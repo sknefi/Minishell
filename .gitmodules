@@ -1,0 +1,3 @@
+[submodule "libft_divinus"]
+	path = libft_divinus
+	url = git@github.com:sknefi/libft_divinus.git
