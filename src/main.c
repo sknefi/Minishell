@@ -34,6 +34,7 @@ int		main(int argc, char **argv, char **env)
 {
 	(void)argc;
 	(void)argv;
+	// this was written by filip
 	ft_printf("PATH: %s\n", get_env_var("PATH", env));
 	return 0;
 }
