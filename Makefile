@@ -6,12 +6,12 @@ YELLOW		= \033[33m
 BLUE  		= \033[34m
 RESET 		= \033[0m
 
-SRCS =  ./src/main.c \
+SRCS =  source/minishell.c source/lexer/lexer.c
 		
 OBJS 		= $(SRCS:.c=.o)
 
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror
+CCFLAGS		= -Wall -Wextra -Werror -lreadline
 RM			= rm -f
 
 LIBFT_NAME	= libft.a
@@ -22,7 +22,7 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	@echo "$(YELLOW)COMPILING: $(NAME)$(RESET)"
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME) 
+	$(CC) $(CCFLAGS) $(OBJS) -o $(NAME) 
 	@echo "$(GREEN)SUCCESS: $(NAME) compiled$(RESET)"
 
 clean:
