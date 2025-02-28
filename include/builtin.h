@@ -13,20 +13,19 @@ t_builtin	**init_builtins(void);
 /**
  * @brief Frees each builtin and the array of builtins
 */
-void	free_builtins(t_builtin **builtins);
+void		free_builtins(t_builtin **builtins);
 
 /**
  * @brief Execute a builtin by its name
 */
-int	exec_builtin(char *name, char **av, t_app *app);
+int			exec_builtin(char *name, char **av, t_app *app);
 
-
-int		sh_echo(t_app *app, char **av);
-int		sh_pwd(t_app *app, char **av);
-int		sh_cd(t_app *app, char **av);
-int		sh_export(t_app *app, char **av);
-int		sh_unset(t_app *app, char **av);
-int		sh_env(t_app *app, char **av);
-int		sh_exit(t_app *app, char **av);
+int			sh_echo(t_app *app, char **av);
+int			sh_pwd(t_app *app, char **av);
+int			sh_cd(t_app *app, char **av);
+int			sh_export(t_app *app, char **av);
+int			sh_unset(t_app *app, char **av);
+int			sh_env(t_app *app, char **av);
+int			sh_exit(t_app *app, char **av);
 
 #endif
