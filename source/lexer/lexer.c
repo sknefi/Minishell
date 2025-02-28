@@ -1,7 +1,6 @@
 #include "../minishell.h"
-#include <time.h>
 
-void	tokenization(char *line);
+//void	tokenization(char *line);
 
 void	lexer(void)
 {
@@ -14,7 +13,7 @@ void	lexer(void)
 	if (*line)
 	{
 		add_history(line);
-		tokenization(line);
+		//tokenization(line);
 	}
 	free(line);
 	rl_clear_history();
@@ -22,7 +21,7 @@ void	lexer(void)
 
 }
 
-void	tokenization(char *line)
+/* void	tokenization(char *line)
 {
 	while (*line)
 	{
@@ -30,4 +29,4 @@ void	tokenization(char *line)
 			line++;
 		if (!(*line))
 			// TODO
-}
+} */
