@@ -1,0 +1,61 @@
+#include "../../include/minishell.h"
+
+/**
+ * @brief Initialize one builtin with name and function
+*/
+static t_builtin	*init_one_builtin(char *name, int (*f)(t_app *app, char **av))
+{
+	t_builtin	*builtin;
+
+	builtin = malloc(sizeof(t_builtin));
+	if (!builtin)
+		return (NULL);
+	builtin->name = name;
+	builtin->f = f;
+	return (builtin);
+}
+
+void	free_builtins(t_builtin **builtins)
+{
+	int	i;
+
+	i = 0;
+	while (builtins[i])
+	{
+		free(builtins[i]);
+		i++;
+	}
+	free(builtins);
+}
+
+t_builtin	**init_builtins(void)
+{
+	t_builtin	**builtins;
+
+	builtins = malloc(sizeof(t_builtin *) * 8);
+	if (!builtins)
+		return (NULL);
+	builtins[0] = init_one_builtin("echo", sh_echo);
+	if (!builtins[0])
+		return (free_builtins(builtins), NULL);
+	builtins[1] = init_one_builtin("pwd", sh_pwd);
+	if (!builtins[1])
+		return (free_builtins(builtins), NULL);
+	builtins[2] = init_one_builtin("cd", sh_cd);
+	if (!builtins[2])
+		return (free_builtins(builtins), NULL);
+	builtins[3] = init_one_builtin("export", sh_export);
+	if (!builtins[3])
+		return (free_builtins(builtins), NULL);
+	builtins[4] = init_one_builtin("unset", sh_unset);
+	if (!builtins[4])
+		return (free_builtins(builtins), NULL);
+	builtins[5] = init_one_builtin("env", sh_env);
+	if (!builtins[5])
+		return (free_builtins(builtins), NULL);
+	builtins[6] = init_one_builtin("exit", sh_exit);
+	if (!builtins[6])
+		return (free_builtins(builtins), NULL);
+	builtins[7] = NULL;
+	return (builtins);
+}

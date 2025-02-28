@@ -1,4 +1,4 @@
-#include "../libft_divinus/libft.h"
+#include "../include/minishell.h"
 
 char	*get_val_of_var(const char *s)
 {
@@ -32,10 +32,19 @@ char	*get_env_var(const char *name, char **env)
 
 int		main(int argc, char **argv, char **env)
 {
+	t_app		*app;
 	(void)argc;
 	(void)argv;
-	// this was written by filip
-	// testing branches
-	ft_printf("PATH: %s\n", get_env_var("PATH", env));
+
+	app = init_app(env);
+	if (!app)
+		return (EXIT_FAILURE);
+	
+	exec_builtin("env", env, app);
+	
+	
+	// p("builtins[4]->name: %s\n", builtins[4]->name);
+	// p("PATH: %s\n", get_env_var("PATH", env));
+	clean_app(app);
 	return 0;
 }

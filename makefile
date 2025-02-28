@@ -6,7 +6,20 @@ YELLOW		= \033[33m
 BLUE  		= \033[34m
 RESET 		= \033[0m
 
-SRCS =  ./src/main.c \
+SRCS =  \
+		./src/main.c \
+		\
+		./src/builtins/builtin.c \
+		./src/builtins/sh_cd.c \
+		./src/builtins/sh_env.c \
+		./src/builtins/sh_pwd.c \
+		./src/builtins/sh_echo.c \
+		./src/builtins/sh_exit.c \
+		./src/builtins/sh_unset.c \
+		./src/builtins/sh_export.c \
+		\
+		./src/init/init_builtins.c \
+		./src/init/init_app.c \
 		
 OBJS 		= $(SRCS:.c=.o)
 
