@@ -2,8 +2,6 @@
 
 int	sh_pwd(t_app *app, char **av)
 {
-	(void)app;
-	(void)av;
-	p("pwd was called\n");
+	p("%s\n", getcwd(NULL, 0));
 	return (0);
 }

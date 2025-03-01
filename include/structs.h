@@ -30,4 +30,60 @@ typedef struct s_app
 	t_builtin	**builtins;
 }				t_app;
 
+/**
+ * @brief Struct of the token
+ * token: the token itself
+ * type: the type of the token
+ * next: pointer to the next token
+ * prev: pointer to the previous token
+*/
+typedef struct s_token
+{
+	char			*token;
+	int				type;
+	struct s_token	*next;
+	struct s_token	*prev;
+}	t_token;
+
+/**
+ * @brief Token types
+ * TOKEN_COMMAND: command token
+ * 				[ls, echo, ...]
+ * TOKEN_ARG`: argument token
+ * 				[-n, -l, -la, ...]
+ * TOKEN_PIPE: pipe token
+ * 				[|]
+ * TOKEN_WORD_VAR: word token to be replaced with variable
+ * 				[$HOME, $USER, ...]
+ * 				+examples 	~>$HOME 
+ * 							~>"$HOME"
+ * TOKEN_WORD_NVAR: word token without variable
+ * 				[Hi, How is ur day, ...], but also
+ * 				[Hello $USER, $HOME, ...] 
+ * 				+examples 	~> Hi
+ * 							~> How is ur day
+ * 							~> "How is ur day"
+ * 							~> 'How is ur day'
+ * 							~> '"Hello $USER"'
+ * TOKEN_REDIRECTION: redirection token
+ * 				[>, <, >>, <<]
+ * TOKEN_FILE: file token
+ * 				[file.txt, file2.txt, ...]
+ * 
+ * Difference between TOKEN_WORD_VAR and TOKEN_WORD_NVAR:
+ * 		TOKEN_WORD_VAR is a word token that is a variable
+ * 		TOKEN_WORD_NVAR is a word token that does not contain a variable, 
+ * 			even if it has $ in it -> the whole token is just a text
+*/
+typedef enum e_token_type
+{
+	TOKEN_COMMAND,
+	TOKEN_ARG,
+	TOKEN_PIPE,
+	TOKEN_WORD_VAR,
+	TOKEN_WORD_NVAR,
+	TOKEN_REDIRECTION,
+	TOKEN_FILE
+}	t_token_type;
+
 #endif

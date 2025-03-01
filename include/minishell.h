@@ -22,7 +22,7 @@
 # define RED	"\033[1;31m"
 # define RST 	"\033[0m"
 
-// # define p(...)	ft_printf(__VA_ARGS__)
+# define p(...)	ft_printf(__VA_ARGS__)
 
 /**
  * @brief Initialize the app struct

@@ -32,6 +32,7 @@ char	*get_env_var(const char *name, char **env)
 
 int		main(int argc, char **argv, char **env)
 {
+	char		**av;
 	t_app		*app;
 	(void)argc;
 	(void)argv;
@@ -39,8 +40,8 @@ int		main(int argc, char **argv, char **env)
 	app = init_app(env);
 	if (!app)
 		return (EXIT_FAILURE);
-	
-	exec_builtin("env", env, app);
+	av = ft_split("cd /qwe", ' ');
+	exec_builtin("cd", av, app);
 	
 	
 	// p("builtins[4]->name: %s\n", builtins[4]->name);
