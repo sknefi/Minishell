@@ -21,6 +21,13 @@ SRCS =  \
 		\
 		./src/init/init_builtins.c \
 		./src/init/init_app.c \
+		\
+		./src/token/token_append.c \
+		./src/token/token_init.c \
+		./src/token/token_clean.c \
+		./src/token/token_print.c \
+		\
+		mocked_data.c \
 		
 OBJS 		= $(SRCS:.c=.o)
 

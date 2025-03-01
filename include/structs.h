@@ -9,6 +9,21 @@
 typedef struct s_app	t_app;
 
 /**
+ * @brief Struct of the token
+ * date: the data of the token
+ * type: the type of the token
+ * next: pointer to the next token
+ * prev: pointer to the previous token
+*/
+typedef struct s_token
+{
+	int				type;
+	char			*data;
+	struct s_token	*next;
+	struct s_token	*prev;
+}	t_token;
+
+/**
  * @brief Struct of builtins
  * name: name of the builtin
  * f: function pointer to the builtin, taking a pointer 
@@ -29,21 +44,6 @@ typedef struct s_app
 	char		**env;
 	t_builtin	**builtins;
 }				t_app;
-
-/**
- * @brief Struct of the token
- * date: the data of the token
- * type: the type of the token
- * next: pointer to the next token
- * prev: pointer to the previous token
-*/
-typedef struct s_token
-{
-	int				type;
-	char			*data;
-	struct s_token	*next;
-	struct s_token	*prev;
-}	t_token;
 
 /**
  * @brief Token types

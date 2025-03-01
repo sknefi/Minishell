@@ -2,21 +2,21 @@
 
 int		main(int argc, char **argv, char **env)
 {
-	char		**av;
+	int	i;
 	t_app		*app;
-	t_token		token;
+	t_token		*token;
+	
 	(void)argc;
 	(void)argv;
-
 	app = init_app(env);
 	if (!app)
 		return (EXIT_FAILURE);
-	
-	// exec_builtin("echo", token, app);
-	
-	
-	// p("builtins[4]->name: %s\n", builtins[4]->name);
-	// p("PATH: %s\n", get_env_var("PATH", env));
+	token = mocked_token_echo();
+	(void)i;
+	// token_print_inline(token);
+	token_print(token);
+
+	token_clean(token);
 	clean_app(app);
 	return 0;
 }

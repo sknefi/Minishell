@@ -30,7 +30,7 @@ char	*get_env_var(const char *name, char **env)
 	while (env[i])
 	{
 		if (ft_strncmp(env[i], name, len) == 0 && env[i][len] == '=')
-			return *(extract_env_var_val(env[i]));
+			return (extract_env_var_val(env[i]));
 		i++;
 	}
 	return (NULL);

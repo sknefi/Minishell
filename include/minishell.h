@@ -16,6 +16,7 @@
 # include "structs.h"
 # include "builtin.h"
 # include "token.h"
+# include "mocked.h"
 
 # define Y		"\033[1;33m"
 # define G		"\033[1;32m"
