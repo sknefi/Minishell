@@ -4,14 +4,15 @@ int		main(int argc, char **argv, char **env)
 {
 	char		**av;
 	t_app		*app;
-	t_token		*token;
+	t_token		token;
 	(void)argc;
 	(void)argv;
 
 	app = init_app(env);
 	if (!app)
 		return (EXIT_FAILURE);
-	exec_builtin("echo", token, app);
+	
+	// exec_builtin("echo", token, app);
 	
 	
 	// p("builtins[4]->name: %s\n", builtins[4]->name);
