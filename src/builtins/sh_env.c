@@ -1,10 +1,10 @@
 #include "../../include/minishell.h"
 
-int	sh_env(t_app *app, char **av)
+int	sh_env(t_app *app, t_token *token)
 {
 	int		i;
 
-	(void)av;
+	(void)token;
 	i = 0;
 	while (app->env[i])
 	{

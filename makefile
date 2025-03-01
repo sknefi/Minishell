@@ -10,6 +10,7 @@ SRCS =  \
 		./src/main.c \
 		\
 		./src/builtins/builtin.c \
+		./src/builtins/builtin_utils.c \
 		./src/builtins/sh_cd.c \
 		./src/builtins/sh_env.c \
 		./src/builtins/sh_pwd.c \

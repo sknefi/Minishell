@@ -17,7 +17,7 @@ typedef struct s_app	t_app;
 typedef struct s_builtin
 {
 	char	*name;
-	int		(*f)(t_app *app, char **av);
+	int		(*f)(t_app *app, t_token *token);
 }	t_builtin;
 
 /**
@@ -32,15 +32,15 @@ typedef struct s_app
 
 /**
  * @brief Struct of the token
- * token: the token itself
+ * date: the data of the token
  * type: the type of the token
  * next: pointer to the next token
  * prev: pointer to the previous token
 */
 typedef struct s_token
 {
-	char			*token;
 	int				type;
+	char			*data;
 	struct s_token	*next;
 	struct s_token	*prev;
 }	t_token;
