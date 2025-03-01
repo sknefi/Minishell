@@ -5,19 +5,27 @@
 #include <stdio.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <unistd.h>
 
 typedef struct s_token
 {
-	char	*token;
-	int		type;
+	int				type;
+	char			*data;
 	struct s_token	*next;
 	struct s_token	*prev;
 }	t_token;
 
 typedef enum e_token_type
 {
-	TOKEN_WORD
+	TOKEN_COMMAND,
+	TOKEN_ARG,
+	TOKEN_WORD_VAR,
+	TOKEN_WORD_NVAR,
+	TOKEN_REDIRECTION,
+	TOEKN_PIPE,
+	TOKEN_FILE
 }	t_token_type;
+
 void	lexer(void);
 
 

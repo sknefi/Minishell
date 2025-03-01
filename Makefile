@@ -6,7 +6,7 @@ YELLOW		= \033[33m
 BLUE  		= \033[34m
 RESET 		= \033[0m
 
-SRCS =  source/minishell.c source/lexer/lexer.c
+SRCS =  source/minishell.c source/token/lexer.c
 		
 OBJS 		= $(SRCS:.c=.o)
 
