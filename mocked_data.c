@@ -8,10 +8,12 @@ t_token	*mocked_token_echo(void)
 	
 	token = NULL;
 	token = token_append(token, "echo", TOKEN_COMMAND);
-	token_append(token, "Hello ", TOKEN_WORD_NVAR);
+	token_append(token, "-n", TOKEN_ARG);
+	token_append(token, "-nnnnn", TOKEN_ARG);
+	token_append(token, "Hello", TOKEN_WORD_NVAR);
 	token_append(token, "$USER", TOKEN_WORD_VAR);
 	token_append(token, "!", TOKEN_WORD_NVAR);
-	token_append(token, " How is ur day?", TOKEN_WORD_NVAR);
+	token_append(token, "How is ur day?", TOKEN_WORD_NVAR);
 	return (token);
 }
 
