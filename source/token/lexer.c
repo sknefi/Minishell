@@ -34,10 +34,15 @@ static void	tokenization(t_token *token, char *line)
 	while (line[i])
 	{
 		while (ft_isspace(line[i]))
-				i++;
+			i++;
 		if (!line)
 			break;
-		
+		tmp = extract_token(line, &i); //TODO
+		if (!tmp)
+			break;
+		if (ft_strchr(tmp, '$')
+				tmp = var(); //TODO
+		type = assign_type(); //TODO
 		token_append(token, *line, type);
 		i++;
 	}
