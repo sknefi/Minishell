@@ -4,6 +4,8 @@
 #include <string.h>
 
 static void	tokenization(t_token *token, char *line);
+static char	extract_token(char line, int *i);
+static int	assign_type(char *token);
 
 void	lexer(void)
 {
@@ -28,6 +30,7 @@ void	lexer(void)
 static void	tokenization(t_token *token, char *line)
 {
 	int		i;
+	int		type;
 	char	*tmp;
 
 	i = 0;
@@ -43,7 +46,29 @@ static void	tokenization(t_token *token, char *line)
 		if (ft_strchr(tmp, '$')
 				tmp = var(); //TODO
 		type = assign_type(); //TODO
-		token_append(token, *line, type);
+		token_append(token, tmp, type);
+		free(tmp);
 		i++;
 	}
-} 
+}
+
+static char	extract_token(char line, int *i)
+{
+	return (token);
+}
+
+static int	assign_type(char *token)
+{
+	if (!ft_strcmp(token, '|'))
+		return (TOKEN_PIPE);
+	else if (!ft_strcmp(token, '>'))
+		return (TOKEN_REDIRECTION_OUT);
+	else if (!ft_strcmp(token, '<'))
+		return (TOKEN_REDIRECTION_IN);
+	else if (!ft_strcmp(token, ">>"))
+		return (TOKEN_APPEND);
+	else if (!ft_strcmp(token, "<<"))
+		return (TOKEN_HEREDOC);
+	return (TOKEN_WORD)
+}
+

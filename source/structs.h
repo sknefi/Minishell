@@ -16,7 +16,7 @@ typedef enum e_token_type
 	TOKEN_WORD_VAR,
 	TOKEN_WORD_NVAR,
 	TOKEN_REDIRECTION,
-	TOEKN_PIPE,
+	TOKEN_PIPE,
 	TOKEN_FILE
 }	t_token_type;
 
