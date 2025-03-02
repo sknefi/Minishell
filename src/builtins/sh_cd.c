@@ -3,17 +3,24 @@
 // Function to change the current working directory
 int	sh_cd(t_app *app, t_token *token)
 {
-	// get i-th token or NULL if i-th token does not exist or i out of range
-	p("current working directory: %s\n", getcwd(NULL, 0));
+	(void)token;
+
+	//TESTING
+	if (sh_pwd(app, token) == -1)
+		return (-1);
+	//END TESTING
+
 	if (chdir(token->next->data) == -1)
 	{
-		p("cd: %s: No such file or directory\n", token->next->data);
+		p(RED "cd: %s: No such file or directory\n" RST, token->next->data);
 		app->exit_status = 1;
 	}
-	else
-	{
-		p("current working directory: %s\n", getcwd(NULL, 0));
-		app->exit_status = 0;
-	}
+
+	//TESTING
+	// the exit status of cd is now comming from pwd - because of this test
+	if (sh_pwd(app, token) == -1)
+		return (-1);
+	//END TESTING
+
 	return (0);
 }
