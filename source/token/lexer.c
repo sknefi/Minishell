@@ -1,5 +1,4 @@
 #include "../minishell.h"
-#include "token.h"
 #include <linux/limits.h>
 #include <stdio.h>
 #include <string.h>
@@ -16,14 +15,14 @@ void	lexer(void)
 	char s[PATH_MAX];
 	getcwd(s, sizeof(s));
 	line = readline(s);
+	if (!line)
+		return ;
 	if (*line)
 	{
 		add_history(line);
 		tokenization(token, line);
 	}
 	free(line);
-	rl_clear_history();
-
 }
 
 static void	tokenization(t_token *token, char *line)
@@ -34,12 +33,12 @@ static void	tokenization(t_token *token, char *line)
 	i = 0;
 	while (line[i])
 	{
-		while (ft_isspace(line[i])
+		while (ft_isspace(line[i]))
 				i++;
 		if (!line)
 			break;
 		
-		token_append(token, *line, int type);
+		token_append(token, *line, type);
 		i++;
 	}
 } 
