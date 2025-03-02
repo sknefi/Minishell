@@ -10,7 +10,8 @@ t_token	*mocked_token_echo(void)
 	token = token_append(token, "echo", TOKEN_COMMAND);
 	token_append(token, "Hello ", TOKEN_WORD_NVAR);
 	token_append(token, "$USER", TOKEN_WORD_VAR);
-	token_append(token, " !", TOKEN_WORD_NVAR);
+	token_append(token, "!", TOKEN_WORD_NVAR);
+	token_append(token, " How is ur day?", TOKEN_WORD_NVAR);
 	return (token);
 }
 
@@ -20,7 +21,7 @@ t_token	*mocked_token_cd(void)
 	
 	token = NULL;
 	token = token_append(token, "cd", TOKEN_COMMAND);
-	token_append(token, "/Users", TOKEN_WORD_NVAR);
+	token_append(token, "../../../qwe", TOKEN_WORD_NVAR);
 	return (token);
 }
 

@@ -24,9 +24,14 @@ t_token	*token_append(t_token *head, char *data, int type);
 */
 void	token_clean(t_token *head);
 
-
+/**
+ * @brief Print token in format [TOKEN_TYPE] TOKEN_VALUE
+*/
 void	token_print(t_token *token);
 
+/**
+ * @brief Print token in one line, as I got it from the input
+*/
 void	token_print_inline(t_token *token);
 
 #endif
