@@ -1,4 +1,5 @@
 #include "../minishell.h"
+#include "token.h"
 #include <linux/limits.h>
 #include <stdio.h>
 #include <string.h>
@@ -38,7 +39,7 @@ static void	tokenization(t_token *token, char *line)
 		if (!line)
 			break;
 		
-		add_token(
+		token_append(token, *line, int type);
 		i++;
 	}
 } 

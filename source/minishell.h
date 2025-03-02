@@ -7,6 +7,8 @@
 #include <readline/history.h>
 #include <unistd.h>
 
+#include "token/token.h"
+
 typedef struct s_token
 {
 	int				type;
@@ -25,6 +27,7 @@ typedef enum e_token_type
 	TOEKN_PIPE,
 	TOKEN_FILE
 }	t_token_type;
+
 
 void	lexer(void);
 

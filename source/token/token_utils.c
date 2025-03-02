@@ -39,3 +39,16 @@ static t_token	*token_init(char *data, int type)
 	token->prev = NULL;
 	return (token);
 }
+
+void	free_tokens(t_token *token)
+{
+	t_token	*tmp;
+
+	while (token)
+	{
+		tmp = token;
+		token = token->next;
+		free(tmp->data);
+		free(tmp);
+	}
+}
