@@ -6,23 +6,30 @@ YELLOW		= \033[33m
 BLUE  		= \033[34m
 RESET 		= \033[0m
 
-SRCS =  source/minishell.c source/token/lexer.c
+SRCS =  source/minishell.c source/token/lexer.c source/token/env_var.c \
+		source/token/token_utils.c
 		
 OBJS 		= $(SRCS:.c=.o)
 
 CC			= cc
-CCFLAGS		= -Wall -Wextra -Werror -lreadline
+CCFLAGS		= -Wall -Wextra -Werror -lreadline -g
 RM			= rm -f
 
 LIBFT_NAME	= libft.a
 LIBFT_DIR	= ./libft_divinus
 LIBFT		= $(LIBFT_DIR)/$(LIBFT_NAME)
 
+
+
+
 all: $(NAME)
+
+%.o: %.c
+	$(CC) $(CCFLAGS) -c $< -o $@
 
 $(NAME): $(OBJS)
 	@echo "$(YELLOW)COMPILING: $(NAME)$(RESET)"
-	$(CC) $(CCFLAGS) $(OBJS) -o $(NAME) 
+	$(CC) $(CCFLAGS) $(OBJS) $(LIBFT) -o $(NAME) 
 	@echo "$(GREEN)SUCCESS: $(NAME) compiled$(RESET)"
 
 clean:

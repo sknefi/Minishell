@@ -3,8 +3,9 @@
 #include <linux/limits.h>
 #include <stdio.h>
 #include <string.h>
+#include "../../libft_divinus/libft.h"
 
-static void	tokenization(t_token *token, char *line);
+static void	tokenization(t_token **token, char *line);
 static char	*extract_token(char *line, int *i);
 static int	assign_type(char *token);
 
@@ -22,13 +23,15 @@ void	lexer(void)
 		return ;
 	if (*line)
 	{
+		printf("%s\n", line);
 		add_history(line);
-		tokenization(token, line);
+		tokenization(&token, line);
 	}
 	free(line);
+	free_tokens(token);
 }
 
-static void	tokenization(t_token *token, char *line)
+static void	tokenization(t_token **token, char *line)
 {
 	int		i;
 	int		type;
@@ -37,19 +40,23 @@ static void	tokenization(t_token *token, char *line)
 	i = 0;
 	while (line[i])
 	{
-		while (ft_isspace(line[i]))
+		while (line[i] && ft_isspace(line[i]))
 			i++;
-		if (!line)
+		if (!line || !line[i])
 			break;
 		tmp = extract_token(line, &i); //TODO
-		if (!tmp)
+		if (!tmp || !*tmp)
+		{
+			free(tmp);
 			break;
+		}
 		if (ft_strchr(tmp, '$'))
 				tmp = get_env_var(tmp); //TODO
 		type = assign_type(tmp); //TODO
-		token_append(token, tmp, type);
+		*token = token_append(*token, tmp, type);
 		free(tmp);
-		i++;
+		if (line[i] != '\0')
+			i++;
 	}
 }
 
@@ -74,21 +81,23 @@ static char	*extract_token(char *line, int *i)
 			(*i)++;
 	}
 	token = ft_substr(line, start, *i - start);
+	if (!token)
+		return (NULL);
 	return (token);
 }
 
 static int	assign_type(char *token)
 {
-	if (!ft_strcmp(token, '|'))
+	if (!ft_strcmp(token, "|"))
 		return (TOKEN_PIPE);
-	else if (!ft_strcmp(token, '>'))
+	else if (!ft_strcmp(token, ">"))
 		return (TOKEN_REDIRECTION_OUT);
-	else if (!ft_strcmp(token, '<'))
+	else if (!ft_strcmp(token, "<"))
 		return (TOKEN_REDIRECTION_IN);
 	else if (!ft_strcmp(token, ">>"))
 		return (TOKEN_APPEND);
 	else if (!ft_strcmp(token, "<<"))
 		return (TOKEN_HEREDOC);
-	return (TOKEN_WORD)
+	return (TOKEN_WORD);
 }
 

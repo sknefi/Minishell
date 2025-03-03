@@ -1,4 +1,6 @@
+#include "../minishell.h"
 #include "token.h"
+#include "../../libft_divinus/libft.h"
 
 static t_token	*token_init(char *data, int type);
 
@@ -18,7 +20,7 @@ t_token	*token_append(t_token *head, char *data, int type)
 	last->next = token;
 	token->prev = last;
 	token->next = NULL;
-	return (token);
+	return (head);
 }
 
 static t_token	*token_init(char *data, int type)
@@ -51,4 +53,26 @@ void	free_tokens(t_token *token)
 		free(tmp->data);
 		free(tmp);
 	}
+}
+
+int	ft_isspace(char	c)
+{
+	if (c == 32)
+		return (1);
+	return (0);
+}
+
+
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	int	i;
+
+	i = 0;
+	while (s1[i] && s2[i])
+	{
+		if (s1[i] != s2[i])
+			return (s1[i] - s2[i]);
+		i++;
+	}
+	return (s1[i] - s2[i]);
 }
