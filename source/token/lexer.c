@@ -1,4 +1,5 @@
 #include "../minishell.h"
+#include "token.h"
 #include <linux/limits.h>
 #include <stdio.h>
 #include <string.h>
@@ -43,8 +44,8 @@ static void	tokenization(t_token *token, char *line)
 		tmp = extract_token(line, &i); //TODO
 		if (!tmp)
 			break;
-		if (ft_strchr(tmp, '$')
-				tmp = var(); //TODO
+		if (ft_strchr(tmp, '$'))
+				tmp = get_env_var(tmp); //TODO
 		type = assign_type(tmp); //TODO
 		token_append(token, tmp, type);
 		free(tmp);
@@ -72,7 +73,7 @@ static char	*extract_token(char *line, int *i)
 		while (line[*i] && !ft_isspace(line[*i]))
 			(*i)++;
 	}
-	token = //TODO
+	token = ft_substr(line, start, *i - start);
 	return (token);
 }
 

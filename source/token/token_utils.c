@@ -1,4 +1,4 @@
-#include "../minishell.h"
+#include "token.h"
 
 static t_token	*token_init(char *data, int type);
 
