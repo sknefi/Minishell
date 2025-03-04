@@ -9,12 +9,11 @@ static void	tokenization(t_token **token, char *line);
 static char	*extract_token(char *line, int *i);
 static int	assign_type(char *token);
 
-void	lexer(void)
+void	lexer(t_token **token)
 {
-	t_token	*token;
 	char	*line;
 
-	token = NULL;
+	*token = NULL;
 	line = NULL;
 	char s[PATH_MAX];
 	getcwd(s, sizeof(s));
@@ -25,10 +24,9 @@ void	lexer(void)
 	{
 		printf("%s\n", line);
 		add_history(line);
-		tokenization(&token, line);
+		tokenization(token, line);
 	}
 	free(line);
-	free_tokens(token);
 }
 
 static void	tokenization(t_token **token, char *line)

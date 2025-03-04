@@ -10,7 +10,7 @@
 #include "structs.h"
 #include "token/token.h"
 
-void	lexer(void);
+void	lexer(t_token **token);
 
 
 #endif
