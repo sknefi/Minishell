@@ -5,6 +5,7 @@ int	sh_exit(t_app *app, t_token *token)
 {
 	(void)app;
 	(void)token;
-	exit(EXIT_SUCCESS);
+	// exit(EXIT_SUCCESS);
+	app->exit_status = 0;
 	return (0);
 }

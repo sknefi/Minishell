@@ -30,7 +30,7 @@ int			sh_exit(t_app *app, t_token *token);
 
 /**
  * @brief Gets the value of an environment variable
- * @param name The name of the environment variable
+ * @param name The name of the environment variable (USER, HOME, ...)
  * @param env The environment variables
  * @return The value of the environment variable (NULL if not found)
 */

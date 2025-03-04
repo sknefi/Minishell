@@ -1,5 +1,9 @@
 #include "../../include/minishell.h"
 
+/**
+ * @brief Execute a builtin command
+ * @return 0 on success, -1 on failure
+*/
 int	exec_builtin(char *name, t_token *token, t_app *app)
 {
 	int			i;
