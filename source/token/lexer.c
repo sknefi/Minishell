@@ -68,6 +68,7 @@ static char	*extract_token(char *line, int *i)
 	if (line[*i] == '\'' || line[*i] == '"')
 	{
 		quote = line[*i];
+		(*i)++;
 		while (line[*i] && line[*i] != quote)
 			(*i)++;
 		if (line[*i] == quote)
