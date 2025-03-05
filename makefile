@@ -21,7 +21,7 @@ SRCS =  \
 		\
 		./src/init/init_builtins.c \
 		./src/init/init_app.c \
-		\
+		./src/init/init_env.c \
 		./src/token/token_append.c \
 		./src/token/token_init.c \
 		./src/token/token_clean.c \

@@ -4,8 +4,8 @@ void	clean_app(t_app *app)
 {
 	if (app)
 	{
-		if (app->builtins)
-			free_builtins(app->builtins);
+		free_builtins(app->builtins);
+		free_env(app->env);
 		free(app);
 	}
 }
@@ -17,7 +17,9 @@ t_app	*init_app(char **env)
 	app = (t_app *)malloc(sizeof(t_app));
 	if (!app)
 		return (NULL);
-	app->env = env;
+	app->env = init_env(env); // this is for better memory management (for example - free on export)
+	if (!app->env)
+		return (clean_app(app), NULL);
 	app->builtins = init_builtins();
 	if (!app->builtins)
 		return (clean_app(app), NULL);

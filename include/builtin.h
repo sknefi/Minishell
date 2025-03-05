@@ -36,5 +36,44 @@ int			sh_exit(t_app *app, t_token *token);
 */
 char	*get_env_var(const char *name, char **env);
 
+/**
+ * @brief Counts the number of pointers in an array of pointers
+ * @param str The array of pointers
+ * @return The number of pointers in the array
+*/
+size_t	count_pointer(char **str);
+
+/**
+ * @brief Frees an array of pointers, from the last pointer to the first
+ * @param str The array of pointers
+ * @param i The number of pointers to free
+*/
+void	free_dpp(char **str, int i);
+
+/**
+ * @brief Sorts an array of environment variables
+ * @param env The array of environment variables
+*/
+char	**sh_env_sort(char **env);
+
+/**
+ * @brief Prints an array of environment variables
+ * @param env The array of environment variables
+*/
+void	show_env(char **env);
+
+/**
+ * @brief Gets the length of the key of an environment variable
+ * @param str The environment variable
+ * @return The length of the key of the environment variable
+*/
+size_t	get_env_key_len(char *str);
+
+/**
+ * @brief Gets the key of an environment variable
+ * @param str The environment variable
+ * @return The key of the environment variable
+*/
+char	*get_env_key(char *str, char **env);
 
 #endif

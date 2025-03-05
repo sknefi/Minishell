@@ -35,3 +35,44 @@ char	*get_env_var(const char *name, char **env)
 	}
 	return (NULL);
 }
+
+size_t	count_pointer(char **str)
+{
+	int		i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
+
+void	free_dpp(char **str, int i)
+{
+	while (i >= 0)
+		free(str[i--]);
+	free(str);
+}
+
+size_t	get_env_key_len(char *str)
+{
+	size_t	len;
+
+	len = 0;
+	while (str[len] && str[len] != '=')
+		len++;
+	return (len);
+}
+
+char	*get_env_key(char *str, char **env)
+{
+	int		i;
+
+	i = 0;
+	while (env[i])
+	{
+		if (ft_strncmp(env[i], str, get_env_key_len(str)) == 0)
+			return (env[i]);
+		i++;
+	}
+	return (NULL);
+}

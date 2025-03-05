@@ -27,6 +27,20 @@
 # define p(...)	ft_printf(__VA_ARGS__)
 
 /**
+ * @brief Initializes the environment variables
+ * @param env The environment variables
+ * @return The initialized environment variables on heap
+*/
+char	**init_env(char **env);
+
+/**
+ * @brief Frees the environment variables
+ * @param env The environment variables
+ */
+void	free_env(char **env);
+
+
+/**
  * @brief Initialize the app struct
 */
 t_app	*init_app(char **env);

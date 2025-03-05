@@ -2,7 +2,6 @@
 
 int		main(int argc, char **argv, char **env)
 {
-	int	i;
 	t_app		*app;
 	t_token		*token;
 	
@@ -11,10 +10,12 @@ int		main(int argc, char **argv, char **env)
 	app = init_app(env);
 	if (!app)
 		return (EXIT_FAILURE);
-	token = mocked_token_cd();
-	(void)i;
+
+	// Test export with various cases
+	token = mocked_token_export();
+	p("\nTesting export command with various cases:\n");
 	token_print(token);
-	exec_builtin("cd", token, app);
+	exec_builtin("export", token, app);
 
 	token_clean(token);
 	clean_app(app);

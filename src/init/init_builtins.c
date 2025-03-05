@@ -19,6 +19,8 @@ void	free_builtins(t_builtin **builtins)
 {
 	int	i;
 
+	if (!builtins)
+		return ;
 	i = 0;
 	while (builtins[i])
 	{

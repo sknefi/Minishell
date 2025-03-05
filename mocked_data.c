@@ -53,7 +53,22 @@ t_token	*mocked_token_export(void)
 	
 	token = NULL;
 	token = token_append(token, "export", TOKEN_COMMAND);
-	token_append(token, "TESTMINISHELL=testing", TOKEN_WORD_NVAR);
+	token_append(token, "ASDW=testing", TOKEN_WORD_NVAR);
+
+	// token_append(token, "EMPTYTWO", TOKEN_WORD_NVAR);	
+	
+	// Test case 2: Variable with empty value
+	// token_append(token, "EMPTYTWO=", TOKEN_WORD_NVAR);
+	
+	// // Test case 3: Variable with spaces in value
+	// token_append(token, "GREETINGTWO=hello world", TOKEN_WORD_NVAR);
+	//  TODO for Tym, just send me "GREETINGTWO=hello" as a token, not "GREETINGTWO=hello world"
+
+	// // Test case 4: Multiple equal signs
+	// token_append(token, "PATHTWO=/usr/bin=/local/bin", TOKEN_WORD_NVAR);
+	
+	// // Test case 5: Just variable name (marks for export)
+	// token_append(token, "EXPORTONLYTWO", TOKEN_WORD_NVAR);	
 	return (token);
 }
 
