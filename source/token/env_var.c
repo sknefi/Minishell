@@ -12,7 +12,7 @@ char	*get_env_var(char *token)
 	char	*result;
 	int		i;
 
-	result = "";
+	result = ft_strdup("");
 	i = 0;
 	while (token[i])
 	{

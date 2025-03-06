@@ -48,7 +48,7 @@ static void	tokenization(t_token **token, char *line)
 			free(tmp);
 			break;
 		}
-		if (ft_strchr(tmp, '$'))
+		if (ft_strchr(tmp, '$') && *tmp != '\'')
 				tmp = get_env_var(tmp); //TODO
 		type = assign_type(tmp); //TODO
 		*token = token_append(*token, tmp, type);
