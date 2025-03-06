@@ -1,6 +1,6 @@
 #include "../../include/minishell.h"
 
-char	**sh_env_sort(char **env)
+char	**show_env_sort(char **env)
 {
 	int		i;
 	int		j;

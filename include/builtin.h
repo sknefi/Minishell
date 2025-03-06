@@ -54,7 +54,7 @@ void	free_dpp(char **str, int i);
  * @brief Sorts an array of environment variables
  * @param env The array of environment variables
 */
-char	**sh_env_sort(char **env);
+char	**show_env_sort(char **env);
 
 /**
  * @brief Prints an array of environment variables
@@ -75,5 +75,13 @@ size_t	get_env_key_len(char *str);
  * @return The key of the environment variable
 */
 char	*get_env_key(char *str, char **env);
+
+/**
+ * @brief Unsets an environment variable
+ * @param app The application
+ * @param token The token
+ * @return 0 if key is not found, 0 if key is unset
+*/
+int	sh_unset(t_app *app, t_token *token);
 
 #endif

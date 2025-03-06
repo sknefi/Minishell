@@ -26,7 +26,7 @@ static int	handle_only_export(t_app *app)
 {
 	char	**new_env;
 
-	new_env = sh_env_sort(app->env);
+	new_env = show_env_sort(app->env);
 	if (!new_env)
 		return (-1);
 	show_env(new_env);
@@ -87,7 +87,6 @@ int	sh_export(t_app *app, t_token *token)
 		if (handle_append_export(app, token) == -1)
 			return (-1);
 	}
-	// TODO: handle replace export
 	else
 	{
 		p("=====handle_replace_export\n");
