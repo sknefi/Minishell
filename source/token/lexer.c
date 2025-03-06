@@ -3,21 +3,23 @@
 #include <linux/limits.h>
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
 #include "../../libft_divinus/libft.h"
 
 static void	tokenization(t_token **token, char *line);
 static char	*extract_token(char *line, int *i);
 static int	assign_type(char *token);
+char	*get_path();
 
 void	lexer(t_token **token)
 {
 	char	*line;
+	char	*shell_path;
 
 	*token = NULL;
 	line = NULL;
-	char s[PATH_MAX];
-	getcwd(s, sizeof(s));
-	line = readline(s);
+	shell_path = get_path();
+	line = readline(shell_path);
 	if (!line)
 		return ;
 	if (*line)
@@ -100,3 +102,13 @@ static int	assign_type(char *token)
 	return (TOKEN_WORD);
 }
 
+char	*get_path()
+{
+	char	*str;
+
+	str = malloc(PATH_MAX);
+	if (!str)
+		exit(EXIT_FAILURE);
+	getcwd(str, PATH_MAX);
+	return (str);
+}
