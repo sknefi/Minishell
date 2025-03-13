@@ -10,6 +10,7 @@ int	main(int argc, char **argv, char **env)
 	(void)argv;
 	(void)env;
 	token = NULL;
+	sig_handler();
 	while (1)
 	{
 		lexer(&token);

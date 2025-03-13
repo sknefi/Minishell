@@ -109,6 +109,6 @@ char	*get_path()
 	str = malloc(PATH_MAX);
 	if (!str)
 		exit(EXIT_FAILURE);
-	getcwd(str, PATH_MAX);
+	getcwd(str, PATH_MAX); //TODO getcwd failure
 	return (str);
 }
