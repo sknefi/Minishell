@@ -27,6 +27,7 @@ int	sh_unset(t_app *app, t_token *token)
 		}
 		i++;
 	}
+	app->exit_status = 0;
 	show_env(app->env);
 	return (0);
 }

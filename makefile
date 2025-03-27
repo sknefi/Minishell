@@ -10,7 +10,8 @@ SRCS =  \
 		./src/main.c \
 		\
 		./src/builtins/builtin.c \
-		./src/builtins/builtin_utils.c \
+		./src/builtins/env_utils_01.c \
+		./src/builtins/env_utils_02.c \
 		./src/builtins/sh_cd.c \
 		./src/builtins/sh_env.c \
 		./src/builtins/sh_pwd.c \
@@ -28,6 +29,12 @@ SRCS =  \
 		./src/token/token_print.c \
 		\
 		mocked_data.c \
+		\
+		./src/exec/sh_exec.c \
+		\
+		./src/utils/utils_01_dpp.c \
+		\
+		./src/external/external.c \
 		
 OBJS 		= $(SRCS:.c=.o)
 

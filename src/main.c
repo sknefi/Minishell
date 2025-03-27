@@ -12,11 +12,12 @@ int		main(int argc, char **argv, char **env)
 		return (EXIT_FAILURE);
 
 	// Test export with various cases
-	token = mocked_token_echo();
-	p("\nTESTING BUILTINS:\n");
+	token = mocked_token_cd_01();
 	token_print(token);
-	exec_builtin("echo", token, app);
 
+	app->exit_status = sh_exec(app, token);
+
+	p("exit status: %d\n", app->exit_status);
 	token_clean(token);
 	clean_app(app);
 	return (EXIT_SUCCESS);

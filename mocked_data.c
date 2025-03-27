@@ -8,6 +8,7 @@ t_token	*mocked_token_echo(void)
 	
 	token = NULL;
 	token = token_append(token, "echo", TOKEN_COMMAND);
+	token_append(token, "Hello", TOKEN_WORD_NVAR);
 	token_append(token, "-n", TOKEN_ARG);
 	token_append(token, "-naa", TOKEN_ARG);
 	token_append(token, "-a", TOKEN_ARG);
@@ -16,18 +17,73 @@ t_token	*mocked_token_echo(void)
 	token_append(token, "$USER", TOKEN_WORD_VAR);
 	token_append(token, "!", TOKEN_WORD_NVAR);
 	token_append(token, "How is ur day?", TOKEN_WORD_NVAR);
-	token_append(token, "\n", TOKEN_WORD_NVAR);
 	return (token);
 }
 
-t_token	*mocked_token_cd(void)
+t_token	*mocked_token_cd_01(void)
 {
 	t_token			*token;
 	
 	token = NULL;
 	token = token_append(token, "cd", TOKEN_COMMAND);
-	// token_append(token, "../../../", TOKEN_WORD_NVAR);
-	// token_append(token, "../../../qwe", TOKEN_WORD_NVAR); // doesnt exists
+	return (token);
+}
+
+t_token	*mocked_token_cd_02(void)
+{
+	t_token			*token;
+	
+	token = NULL;
+	token = token_append(token, "cd", TOKEN_COMMAND);
+	token_append(token, "../../../../", TOKEN_WORD_NVAR);
+	return (token);
+}
+
+t_token	*mocked_token_cd_03(void)
+{
+	t_token			*token;
+	
+	token = NULL;
+	token = token_append(token, "cd", TOKEN_COMMAND);
+	token = token_append(token, "~", TOKEN_WORD_NVAR);
+	return (token);
+}
+
+t_token	*mocked_token_cd_04(void)
+{
+	t_token			*token;
+	
+	token = NULL;
+	token = token_append(token, "cd", TOKEN_COMMAND);
+	token = token_append(token, "-", TOKEN_WORD_NVAR);
+	return (token);
+}
+
+t_token	*mocked_token_cd_05(void)
+{
+	t_token			*token;
+	
+	token = NULL;
+	token = token_append(token, "cd", TOKEN_COMMAND);
+	token_append(token, "../../../../../../../../../../../../../../", TOKEN_WORD_NVAR);
+	return (token);
+}
+
+t_token	*mocked_token_invalid_command(void)
+{
+	t_token			*token;
+	
+	token = NULL;
+	token = token_append(token, "invalid", TOKEN_COMMAND);
+	return (token);
+}
+
+t_token	*mocked_token_invalid_command_input(void)
+{
+	t_token			*token;
+	
+	token = NULL;
+	token = token_append(token, "HelloWorld", TOKEN_WORD_NVAR);
 	return (token);
 }
 
@@ -55,7 +111,7 @@ t_token	*mocked_token_export(void)
 	
 	token = NULL;
 	token = token_append(token, "export", TOKEN_COMMAND);
-	// token_append(token, "QWE=", TOKEN_WORD_NVAR);
+	token_append(token, "USER=123", TOKEN_WORD_NVAR);
 
 	// token_append(token, "EMPTYTWO", TOKEN_WORD_NVAR);	
 	

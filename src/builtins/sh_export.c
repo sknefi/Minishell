@@ -9,13 +9,13 @@ static char	**append_env(char **from, char **to, char *new_var, t_app *app)
 	{
 		to[i] = ft_strdup(from[i]);
 		if (!to[i])
-			return (free_dpp(from, i), NULL);
+			return (free_dpp_i(from, i), NULL);
 		free(from[i]);
 		i++;
 	}
 	to[i] = ft_strdup(new_var);
 	if (!to[i])
-		return (free_dpp(to, i), NULL);
+		return (free_dpp_i(to, i), NULL);
 	to[i + 1] = NULL;
 	free(from);
 	app->env = to;
@@ -35,7 +35,7 @@ static int	handle_only_export(t_app *app)
 	return (0);
 }
 
-static int	handle_append_export(t_app *app, t_token *token)
+int	handle_append_export(t_app *app, t_token *token)
 {
 	char	**new_env;
 	size_t	env_size;
@@ -44,23 +44,23 @@ static int	handle_append_export(t_app *app, t_token *token)
 	new_env = malloc(sizeof(char *) * (env_size + 2)); // +2 for new var and NULL terminator
 	if (!new_env)
 		return (-1);
-	if (!append_env(app->env, new_env, token->next->data, app))
+	if (!append_env(app->env, new_env, token->data, app))
 		return (-1);
 	return (0);
 }
 
 // ASDW=testing
-static int	handle_replace_export(t_app *app, t_token *token)
+int	handle_replace_export(t_app *app, t_token *token)
 {
 	int	i;
 
 	i = 0;
 	while (app->env[i])
 	{
-		if (ft_strncmp(app->env[i], token->next->data, get_env_key_len(token->next->data)) == 0)
+		if (ft_strncmp(app->env[i], token->data, get_env_key_len(token->data)) == 0)
 		{
 			free(app->env[i]);
-			app->env[i] = ft_strdup(token->next->data);
+			app->env[i] = ft_strdup(token->data);
 			break ;
 		}
 		i++;
@@ -84,7 +84,7 @@ int	sh_export(t_app *app, t_token *token)
 	if (!key)
 	{
 		p("=====handle_append_export\n");
-		if (handle_append_export(app, token) == -1)
+		if (handle_append_export(app, token->next) == -1)
 			return (-1);
 	}
 	else

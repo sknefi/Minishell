@@ -17,6 +17,7 @@
 # include "builtin.h"
 # include "token.h"
 # include "mocked.h"
+# include "utils.h"
 
 # define Y		"\033[1;33m"
 # define G		"\033[1;32m"
@@ -49,5 +50,21 @@ t_app	*init_app(char **env);
  * @brief Frees the app struct
 */
 void	clean_app(t_app *app);
+
+/**
+ * @brief Executes an external command
+ * @param app The application
+ * @param token The token
+ * @return 0 on success, 1 if command not found, -1 on error
+*/
+int	exec_external(t_app *app, t_token *token);
+
+/**
+ * @brief Executes a command (builtin or external)
+ * @param app The application
+ * @param token The token
+ * @return 0 on success, 1 on failure (command not found), -1 on failure (malloc failed)
+*/
+int	sh_exec(t_app *app, t_token *token);
 
 #endif

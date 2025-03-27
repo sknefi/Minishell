@@ -17,13 +17,18 @@ void		free_builtins(t_builtin **builtins);
 
 /**
  * @brief Execute a builtin by its name
+ * @param app The application
+ * @param token The token
+ * @return 0 on success, -1 on failure (malloc failed), 1 on failure (command not found)
 */
-int			exec_builtin(char *name, t_token *token, t_app *app);
+int			exec_builtin(t_app *app, t_token *token);
 
 int			sh_echo(t_app *app, t_token *token);
 int			sh_pwd(t_app *app, t_token *token);
 int			sh_cd(t_app *app, t_token *token);
 int			sh_export(t_app *app, t_token *token);
+int			handle_replace_export(t_app *app, t_token *token);
+int			handle_append_export(t_app *app, t_token *token);
 int			sh_unset(t_app *app, t_token *token);
 int			sh_env(t_app *app, t_token *token);
 int			sh_exit(t_app *app, t_token *token);
@@ -35,20 +40,6 @@ int			sh_exit(t_app *app, t_token *token);
  * @return The value of the environment variable (NULL if not found)
 */
 char	*get_env_var(const char *name, char **env);
-
-/**
- * @brief Counts the number of pointers in an array of pointers
- * @param str The array of pointers
- * @return The number of pointers in the array
-*/
-size_t	count_pointer(char **str);
-
-/**
- * @brief Frees an array of pointers, from the last pointer to the first
- * @param str The array of pointers
- * @param i The number of pointers to free
-*/
-void	free_dpp(char **str, int i);
 
 /**
  * @brief Sorts an array of environment variables

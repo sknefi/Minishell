@@ -36,23 +36,6 @@ char	*get_env_var(const char *name, char **env)
 	return (NULL);
 }
 
-size_t	count_pointer(char **str)
-{
-	int		i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
-
-void	free_dpp(char **str, int i)
-{
-	while (i >= 0)
-		free(str[i--]);
-	free(str);
-}
-
 size_t	get_env_key_len(char *str)
 {
 	size_t	len;
