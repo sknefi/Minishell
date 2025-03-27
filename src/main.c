@@ -12,7 +12,7 @@ int		main(int argc, char **argv, char **env)
 		return (EXIT_FAILURE);
 
 	// Test export with various cases
-	token = mocked_token_cd_01();
+	token = mocked_token_unset();
 	token_print(token);
 
 	app->exit_status = sh_exec(app, token);

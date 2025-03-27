@@ -11,7 +11,6 @@ static t_token	*set_var_oldpwd()
 	char	*curr_pwd_text;
 	t_token	*curr_pwd;
 
-	p(Y"testing set_var_oldpwd\n" RST);
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 		return (NULL);
@@ -19,13 +18,11 @@ static t_token	*set_var_oldpwd()
 	if (!tmp)
 		return (free(cwd), NULL);
 	curr_pwd_text = ft_strjoin(tmp, cwd);
-	p(Y"curr_pwd_text: %s\n" RST, curr_pwd_text);
 	free(cwd);
 	free(tmp);
 	if (!curr_pwd_text)
 		return (NULL);
 	curr_pwd = token_append(NULL, curr_pwd_text, TOKEN_WORD_NVAR);
-	p(Y"curr_pwd: %s\n" RST, curr_pwd->data);
 	free(curr_pwd_text);
 	if (!curr_pwd)
 		return (NULL);
@@ -49,12 +46,13 @@ int	sh_cd(t_app *app, t_token *token)
 		return (-1); // malloc failed
 	if (!token->next || strncmp(token->next->data, "~", 1) == 0)
 		path = get_env_var("HOME", app->env);
+	else if (strncmp(token->next->data, "-", 1) == 0)
+		path = get_env_var("OLDPWD", app->env);
 	else
 		path = token->next->data;
 	if (chdir(path) == -1)
 	{
 		p(RED "cd: %s: No such file or directory\n" RST, token->next->data);
-		app->exit_status = 1;
 		return (1);
 	}
 
@@ -67,6 +65,6 @@ int	sh_cd(t_app *app, t_token *token)
 	if (get_env_var("OLDPWD", app->env))
 		handle_replace_export(app, old_pwd);
 	else
-		handle_append_export(app, old_pwd); // if there is no OLDPWD, append it
+		handle_append_export(app, old_pwd); // if there is no OLDPWD, create it
 	return (0);
 }

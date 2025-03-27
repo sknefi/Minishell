@@ -19,5 +19,5 @@ int	exec_builtin(t_app *app, t_token *token)
 			return (builtins[i]->f(app, token));
 		i++;
 	}
-	return (1);
+	return (1); // command is not a builtin
 }

@@ -31,7 +31,6 @@ static int	handle_only_export(t_app *app)
 		return (-1);
 	show_env(new_env);
 	free_env(new_env);
-	app->exit_status = 0;
 	return (0);
 }
 
@@ -93,7 +92,6 @@ int	sh_export(t_app *app, t_token *token)
 		if (handle_replace_export(app, token) == -1)
 			return (-1);
 	}
-	app->exit_status = 0;
 	sh_env(app, token);
 	return (0);
 }

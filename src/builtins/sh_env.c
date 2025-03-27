@@ -45,6 +45,5 @@ int	sh_env(t_app *app, t_token *token)
 {
 	(void)token;
 	show_env(app->env);
-	app->exit_status = 0;
 	return (0);
 }

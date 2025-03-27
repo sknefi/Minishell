@@ -17,7 +17,7 @@ int	sh_exec(t_app *app, t_token *token)
 		return (127);
 	}
 	status = exec_builtin(app, token);
-	if (status != 1) // if command was found - command is builtin or malloc failed
+	if (status != 1 || status == -1) // command is not a builtin or malloc failed
 		return (status);
 	// return (exec_external(app, token));
 	return (0);

@@ -52,6 +52,5 @@ int	sh_echo(t_app *app, t_token *token)
 	}
 	if (!n_flag)
 		p("\n");
-	app->exit_status = 0;
 	return (0);
 }
