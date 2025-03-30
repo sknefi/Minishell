@@ -66,7 +66,11 @@ typedef struct s_app
  * 							~> 'How is ur day'
  * 							~> '"Hello $USER"'
  * TOKEN_REDIRECTION: redirection token
- * 				[>, <, >>, <<]
+ * 				[>, <, <<]
+ * 
+ * TOKEN_HERE_DOC: here document token
+ * 				[<<EOF]]
+ * 
  * TOKEN_FILE: file token
  * 				[file.txt, file2.txt, ...]
  * 
@@ -83,6 +87,7 @@ typedef enum e_token_type
 	TOKEN_WORD_VAR,
 	TOKEN_WORD_NVAR,
 	TOKEN_REDIRECTION,
+	TOKEN_HERE_DOC,
 	TOKEN_FILE
 }	t_token_type;
 
