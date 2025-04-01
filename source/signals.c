@@ -25,6 +25,7 @@ static void	sigint_handler(int sig)
 	(void)sig;
 	//TODO
 	write(STDOUT_FILENO, "^C\n", 3);
+	exit(EXIT_SUCCESS);
 }
 
 static void	sigquit_handler(int sig)
