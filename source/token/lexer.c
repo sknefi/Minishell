@@ -97,13 +97,15 @@ static int	assign_type(char *token)
 {
 	if (is_command(token))
 		return (TOKEN_COMMAND);
-	else if (ft_strcmp(token, "|"))
+	else if (!ft_strcmp(token, "-n"))
+		return (TOKEN_ARG);
+	else if (!ft_strcmp(token, "|"))
 		return (TOKEN_PIPE);
-	else if (ft_strcmp(token, ">"))
+	else if (!ft_strcmp(token, ">"))
 		return (TOKEN_REDIRECTION);
-	else if (ft_strcmp(token, "<"))
+	else if (!ft_strcmp(token, "<"))
 		return (TOKEN_REDIRECTION);
-	else if (ft_strcmp(token, ">>"))
+	else if (!ft_strcmp(token, ">>"))
 		return (TOKEN_HERE_DOC);
 	else if (!ft_strcmp(token, "<<"))
 		return (TOKEN_HERE_DOC);
