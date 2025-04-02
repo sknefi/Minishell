@@ -93,21 +93,21 @@ static char	*extract_token(char *line, int *i)
 	return (token);
 }
 
-static int	assign_type(t_token *token)
+static int	assign_type(char *token)
 {
-	if (is_command(token->data))
+	if (is_command(token))
 		return (TOKEN_COMMAND);
-	else if (!ft_strcmp(token->data, "|"))
+	else if (ft_strcmp(token, "|"))
 		return (TOKEN_PIPE);
-	else if (!ft_strcmp(token->data, ">"))
-		return (TOKEN_REDIRECTION_OUT);
-	else if (!ft_strcmp(token->data, "<"))
-		return (TOKEN_REDIRECTION_IN);
-	else if (!ft_strcmp(token->data, ">>"))
-		return (TOKEN_APPEND);
-	else if (!ft_strcmp(token->data, "<<"))
-		return (TOKEN_HEREDOC);
-	return ();
+	else if (ft_strcmp(token, ">"))
+		return (TOKEN_REDIRECTION);
+	else if (ft_strcmp(token, "<"))
+		return (TOKEN_REDIRECTION);
+	else if (ft_strcmp(token, ">>"))
+		return (TOKEN_HERE_DOC);
+	else if (!ft_strcmp(token, "<<"))
+		return (TOKEN_HERE_DOC);
+	return (TOKEN_WORD_VAR);
 }
 
 char	*get_path()

@@ -7,7 +7,7 @@ BLUE  		= \033[34m
 RESET 		= \033[0m
 
 SRCS =  source/minishell.c source/token/lexer.c source/token/env_var.c \
-		source/token/token_utils.c source/signals.c
+		source/token/token_utils.c source/signals.c source/token/is_command.c
 		
 OBJS 		= $(SRCS:.c=.o)
 
