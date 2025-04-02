@@ -20,10 +20,12 @@ void	sig_handler()
 	sigaction(SIGQUIT, &sa, NULL);
 }
 
+//TODO error codes
+
 static void	sigint_handler(int sig)
 {
 	(void)sig;
-	//TODO
+
 	write(STDOUT_FILENO, "^C\n", 3);
 	exit(EXIT_SUCCESS);
 }

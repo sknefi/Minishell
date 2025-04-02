@@ -24,7 +24,7 @@ void	lexer(t_token **token)
 		return ;
 	if (*line)
 	{
-		//free(shell_path); maybe move it outside, but it doesn't change anything
+		free(shell_path); //maybe move it outside, but it doesn't change anything
 		printf("%s\n", line);
 		add_history(line);
 		tokenization(token, line);
@@ -115,10 +115,13 @@ static int	assign_type(char *token)
 char	*get_path()
 {
 	char	*str;
+	char	*tmp;
 
-	str = malloc(PATH_MAX);
-	if (!str)
+	tmp = malloc(PATH_MAX);
+	if (!tmp)
 		exit(EXIT_FAILURE);
-	getcwd(str, PATH_MAX); //TODO getcwd failure
+	getcwd(tmp, PATH_MAX); //TODO getcwd failure
+	str = ft_strjoin(tmp, "$ ");
+	free(tmp);
 	return (str);
 }
