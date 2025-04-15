@@ -1,17 +1,13 @@
 #include "../minishell.h"
-#include "token.h"
-#include <linux/limits.h>
-#include <stdio.h>
-#include <string.h>
-#include <unistd.h>
-#include "../../libft_divinus/libft.h"
+#include <limits.h>
 
 static void	tokenization(t_token **token, char *line);
 static char	*extract_token(char *line, int *i);
 static int	assign_type(char *token);
-char	*get_path();
+static char	*get_path();
 
-void	lexer(t_token **token)
+
+void	prompt(t_token **token)
 {
 	char	*line;
 	char	*shell_path;
@@ -20,12 +16,11 @@ void	lexer(t_token **token)
 	line = NULL;
 	shell_path = get_path();
 	line = readline(shell_path);
+	free(shell_path);
 	if (!line)
 		return ;
 	if (*line)
 	{
-		//free(shell_path); maybe move it outside, but it doesn't change anything
-		printf("%s\n", line);
 		add_history(line);
 		tokenization(token, line);
 	}
@@ -44,16 +39,11 @@ static void	tokenization(t_token **token, char *line)
 		while (line[i] && ft_isspace(line[i]))
 			i++;
 		if (!line || !line[i])
-			break;
-		tmp = extract_token(line, &i); //TODO
-		if (!tmp || !*tmp)
-		{
-			free(tmp);
-			break;
-		}
+			break ;
+		tmp = extract_token(line, &i);
 		if (ft_strchr(tmp, '$') && *tmp != '\'')
-				tmp = get_env_var(tmp); //TODO
-		type = assign_type(tmp); //TODO
+			tmp = get_env_var(tmp);
+		type = assign_type(tmp);
 		*token = token_append(*token, tmp, type);
 		free(tmp);
 	}
@@ -93,30 +83,33 @@ static char	*extract_token(char *line, int *i)
 	return (token);
 }
 
-static int	assign_type(t_token *token)
+static int	assign_type(char *token)
 {
-	if (is_command(token->data))
+	if (is_command(token))
 		return (TOKEN_COMMAND);
-	else if (!ft_strcmp(token->data, "|"))
+	else if (!ft_strcmp(token, "|"))
 		return (TOKEN_PIPE);
-	else if (!ft_strcmp(token->data, ">"))
-		return (TOKEN_REDIRECTION_OUT);
-	else if (!ft_strcmp(token->data, "<"))
+	else if (!ft_strcmp(token, ">"))
 		return (TOKEN_REDIRECTION_IN);
-	else if (!ft_strcmp(token->data, ">>"))
-		return (TOKEN_APPEND);
-	else if (!ft_strcmp(token->data, "<<"))
+	else if (!ft_strcmp(token, "<"))
+		return (TOKEN_REDIRECTION_OUT);
+	else if (!ft_strcmp(token, ">>"))
 		return (TOKEN_HEREDOC);
-	return ();
+	else if (!ft_strcmp(token, "<<"))
+		return (TOKEN_HEREDOC);
+	return (TOKEN_WORD);
 }
 
-char	*get_path()
+static char	*get_path()
 {
 	char	*str;
+	char	*tmp;
 
-	str = malloc(PATH_MAX);
-	if (!str)
+	tmp = malloc(PATH_MAX); //PATH_MAX is not always good, need to check on it
+	if (!tmp)
 		exit(EXIT_FAILURE);
-	getcwd(str, PATH_MAX); //TODO getcwd failure
+	getcwd(tmp, PATH_MAX); //TODO getcwd failure
+	str = ft_strjoin(tmp, "$ ");
+	free(tmp);
 	return (str);
 }

@@ -1,11 +1,12 @@
 #include "minishell.h"
 #include "structs.h"
-#include "token/token.h"
 
 int	main(int argc, char **argv, char **env)
 {
 	t_token	*token;
-	t_token	*tmp;
+	t_ast_node	*root;
+	t_token *tmp;
+
 	(void)argc;
 	(void)argv;
 	(void)env;
@@ -13,9 +14,9 @@ int	main(int argc, char **argv, char **env)
 	sig_handler();
 	while (1)
 	{
-		lexer(&token);
+		prompt(&token);
 		printf("juz po\n");
-		printf("\n🔹 Lista Tokenów:\n");
+		root = parse(token);
 		tmp = token;
     	while (tmp)
     	{

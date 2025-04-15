@@ -1,6 +1,4 @@
 #include "../minishell.h"
-#include "token.h"
-#include "../../libft_divinus/libft.h"
 
 static t_token	*token_init(char *data, int type);
 

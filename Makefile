@@ -16,7 +16,7 @@ CCFLAGS		= -Wall -Wextra -Werror -lreadline -g
 RM			= rm -f
 
 LIBFT_NAME	= libft.a
-LIBFT_DIR	= ./libft_divinus
+LIBFT_DIR	= ./libft
 LIBFT		= $(LIBFT_DIR)/$(LIBFT_NAME)
 
 

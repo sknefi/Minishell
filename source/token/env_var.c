@@ -1,7 +1,4 @@
 #include "../minishell.h"
-#include "token.h"
-#include "../../libft_divinus/libft.h"
-#include <stdlib.h>
 
 static char	*extract_env(const char *str);
 
