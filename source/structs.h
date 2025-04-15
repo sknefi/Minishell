@@ -10,6 +10,8 @@ typedef enum e_token_types
 	TOKEN_HEREDOC,
 	TOKEN_REDIRECTION_IN,
 	TOKEN_REDIRECTION_OUT,
+	TOKEN_SINGLE_QUOTES,
+	TOKEN_DOUBLE_QUOTES,
 }	t_token_types;
 
 typedef enum e_node_types

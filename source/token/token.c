@@ -85,9 +85,9 @@ static char	*extract_token(char *line, int *i)
 
 static int	assign_type(char *token)
 {
-	if (is_command(token))
-		return (TOKEN_COMMAND);
-	else if (!ft_strcmp(token, "|"))
+	//if (is_command(token))
+	//	return (TOKEN_COMMAND);
+	if (!ft_strcmp(token, "|"))
 		return (TOKEN_PIPE);
 	else if (!ft_strcmp(token, ">"))
 		return (TOKEN_REDIRECTION_IN);

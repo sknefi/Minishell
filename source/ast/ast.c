@@ -29,10 +29,14 @@ static t_ast_node	*ast_command(t_token **tokens)
 {
 	char	**data;
 	int		i;
+	int		j;
 	t_token *tmp;
 	t_ast_node	*cmd;
 
-	while (tmp && (tmp->type == TOKEN_WORD || tmp->type == single_quotes || tmp->type == double_quotes)) //TODO
+	i = 0;
+	j = 0;
+	tmp = *tokens;
+	while (tmp && (tmp->type == TOKEN_WORD || tmp->type == TOKEN_SINGLE_QUOTES || tmp->type == TOKEN_DOUBLE_QUOTES)) //TODO
 	{
 		i++;
 		tmp = tmp->next;
@@ -40,13 +44,12 @@ static t_ast_node	*ast_command(t_token **tokens)
 	data = malloc(sizeof(char *) * (i + 1));
 	if (!data)
 		return (NULL);
-	i = 0;
-	while (*tokens && (*tokens)->type == TOKEN_WORD || (*tokens)->type == SQ_TOKEN || (*tokens)->type == DQ_TOKEN) //TODO
+	while (*tokens && ((*tokens)->type == TOKEN_WORD || (*tokens)->type == TOKEN_SINGLE_QUOTES || (*tokens)->type == TOKEN_DOUBLE_QUOTES)) //TODO
 	{
-		data[i++];
+		data[j++] = (*tokens)->data;
 		*tokens = (*tokens)->next;
 	}
-	data[i] = NULL;
+	data[j] = NULL;
 	cmd = ast_new_node(NODE_CMD, data);
 	while (*tokens && ((*tokens)->type == TOKEN_REDIRECTION_IN || (*tokens)->type == TOKEN_REDIRECTION_OUT || (*tokens)->type == TOKEN_APPEND || (*tokens)->type == TOKEN_HEREDOC))
 		cmd = parse_redirection(tokens, cmd);
@@ -83,6 +86,8 @@ static t_ast_node	*parse_redirection(t_token **tokens, t_ast_node *cmd)
 	data = malloc(2 * sizeof(char *));
 	data[0] = (*tokens)->data;
 	data[1] = NULL;
-	redir_node->data = tokens->next;
+	redir_node->data = data;
+	redir_node->right = cmd;
+	*tokens = (*tokens)->next;
 	return (NULL);
 }

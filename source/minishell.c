@@ -4,7 +4,7 @@
 int	main(int argc, char **argv, char **env)
 {
 	t_token	*token;
-	t_ast_node	*root;
+	//t_ast_node	*root;
 	t_token *tmp;
 
 	(void)argc;
@@ -16,7 +16,7 @@ int	main(int argc, char **argv, char **env)
 	{
 		prompt(&token);
 		printf("juz po\n");
-		root = parse(token);
+		//root = parse(token);
 		tmp = token;
     	while (tmp)
     	{
