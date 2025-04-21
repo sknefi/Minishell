@@ -5,6 +5,7 @@ int	sh_pwd(t_app *app, t_token *token)
 	char	*cwd;
 
 	(void)token;
+	(void)app;
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 	{

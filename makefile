@@ -34,7 +34,6 @@ SRCS =  \
 		\
 		./src/utils/utils_01_dpp.c \
 		\
-		./src/external/external.c \
 		
 OBJS 		= $(SRCS:.c=.o)
 
