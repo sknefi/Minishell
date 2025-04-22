@@ -89,5 +89,5 @@ static t_ast_node	*parse_redirection(t_token **tokens, t_ast_node *cmd)
 	redir_node->data = data;
 	redir_node->right = cmd;
 	*tokens = (*tokens)->next;
-	return (NULL);
+	return (redir_node);
 }
