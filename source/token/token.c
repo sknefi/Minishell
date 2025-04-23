@@ -90,11 +90,11 @@ static int	assign_type(char *token)
 	if (!ft_strcmp(token, "|"))
 		return (TOKEN_PIPE);
 	else if (!ft_strcmp(token, ">"))
-		return (TOKEN_REDIRECTION_IN);
-	else if (!ft_strcmp(token, "<"))
 		return (TOKEN_REDIRECTION_OUT);
+	else if (!ft_strcmp(token, "<"))
+		return (TOKEN_REDIRECTION_IN);
 	else if (!ft_strcmp(token, ">>"))
-		return (TOKEN_HEREDOC);
+		return (TOKEN_APPEND);
 	else if (!ft_strcmp(token, "<<"))
 		return (TOKEN_HEREDOC);
 	return (TOKEN_WORD);

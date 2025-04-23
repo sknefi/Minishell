@@ -64,7 +64,7 @@ int	main(int argc, char **argv, char **env)
 {
 	t_token	*token;
 	t_ast_node	*root;
-	//t_token *tmp;
+	t_token *tmp;
 
 	(void)argc;
 	(void)argv;
@@ -77,12 +77,12 @@ int	main(int argc, char **argv, char **env)
 		printf("juz po\n");
 		root = parse(token);
 		print_ast(root, 0, 0);
-		//tmp = token;
-    	/*while (tmp)
+		tmp = token;
+    	while (tmp)
     	{
         	printf("Token: %-10s | Typ: %d\n", tmp->data, tmp->type);
         	tmp = tmp->next;
-    	} */
+    	}
 		free_tokens(token);
 	}
 	return (EXIT_SUCCESS);
