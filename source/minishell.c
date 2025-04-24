@@ -73,7 +73,11 @@ int	main(int argc, char **argv, char **env)
 	sig_handler();
 	while (1)
 	{
-		prompt(&token);
+		if (prompt(&token))
+		{
+			free_tokens(token);
+			continue ;
+		}
 		printf("juz po\n");
 		root = parse(token);
 		print_ast(root, 0, 0);

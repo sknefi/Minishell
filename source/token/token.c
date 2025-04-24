@@ -1,13 +1,13 @@
 #include "../minishell.h"
 #include <limits.h>
 
-static void	tokenization(t_token **token, char *line);
+static int	tokenization(t_token **token, char *line);
 static char	*extract_token(char *line, int *i);
 static int	assign_type(char *token);
 static char	*get_path();
 
 
-void	prompt(t_token **token)
+int	prompt(t_token **token)
 {
 	char	*line;
 	char	*shell_path;
@@ -18,16 +18,18 @@ void	prompt(t_token **token)
 	line = readline(shell_path);
 	free(shell_path);
 	if (!line)
-		return ;
+		return (1);
 	if (*line)
 	{
 		add_history(line);
-		tokenization(token, line);
+		if (tokenization(token, line))
+			return (1);
 	}
 	free(line);
+	return (0);
 }
 
-static void	tokenization(t_token **token, char *line)
+static int	tokenization(t_token **token, char *line)
 {
 	int		i;
 	int		type;
@@ -41,12 +43,15 @@ static void	tokenization(t_token **token, char *line)
 		if (!line || !line[i])
 			break ;
 		tmp = extract_token(line, &i);
+		if (NULL == tmp)
+			return (1);
 		if (ft_strchr(tmp, '$') && *tmp != '\'')
 			tmp = get_env_var(tmp);
 		type = assign_type(tmp);
 		*token = token_append(*token, tmp, type);
 		free(tmp);
 	}
+	return (0);
 }
 
 static char	*extract_token(char *line, int *i)
@@ -67,10 +72,26 @@ static char	*extract_token(char *line, int *i)
 	}
 	else if (line[*i] == '|' || line[*i] == '<' || line[*i] == '>')
 	{
-		if ((line[*i] == '>' && line[*i + 1] == '>') || (line[*i] == '<' && line[*i + 1] == '<'))
-			(*i) += 2;
+		if (line[*i + 1])
+		{
+			if (((line[*i] == '>' && line[*i + 1] == '>') || (line[*i] == '<' && line[*i + 1] == '<')))
+			{
+				if (line[*i + 2])
+					(*i) += 2;
+				else
+				{
+					ft_printf("Syntax error near unexpected token\n");
+					return (NULL);
+				}
+			}
+			else
+				(*i)++;
+		}
 		else
-			(*i)++;
+		{
+			ft_printf("Syntax error near unexpected token\n");
+			return (NULL);
+		}
 	}
 	else
 	{
