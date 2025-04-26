@@ -3,7 +3,7 @@
 #include <unistd.h>
 
 static void	sigint_handler(int sig);
-static void	sigquit_handler(int sig);
+//static void	sigquit_handler(int sig);
 
 void	sig_handler()
 {
@@ -16,7 +16,7 @@ void	sig_handler()
 	sigaction(SIGINT, &sa, NULL);
 
 	//Handle SIGQUIT
-	sa.sa_handler = sigquit_handler;
+	sa.sa_handler = SIG_IGN;
 	sigaction(SIGQUIT, &sa, NULL);
 }
 
@@ -31,9 +31,9 @@ static void	sigint_handler(int sig)
 	rl_on_new_line();
 	rl_redisplay();
 }
-
+/*
 static void	sigquit_handler(int sig)
 {
 	(void)sig;
 	//TODO
-}
+}*/

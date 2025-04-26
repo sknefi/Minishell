@@ -1,5 +1,4 @@
 #include "../minishell.h"
-#include <limits.h>
 
 static int	tokenization(t_token **token, char *line);
 static char	*extract_token(char *line, int *i);
@@ -18,7 +17,11 @@ int	prompt(t_token **token)
 	line = readline(shell_path);
 	free(shell_path);
 	if (!line)
-		return (1);
+	{
+		free(line);
+		write(1, "exit\n", 5);
+		exit(EXIT_SUCCESS);
+	}
 	if (*line)
 	{
 		add_history(line);
