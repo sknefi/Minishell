@@ -12,7 +12,7 @@ SRCS =  source/minishell.c source/signals.c source/token/token.c source/token/en
 OBJS 		= $(SRCS:.c=.o)
 
 CC			= cc
-CCFLAGS		= -Wall -Wextra -Werror -lreadline -g
+CCFLAGS		= -Wall -Wextra -Werror -g #-lreadline -g
 RM			= rm -f
 
 LIBFT_NAME	= libft.a
@@ -29,7 +29,7 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	@echo "$(YELLOW)COMPILING: $(NAME)$(RESET)"
-	$(CC) $(CCFLAGS) $(OBJS) $(LIBFT) -o $(NAME) 
+	$(CC) $(CCFLAGS) $(OBJS) $(LIBFT) -lreadline -o $(NAME) 
 	@echo "$(GREEN)SUCCESS: $(NAME) compiled$(RESET)"
 
 clean:

@@ -93,7 +93,7 @@ int	main(int argc, char **argv, char **env)
         	printf("Token: %-10s | Typ: %d\n", tmp->data, tmp->type);
         	tmp = tmp->next;
     	}
-		//free_ast(root); broken as in ast node's data are pointer to tokens
+		//free_ast(root); //broken as in ast node's data are pointer to tokens
 		free_tokens(token);
 		printf("qwe\n");
 	}

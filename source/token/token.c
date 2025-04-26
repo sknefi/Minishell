@@ -126,11 +126,12 @@ static char	*get_path()
 	char	*str;
 	char	*tmp;
 
-	tmp = malloc(PATH_MAX); //PATH_MAX is not always good, need to check on it
+	tmp = getcwd(NULL, 0);
 	if (!tmp)
-		exit(EXIT_FAILURE);
-	getcwd(tmp, PATH_MAX); //TODO getcwd failure
+		exit(EXIT_FAILURE); //change it to return error
 	str = ft_strjoin(tmp, "$ ");
+	if (!str)
+		exit(EXIT_FAILURE); //change it to return error
 	free(tmp);
 	return (str);
 }
