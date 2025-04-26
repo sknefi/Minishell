@@ -133,10 +133,13 @@ static char	*get_path()
 
 	tmp = getcwd(NULL, 0);
 	if (!tmp)
-		exit(EXIT_FAILURE); //change it to return error
+		exit(EXIT_FAILURE);
 	str = ft_strjoin(tmp, "$ ");
 	if (!str)
-		exit(EXIT_FAILURE); //change it to return error
+	{
+		free(tmp);
+		exit(EXIT_FAILURE);
+	}
 	free(tmp);
 	return (str);
 }
