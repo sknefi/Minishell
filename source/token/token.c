@@ -121,6 +121,8 @@ static int	assign_type(char *token)
 		return (TOKEN_APPEND);
 	else if (!ft_strcmp(token, "<<"))
 		return (TOKEN_HEREDOC);
+	//else if (ft_strchr(token, 34))
+	//	return (TOKEN_SINGLE_QUOTES);
 	return (TOKEN_WORD);
 }
 
