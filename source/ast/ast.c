@@ -6,7 +6,14 @@ static t_ast_node	*parse_redirection(t_token **tokens, t_ast_node *cmd);
 
 t_ast_node	*parse(t_token *tokens)
 {
-	return (handle_pipes(&tokens));
+	t_ast_node	*root;
+
+	root = handle_pipes(&tokens);
+	if (!root)
+	{
+		return (NULL);
+	}
+	return (root);
 }
 
 static t_ast_node	*handle_pipes(t_token  **tokens)

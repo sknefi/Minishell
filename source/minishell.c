@@ -70,6 +70,7 @@ int	main(int argc, char **argv, char **env)
 	(void)argv;
 	(void)env;
 	token = NULL;
+	root = NULL;
 	sig_handler();
 	while (1)
 	{
@@ -78,8 +79,13 @@ int	main(int argc, char **argv, char **env)
 			free_tokens(token);
 			continue ;
 		}
-		printf("juz po\n");
 		root = parse(token);
+		if (!root)
+		{
+			free_tokens(token);
+			free_ast(root);
+			continue ;
+		}
 		print_ast(root, 0, 0);
 		tmp = token;
     	while (tmp)
@@ -87,7 +93,9 @@ int	main(int argc, char **argv, char **env)
         	printf("Token: %-10s | Typ: %d\n", tmp->data, tmp->type);
         	tmp = tmp->next;
     	}
+		//free_ast(root); broken as in ast node's data are pointer to tokens
 		free_tokens(token);
+		printf("qwe\n");
 	}
 	return (EXIT_SUCCESS);
 }

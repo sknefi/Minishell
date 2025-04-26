@@ -34,3 +34,24 @@ t_ast_node	*ast_node_insert(t_ast_node *root, t_node_types type, char **data)
 	root->right = ast_node_insert(root->right, type, data);
 	return (root);
 }
+
+void	free_ast(t_ast_node *node)
+{
+	int	i;
+
+	i = 0;
+	if (!node)
+		return ;
+	free_ast(node->left);
+	free_ast(node->right);
+	if (node->data)
+	{
+		while (node->data[i])
+		{
+			free(node->data[i]);
+			i++;
+		}
+		//free(node->data);
+	}
+	free(node);
+}
