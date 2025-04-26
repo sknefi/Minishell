@@ -70,7 +70,7 @@ void	clean_app(t_app *app);
  * @param token The token
  * @return 0 on success, 1 on failure (command not found), -1 on failure (malloc failed)
 */
-int	sh_exec(t_app *app, t_token *token);
+void	sh_exec(t_app *app);
 
 int	prompt(t_token **token);
 void	sig_handler();

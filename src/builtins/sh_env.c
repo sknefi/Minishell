@@ -41,9 +41,9 @@ void	show_env(char **env)
 	}
 }
 
-int	sh_env(t_app *app, t_token *token)
+int	sh_env(t_app *app, char **cmd_args)
 {
-	(void)token;
+	(void)cmd_args;
 	show_env(app->env);
 	return (0);
 }

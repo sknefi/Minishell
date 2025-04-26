@@ -18,39 +18,67 @@ static int	is_n_flag(char *arg)
 	return (true);	
 }
 
-// Function to print the arguments passed to echo
-int	sh_echo(t_app *app, t_token *token)
+static int	count_chars(char **cmd_args)
 {
+	int		i;
+	size_t	count;
+
+	i = 0;
+	count = 0;
+	while (cmd_args[i])
+	{
+		count += ft_strlen(cmd_args[i]);
+		i++;
+	}
+	return (count);
+}
+
+// Merge all arguments into one string
+static char	*merge_args(char **cmd_args, int n_flag)
+{
+	int		i;
+	char	*result;
+
+	result = malloc(count_chars(cmd_args) + n_flag + 1);
+	if (!result)
+		return (NULL);
+	i = 0;
+	while (cmd_args[i])
+	{
+		ft_strlcpy(result, cmd_args[i], ft_strlen(cmd_args[i]));
+		i++;
+	}
+	if (n_flag)
+		result[i] = '\n';
+	return (result);
+}
+
+// Function to print the arguments passed to echo
+int	sh_echo(t_app *app, char **cmd_args)
+{
+	int		i;
 	int		n_flag;
+	char	*result;
 
-	n_flag = false;
-	token = token->next;
-
+	(void)app;
 	// set n_flag to true if there is -n flag
 	// and break the loop if there is no more ARGS
-	while (token)
+	i = 0;
+	n_flag = 0;
+	while (cmd_args[i])
 	{
-		if (is_n_flag(token->data))
-			n_flag = true;
-		if (token->type != TOKEN_ARG)
+		if (is_n_flag(cmd_args[i]))
+			n_flag = 1;
+		if (cmd_args[i + 1])
 			break;
-		token = token->next;
+		i++;
 	}
 
-	// all ARGS has to be after echo
-	// when I iterate through the tokens, when ARGS are finished, I am starting to print 
-	// everything else till I find redirect or pipe
-	while (token)
-	{
-		if (token->type == TOKEN_WORD_VAR)
-			p("%s", get_env_var(token->data + 1, app->env)); // +1 to skip the '$' character
-		else if (token->type != TOKEN_REDIRECTION && token->type != TOKEN_PIPE)
-			p("%s", token->data);
-		if (token->next) // dont print space after the last argument
-			p("_");
-		token = token->next;
-	}
-	if (!n_flag)
-		p("\n");
+	// count how many characters are in the result (how much memory to allocate)
+	result = merge_args(cmd_args, n_flag);
+	if (!result)
+		return (-1);
+	p(result);
+	free(result);
 	return (0);
 }

@@ -22,17 +22,18 @@ void		free_builtins(t_builtin **builtins);
  * @param token The token
  * @return 0 on success, -1 on failure (malloc failed), 1 on failure (command not found)
 */
-int			exec_builtin(t_app *app, t_token *token);
+int			exec_builtin(t_app *app, char **cmd_args);
 
-int			sh_echo(t_app *app, t_token *token);
-int			sh_pwd(t_app *app, t_token *token);
-int			sh_cd(t_app *app, t_token *token);
-int			sh_export(t_app *app, t_token *token);
-int			handle_replace_export(t_app *app, t_token *token);
-int			handle_append_export(t_app *app, t_token *token);
-int			sh_unset(t_app *app, t_token *token);
-int			sh_env(t_app *app, t_token *token);
-int			sh_exit(t_app *app, t_token *token);
+int			sh_echo(t_app *app, char **cmd_args);
+int			sh_pwd(t_app *app, char **cmd_args);
+int			sh_cd(t_app *app, char **cmd_args);
+int			sh_export(t_app *app, char **cmd_args);
+int			sh_unset(t_app *app, char **cmd_args);
+int			sh_env(t_app *app, char **cmd_args);
+int			sh_exit(t_app *app, char **cmd_args);
+
+int			handle_replace_export(t_app *app, char *key);
+int			handle_append_export(t_app *app, char *key);
 
 /**
  * @brief Gets the value of an environment variable
@@ -74,6 +75,6 @@ char	*get_env_key(char *str, char **env);
  * @param token The token
  * @return 0 if key is not found, 0 if key is unset
 */
-int	sh_unset(t_app *app, t_token *token);
+// int	sh_unset(t_app *app);
 
 #endif

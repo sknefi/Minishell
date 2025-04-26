@@ -3,7 +3,7 @@
 /**
  * @brief Initialize one builtin with name and function
 */
-static t_builtin	*init_one_builtin(char *name, int (*f)(t_app *app, t_token *token))
+static t_builtin	*init_one_builtin(char *name, int (*f)(t_app *app, char **cmd_args))
 {
 	t_builtin	*builtin;
 

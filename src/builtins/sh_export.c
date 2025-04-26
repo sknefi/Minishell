@@ -34,7 +34,7 @@ static int	handle_only_export(t_app *app)
 	return (0);
 }
 
-int	handle_append_export(t_app *app, t_token *token)
+int	handle_append_export(t_app *app, char *key)
 {
 	char	**new_env;
 	size_t	env_size;
@@ -43,23 +43,25 @@ int	handle_append_export(t_app *app, t_token *token)
 	new_env = malloc(sizeof(char *) * (env_size + 2)); // +2 for new var and NULL terminator
 	if (!new_env)
 		return (-1);
-	if (!append_env(app->env, new_env, token->data, app))
+	if (!append_env(app->env, new_env, key, app))
 		return (-1);
 	return (0);
 }
 
 // ASDW=testing
-int	handle_replace_export(t_app *app, t_token *token)
+int	handle_replace_export(t_app *app, char *key)
 {
 	int	i;
 
 	i = 0;
 	while (app->env[i])
 	{
-		if (ft_strncmp(app->env[i], token->data, get_env_key_len(token->data)) == 0)
+		if (ft_strncmp(app->env[i], key, get_env_key_len(key)) == 0)
 		{
 			free(app->env[i]);
-			app->env[i] = ft_strdup(token->data);
+			app->env[i] = ft_strdup(key);
+			if (!app->env[i])
+				return (-1);
 			break ;
 		}
 		i++;
@@ -68,30 +70,30 @@ int	handle_replace_export(t_app *app, t_token *token)
 }
 
 // example: export VAR=VALUE
-int	sh_export(t_app *app, t_token *token)
+int	sh_export(t_app *app, char **cmd_args)
 {
 	char	*key;
 	
-	if (!token->next)
+	if (!cmd_args[1])
 	{
 		p("=====handle_only_export\n");
 		if (handle_only_export(app) == -1)
 			return (-1);
 		return (0);
 	}
-	key = get_env_key(token->next->data, app->env);
+	key = get_env_key(cmd_args[1], app->env);
 	if (!key)
 	{
 		p("=====handle_append_export\n");
-		if (handle_append_export(app, token->next) == -1)
+		if (handle_append_export(app, cmd_args[1]) == -1)
 			return (-1);
 	}
 	else
 	{
 		p("=====handle_replace_export\n");
-		if (handle_replace_export(app, token) == -1)
+		if (handle_replace_export(app, cmd_args[1]) == -1)
 			return (-1);
 	}
-	sh_env(app, token);
+	sh_env(app, cmd_args);
 	return (0);
 }

@@ -1,10 +1,10 @@
 #include "../../include/minishell.h"
 
 // Function to exit the shell
-int	sh_exit(t_app *app, t_token *token)
+int	sh_exit(t_app *app, char **cmd_args)
 {
 	(void)app;
-	(void)token;
+	(void)cmd_args;
 	// exit(EXIT_SUCCESS);
 	return (0);
 }

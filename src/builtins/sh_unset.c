@@ -1,13 +1,13 @@
 #include "../../include/minishell.h"
 
-int	sh_unset(t_app *app, t_token *token)
+int	sh_unset(t_app *app, char **cmd_args)
 {
 	int		i;
 	char	*key;
 	size_t	key_len;
 
-	p(Y"token: %s\n" RST, token->data);
-	key = token->next->data;
+	p(Y"cmd_args: %s\n" RST, cmd_args[0]);
+	key = cmd_args[1];
 	if (!key)
 		return (0);
 	key_len = get_env_key_len(key);

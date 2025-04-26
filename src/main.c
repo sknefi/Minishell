@@ -37,11 +37,15 @@ int	main(int argc, char **argv, char **env)
 	sig_handler();
 	while (1)
 	{
-		if (prompt(&app->token))
+		int prompt_res = prompt(&app->token);
+		if (prompt_res == 1)
 		{
 			free_tokens(app->token);
 			continue ;
 		}
+		else if (prompt_res == -1)
+			return (clean_app(app), EXIT_FAILURE);
+		app->exit_status = prompt_res;
 		app->root = parse(app->token);
 		if (!app->root)
 		{
@@ -56,9 +60,9 @@ int	main(int argc, char **argv, char **env)
         	printf("Token: %-10s | Typ: %d\n", tmp->data, tmp->type);
         	tmp = tmp->next;
     	}
+		sh_exec(app);
 		//free_ast(root); broken as in ast node's data are pointer to tokens
 		free_tokens(app->token);
-		printf("qwe\n");
 	}
 	clean_app(app);
 	return (EXIT_SUCCESS);

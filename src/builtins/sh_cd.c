@@ -4,12 +4,11 @@
  * @brief Allocates a new token with the oldpwd variable
  * @return The new token OLDPWD=...
  */
-static t_token	*set_var_oldpwd()
+static char	*set_var_oldpwd()
 {
 	char	*cwd;
 	char	*tmp;
 	char	*curr_pwd_text;
-	t_token	*curr_pwd;
 
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
@@ -22,49 +21,50 @@ static t_token	*set_var_oldpwd()
 	free(tmp);
 	if (!curr_pwd_text)
 		return (NULL);
-	curr_pwd = token_append(NULL, curr_pwd_text, TOKEN_WORD_NVAR);
-	free(curr_pwd_text);
-	if (!curr_pwd)
-		return (NULL);
-	return (curr_pwd);
+	return (curr_pwd_text);
 }
 
 // Function to change the current working directory
-int	sh_cd(t_app *app, t_token *token)
+int	sh_cd(t_app *app, char **cmd_args)
 {
 	char	*path;
-	t_token	*old_pwd;
+	char	*old_pwd;
 
-	(void)token;
 	//TESTING
-	if (sh_pwd(app, token) == -1)
+	if (sh_pwd(app, cmd_args) == -1)
 		return (-1);
 	//END TESTING
 
 	old_pwd = set_var_oldpwd();
 	if (!old_pwd)
 		return (-1); // malloc failed
-	if (!token->next || strncmp(token->next->data, "~", 1) == 0)
+	if (!cmd_args[1] || ft_strncmp(cmd_args[1], "~", 1) == 0)
 		path = get_env_var("HOME", app->env);
-	else if (strncmp(token->next->data, "-", 1) == 0)
+	else if (ft_strncmp(cmd_args[1], "-", 1) == 0)
 		path = get_env_var("OLDPWD", app->env);
 	else
-		path = token->next->data;
+		path = cmd_args[1];
 	if (chdir(path) == -1)
 	{
-		p(RED "cd: %s: No such file or directory\n" RST, token->next->data);
+		p(RED "cd: %s: No such file or directory\n" RST, cmd_args[1]);
 		return (1);
 	}
 
 	//TESTING
 	// the exit status of cd is now comming from pwd - because of this test
-	if (sh_pwd(app, token) == -1)
+	if (sh_pwd(app, cmd_args) == -1)
 		return (-1);
 	//END TESTING
 
 	if (get_env_var("OLDPWD", app->env))
-		handle_replace_export(app, old_pwd);
+	{
+		if (handle_replace_export(app, old_pwd) == -1)
+			return (-1);
+	}
 	else
-		handle_append_export(app, old_pwd); // if there is no OLDPWD, create it
+	{
+		if (handle_append_export(app, old_pwd) == -1)
+			return (-1);
+	}
 	return (0);
 }

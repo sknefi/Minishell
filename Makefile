@@ -14,6 +14,7 @@ SRCS =  \
 		./src/token/token_utils.c \
 		./src/ast/ast.c \
 		./src/ast/ast_utils.c \
+		./src/visualizer.c \
 		\
 		./src/builtins/builtin.c \
 		./src/builtins/env_utils_01.c \
@@ -29,12 +30,6 @@ SRCS =  \
 		./src/init/init_builtins.c \
 		./src/init/init_app.c \
 		./src/init/init_env.c \
-		./src/token/token_append.c \
-		./src/token/token_init.c \
-		./src/token/token_clean.c \
-		./src/token/token_print.c \
-		\
-		mocked_data.c \
 		\
 		./src/exec/sh_exec.c \
 		\

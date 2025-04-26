@@ -32,7 +32,7 @@ typedef struct s_token
 typedef struct s_builtin
 {
 	char	*name;
-	int		(*f)(t_app *app, t_token *token);
+	int		(*f)(t_app *app, char **cmd_args); // main change
 }	t_builtin;
 
 /**
