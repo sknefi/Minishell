@@ -11,6 +11,10 @@
 # include <string.h>
 # include <sys/wait.h>
 # include <sysexits.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <signal.h>
+# include <limits.h>
 
 # include "../libft_divinus/libft.h"
 # include "structs.h"
@@ -18,7 +22,8 @@
 # include "token.h"
 # include "mocked.h"
 # include "utils.h"
-
+# include "ast.h"
+# include "visualizer.h"
 # define Y		"\033[1;33m"
 # define G		"\033[1;32m"
 # define C 		"\033[1;36m"
@@ -57,7 +62,7 @@ void	clean_app(t_app *app);
  * @param token The token
  * @return 0 on success, 1 if command not found, -1 on error
 */
-int	exec_external(t_app *app, t_token *token);
+// int	exec_external(t_app *app, t_token *token);
 
 /**
  * @brief Executes a command (builtin or external)
@@ -66,5 +71,15 @@ int	exec_external(t_app *app, t_token *token);
  * @return 0 on success, 1 on failure (command not found), -1 on failure (malloc failed)
 */
 int	sh_exec(t_app *app, t_token *token);
+
+int	prompt(t_token **token);
+void	sig_handler();
+
+t_token	*token_append(t_token *head, char *data, int type);
+void	free_tokens(t_token *token);
+int	ft_isspace(char	c);
+int	ft_strcmp(const char *s1, const char *s2);
+int	is_command(char *str);
+
 
 #endif

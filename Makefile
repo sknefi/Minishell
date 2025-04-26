@@ -1,13 +1,19 @@
-NAME		= minishell
+NAME        = minishell
 
-RED   		= \033[31m
-GREEN 		= \033[32m
-YELLOW		= \033[33m
-BLUE  		= \033[34m
-RESET 		= \033[0m
+RED           = \033[31m
+GREEN         = \033[32m
+YELLOW        = \033[33m
+BLUE          = \033[34m
+RESET         = \033[0m
 
 SRCS =  \
 		./src/main.c \
+		./src/signal/signals.c \
+		./src/token/token.c \
+		./src/token/env_var.c \
+		./src/token/token_utils.c \
+		./src/ast/ast.c \
+		./src/ast/ast_utils.c \
 		\
 		./src/builtins/builtin.c \
 		./src/builtins/env_utils_01.c \
@@ -34,22 +40,27 @@ SRCS =  \
 		\
 		./src/utils/utils_01_dpp.c \
 		\
-		
-OBJS 		= $(SRCS:.c=.o)
+        
+OBJS         = $(SRCS:.c=.o)
 
-CC			= cc
-CFLAGS		= -Wall -Wextra -Werror
-RM			= rm -f
+CC            = cc
+CFLAGS        = -Wall -Wextra -Werror -g
+LDFLAGS        = -lreadline
+RM            = rm -f
 
-LIBFT_NAME	= libft.a
-LIBFT_DIR	= ./libft_divinus
-LIBFT		= $(LIBFT_DIR)/$(LIBFT_NAME)
+LIBFT_NAME    = libft.a
+LIBFT_DIR    = ./libft
+LIBFT        = $(LIBFT_DIR)/$(LIBFT_NAME)
+
 
 all: $(NAME)
 
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
 $(NAME): $(OBJS)
 	@echo "$(YELLOW)COMPILING: $(NAME)$(RESET)"
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME) 
+	$(CC) $(OBJS) $(LIBFT) $(LDFLAGS) -o $(NAME) 
 	@echo "$(GREEN)SUCCESS: $(NAME) compiled$(RESET)"
 
 clean:

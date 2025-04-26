@@ -2,6 +2,7 @@
 # define BUILTINT_H
 
 # include "structs.h"
+# include "minishell.h"
 
 /**
  * @brief Initialize builtins, each builtin has a name and a function pointer

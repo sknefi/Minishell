@@ -5,7 +5,8 @@ void	clean_app(t_app *app)
 	if (app)
 	{
 		free_builtins(app->builtins);
-		free_env(app->env);
+		free_tokens(app->token);
+		free_ast(app->root);
 		free(app);
 	}
 }
@@ -24,5 +25,7 @@ t_app	*init_app(char **env)
 	if (!app->builtins)
 		return (clean_app(app), NULL);
 	app->exit_status = 0;
+	app->token = NULL;
+	app->root = NULL;
 	return (app);
 }

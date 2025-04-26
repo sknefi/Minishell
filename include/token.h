@@ -8,7 +8,7 @@
  * @param type The type of the token from enum
  * @param data The data of the token (string)
 */
-t_token	*token_init(int type, char *data);
+// t_token	*token_init(int type, char *data);
 
 /**
  * @brief Append a token to the end of the list
@@ -34,4 +34,5 @@ void	token_print(t_token *token);
 */
 void	token_print_inline(t_token *token);
 
+char	*get_env_var_token(char *token);
 #endif
