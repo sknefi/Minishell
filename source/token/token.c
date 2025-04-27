@@ -64,6 +64,7 @@ static char	*extract_token(char *line, int *i)
 	char	quote;
 	char	*token;
 
+	quote = 0;
 	start = *i;
 	if (line[*i] == '\'' || line[*i] == '"')
 	{
@@ -102,7 +103,10 @@ static char	*extract_token(char *line, int *i)
 		while (line[*i] && !ft_isspace(line[*i]) && line[*i] != '|' && line[*i] != '<' && line[*i] != '>')
 			(*i)++;
 	}
-	token = ft_substr(line, start, *i - start);
+	if (quote == 0)
+		token = ft_substr(line, start, *i - start);
+	else
+		token = ft_substr(line, start + 1, *i - start - 2);
 	if (!token)
 		return (NULL);
 	return (token);
