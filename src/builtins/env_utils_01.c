@@ -59,3 +59,17 @@ char	*get_env_key(char *str, char **env)
 	}
 	return (NULL);
 }
+
+int	contains_equal_sign(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '=')
+			return (1);
+		i++;
+	}
+	return (0);
+}

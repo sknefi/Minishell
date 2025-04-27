@@ -53,7 +53,7 @@ static t_ast_node	*ast_command(t_token **tokens)
 		return (NULL);
 	while (*tokens && ((*tokens)->type == TOKEN_WORD || (*tokens)->type == TOKEN_SINGLE_QUOTES || (*tokens)->type == TOKEN_DOUBLE_QUOTES)) //TODO
 	{
-		data[j++] = (*tokens)->data;
+		data[j++] = ft_strdup((*tokens)->data);
 		*tokens = (*tokens)->next;
 	}
 	data[j] = NULL;
@@ -91,7 +91,7 @@ static t_ast_node	*parse_redirection(t_token **tokens, t_ast_node *cmd)
 	}
 	redir_node->right = cmd;
 	data = malloc(2 * sizeof(char *));
-	data[0] = (*tokens)->data;
+	data[0] = ft_strdup((*tokens)->data);
 	data[1] = NULL;
 	redir_node->data = data;
 	redir_node->right = cmd;

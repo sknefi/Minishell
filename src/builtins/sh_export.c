@@ -39,6 +39,11 @@ int	handle_append_export(t_app *app, char *key)
 	char	**new_env;
 	size_t	env_size;
 
+	if (!contains_equal_sign(key))
+	{
+		p(RED "export: not a valid identifier\n" RST);
+		return (1);
+	}
 	env_size = count_pointer(app->env);
 	new_env = malloc(sizeof(char *) * (env_size + 2)); // +2 for new var and NULL terminator
 	if (!new_env)
@@ -53,6 +58,11 @@ int	handle_replace_export(t_app *app, char *key)
 {
 	int	i;
 
+	if (!contains_equal_sign(key))
+	{
+		p(RED "export: not a valid identifier\n" RST);
+		return (1);
+	}
 	i = 0;
 	while (app->env[i])
 	{
@@ -76,24 +86,18 @@ int	sh_export(t_app *app, char **cmd_args)
 	
 	if (!cmd_args[1])
 	{
-		p("=====handle_only_export\n");
 		if (handle_only_export(app) == -1)
 			return (-1);
 		return (0);
 	}
+	if (cmd_args[1] && cmd_args[2])
+	{
+		p(RED "export: too many arguments\n" RST);
+		return (1);
+	}
 	key = get_env_key(cmd_args[1], app->env);
 	if (!key)
-	{
-		p("=====handle_append_export\n");
-		if (handle_append_export(app, cmd_args[1]) == -1)
-			return (-1);
-	}
+		return (handle_append_export(app, cmd_args[1]));
 	else
-	{
-		p("=====handle_replace_export\n");
-		if (handle_replace_export(app, cmd_args[1]) == -1)
-			return (-1);
-	}
-	sh_env(app, cmd_args);
-	return (0);
+		return (handle_replace_export(app, cmd_args[1]));
 }

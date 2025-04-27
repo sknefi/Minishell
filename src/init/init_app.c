@@ -4,6 +4,7 @@ void	clean_app(t_app *app)
 {
 	if (app)
 	{
+		free_env(app->env);
 		free_builtins(app->builtins);
 		free_tokens(app->token);
 		free_ast(app->root);

@@ -23,4 +23,11 @@ void	free_dpp_i(char **str, int i);
  */
 void	free_dpp(char **str);
 
+/**
+ * @brief Checks if a string contains an equal sign
+ * @param str The string to check
+ * @return 1 if the string contains an equal sign, 0 otherwise
+ */
+int	contains_equal_sign(char *str);
+
 #endif

@@ -6,7 +6,7 @@ static int	assign_type(char *token);
 static char	*get_path();
 
 
-int	prompt(t_token **token)
+int	prompt(t_token **token, t_app *app)
 {
 	char	*line;
 	char	*shell_path;
@@ -18,8 +18,9 @@ int	prompt(t_token **token)
 	free(shell_path);
 	if (!line)
 	{
+		p(RED "recieved EOF\n" RST);
 		free(line);
-		write(1, "exit\n", 5);
+		clean_app(app);
 		exit(EXIT_SUCCESS);
 	}
 	if (*line)
@@ -63,6 +64,7 @@ static char	*extract_token(char *line, int *i)
 	char	quote;
 	char	*token;
 
+	quote = 0;
 	start = *i;
 	if (line[*i] == '\'' || line[*i] == '"')
 	{
@@ -101,7 +103,10 @@ static char	*extract_token(char *line, int *i)
 		while (line[*i] && !ft_isspace(line[*i]) && line[*i] != '|' && line[*i] != '<' && line[*i] != '>')
 			(*i)++;
 	}
-	token = ft_substr(line, start, *i - start);
+	if (quote == 0)
+		token = ft_substr(line, start, *i - start);
+	else
+		token = ft_substr(line, start + 1, *i - start - 2);
 	if (!token)
 		return (NULL);
 	return (token);

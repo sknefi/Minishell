@@ -24,21 +24,35 @@ static char	*set_var_oldpwd()
 	return (curr_pwd_text);
 }
 
+/**
+ * Replaces the oldpwd variable with the new path
+ * @param app The application structure
+ * @param old_pwd The old path
+ * @return -1 if malloc failed, 0 if success
+ */
+static int	replace_oldpwd(t_app *app, char *old_pwd)
+{
+	if (get_env_var("OLDPWD", app->env))
+		return (handle_replace_export(app, old_pwd));
+	else
+		return (handle_append_export(app, old_pwd));
+}
+
 // Function to change the current working directory
 int	sh_cd(t_app *app, char **cmd_args)
 {
 	char	*path;
 	char	*old_pwd;
 
-	//TESTING
-	if (sh_pwd(app, cmd_args) == -1)
-		return (-1);
-	//END TESTING
-
 	old_pwd = set_var_oldpwd();
 	if (!old_pwd)
-		return (-1); // malloc failed
-	if (!cmd_args[1] || ft_strncmp(cmd_args[1], "~", 1) == 0)
+		return (-1);
+	if (cmd_args[1] && cmd_args[2])
+	{
+		p(RED "cd: too many arguments\n" RST);
+		return (1);
+	}
+	else if (!cmd_args[1] || ft_strncmp(cmd_args[1], "~", 1) == 0)
 		path = get_env_var("HOME", app->env);
 	else if (ft_strncmp(cmd_args[1], "-", 1) == 0)
 		path = get_env_var("OLDPWD", app->env);
@@ -49,22 +63,7 @@ int	sh_cd(t_app *app, char **cmd_args)
 		p(RED "cd: %s: No such file or directory\n" RST, cmd_args[1]);
 		return (1);
 	}
-
-	//TESTING
-	// the exit status of cd is now comming from pwd - because of this test
-	if (sh_pwd(app, cmd_args) == -1)
+	if (replace_oldpwd(app, old_pwd) == -1)
 		return (-1);
-	//END TESTING
-
-	if (get_env_var("OLDPWD", app->env))
-	{
-		if (handle_replace_export(app, old_pwd) == -1)
-			return (-1);
-	}
-	else
-	{
-		if (handle_append_export(app, old_pwd) == -1)
-			return (-1);
-	}
 	return (0);
 }

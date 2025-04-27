@@ -71,7 +71,7 @@ void	clean_app(t_app *app);
 */
 void	sh_exec(t_app *app);
 
-int	prompt(t_token **token);
+int	prompt(t_token **token, t_app *app);
 void	sig_handler();
 
 t_token	*token_append(t_token *head, char *data, int type);
