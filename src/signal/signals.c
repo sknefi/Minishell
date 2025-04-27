@@ -1,7 +1,7 @@
 #include "../../include/minishell.h"
 
 static void	sigint_handler(int sig);
-static void	sigquit_handler(int sig);
+// static void	sigquit_handler(int sig);
 
 void	sig_handler()
 {
@@ -9,12 +9,12 @@ void	sig_handler()
 
 	// Handle SIGINT
 	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = SIGINFO;
+	sa.sa_flags = 0;
 	sa.sa_handler = sigint_handler;
 	sigaction(SIGINT, &sa, NULL);
 
 	//Handle SIGQUIT
-	sa.sa_handler = sigquit_handler;
+	sa.sa_handler = SIG_IGN;
 	sigaction(SIGQUIT, &sa, NULL);
 }
 
@@ -25,11 +25,10 @@ static void	sigint_handler(int sig)
 	(void)sig;
 
 	write(STDOUT_FILENO, "^C\n", 3);
-	exit(EXIT_SUCCESS);
 }
 
-static void	sigquit_handler(int sig)
-{
-	(void)sig;
-	//TODO
-}
+// static void	sigquit_handler(int sig)
+// {
+// 	(void)sig;
+// 	//TODO
+// }

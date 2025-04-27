@@ -20,7 +20,6 @@
 # include "structs.h"
 # include "builtin.h"
 # include "token.h"
-# include "mocked.h"
 # include "utils.h"
 # include "ast.h"
 # include "visualizer.h"

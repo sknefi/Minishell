@@ -16,8 +16,12 @@ int	prompt(t_token **token)
 	shell_path = get_path();
 	line = readline(shell_path);
 	free(shell_path);
-	if (!line) //TODO readline failure
-		return (-1);
+	if (!line)
+	{
+		free(line);
+		write(1, "exit\n", 5);
+		exit(EXIT_SUCCESS);
+	}
 	if (*line)
 	{
 		add_history(line);
@@ -117,6 +121,8 @@ static int	assign_type(char *token)
 		return (TOKEN_APPEND);
 	else if (!ft_strcmp(token, "<<"))
 		return (TOKEN_HEREDOC);
+	//else if (ft_strchr(token, 34))
+	//	return (TOKEN_SINGLE_QUOTES);
 	return (TOKEN_WORD);
 }
 
@@ -125,11 +131,15 @@ static char	*get_path()
 	char	*str;
 	char	*tmp;
 
-	tmp = malloc(PATH_MAX); //PATH_MAX is not always good, need to check on it
+	tmp = getcwd(NULL, 0);
 	if (!tmp)
 		exit(EXIT_FAILURE);
-	getcwd(tmp, PATH_MAX); //TODO getcwd failure
 	str = ft_strjoin(tmp, "$ ");
+	if (!str)
+	{
+		free(tmp);
+		exit(EXIT_FAILURE);
+	}
 	free(tmp);
 	return (str);
 }
