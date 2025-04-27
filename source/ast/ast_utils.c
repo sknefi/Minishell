@@ -55,4 +55,5 @@ void	free_ast(t_ast_node *node)
 		free(node->data);
 	}
 	free(node);
+	ft_printf("freed");
 }
