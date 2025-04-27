@@ -46,12 +46,6 @@ void	free_ast(t_ast_node *node)
 	free_ast(node->right);
 	if (node->data)
 	{
-		while (node->data[i])
-		{
-			if (!node->data[i])
-				free(node->data[i]);
-			i++;
-		}
 		free(node->data);
 	}
 	free(node);
