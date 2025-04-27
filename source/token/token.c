@@ -58,6 +58,28 @@ static int	tokenization(t_token **token, char *line)
 	return (0);
 }
 
+
+void	remove_quotes(char *str)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	if (NULL == str)
+		return ;
+	while (str[i] != '\0')
+	{
+		if (str[i] != '\'' && str[i] != '\"')
+		{
+			str[j] = str[i];
+			j++;
+		}
+		i++;
+	}
+	str[j] = '\0';
+}
+
 static char	*extract_token(char *line, int *i)
 {
 	int		start;
@@ -102,6 +124,9 @@ static char	*extract_token(char *line, int *i)
 	{
 		while (line[*i] && !ft_isspace(line[*i]) && line[*i] != '|' && line[*i] != '<' && line[*i] != '>')
 			(*i)++;
+		token = ft_substr(line, start, *i - start);
+		remove_quotes(token);
+		return (token);
 	}
 	if (quote == 0)
 		token = ft_substr(line, start, *i - start);
