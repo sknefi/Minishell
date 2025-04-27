@@ -6,7 +6,7 @@ static int	assign_type(char *token);
 static char	*get_path();
 
 
-int	prompt(t_token **token)
+int	prompt(t_token **token, t_ast_node **node)
 {
 	char	*line;
 	char	*shell_path;
@@ -20,6 +20,7 @@ int	prompt(t_token **token)
 	{
 		free(line);
 		write(1, "exit\n", 5);
+		free_ast(*node);
 		exit(EXIT_SUCCESS);
 	}
 	if (*line)

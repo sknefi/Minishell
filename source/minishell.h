@@ -13,7 +13,7 @@
 //#include "token/token.h"
 #include "ast/ast.h"
 
-int	prompt(t_token **token);
+int	prompt(t_token **token, t_ast_node **node);
 void	sig_handler();
 
 t_token	*token_append(t_token *head, char *data, int type);

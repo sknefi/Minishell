@@ -74,7 +74,7 @@ int	main(int argc, char **argv, char **env)
 	sig_handler();
 	while (1)
 	{
-		if (prompt(&token))
+		if (prompt(&token, &root))
 		{
 			free_tokens(token);
 			continue ;
