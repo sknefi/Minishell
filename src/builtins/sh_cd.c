@@ -43,6 +43,7 @@ int	sh_cd(t_app *app, char **cmd_args)
 {
 	char	*path;
 	char	*old_pwd;
+	int     result;
 
 	old_pwd = set_var_oldpwd();
 	if (!old_pwd)
@@ -50,6 +51,7 @@ int	sh_cd(t_app *app, char **cmd_args)
 	if (cmd_args[1] && cmd_args[2])
 	{
 		p(RED "cd: too many arguments\n" RST);
+		free(old_pwd);
 		return (1);
 	}
 	else if (!cmd_args[1] || ft_strncmp(cmd_args[1], "~", 1) == 0)
@@ -61,9 +63,12 @@ int	sh_cd(t_app *app, char **cmd_args)
 	if (chdir(path) == -1)
 	{
 		p(RED "cd: %s: No such file or directory\n" RST, cmd_args[1]);
+		free(old_pwd);
 		return (1);
 	}
-	if (replace_oldpwd(app, old_pwd) == -1)
+	result = replace_oldpwd(app, old_pwd);
+	free(old_pwd);
+	if (result == -1)
 		return (-1);
 	return (0);
 }
