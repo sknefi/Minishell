@@ -2,7 +2,10 @@
 
 /**
  * @brief Execute a builtin command
- * @return 0 on success, -1 on failure (malloc failed), 1 on failure (command not found)
+ * @return 0 on success, 
+ * -1 on failure (malloc failed), 
+ * 1 command valid but error - too many arguments
+ * 2 command is not a builtin 
 */
 int	exec_builtin(t_app *app, char **cmd_args)
 {
@@ -19,5 +22,5 @@ int	exec_builtin(t_app *app, char **cmd_args)
 			return (builtins[i]->f(app, cmd_args));
 		i++;
 	}
-	return (1); // command is not a builtin
+	return (2); // command is not a builtin
 }

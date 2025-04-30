@@ -32,6 +32,7 @@ SRCS =  \
 		./src/init/init_env.c \
 		\
 		./src/exec/sh_exec.c \
+		./src/exec/exec_external.c \
 		\
 		./src/utils/utils_01_dpp.c \
 		\

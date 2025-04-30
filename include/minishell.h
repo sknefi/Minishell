@@ -69,7 +69,15 @@ void	clean_app(t_app *app);
  * @param token The token
  * @return 0 on success, 1 on failure (command not found), -1 on failure (malloc failed)
 */
-void	sh_exec(t_app *app);
+int	sh_exec(t_app *app);
+
+/**
+ * @brief Executes an external command
+ * @param app The application
+ * @param cmd_args The command arguments
+ * @return 0 on success, 1 on failure (command not found), -1 on failure (malloc failed)
+*/
+int	exec_external(t_app *app, char **cmd_args);
 
 int	prompt(t_token **token, t_app *app);
 void	sig_handler();

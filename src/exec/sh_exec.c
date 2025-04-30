@@ -22,14 +22,23 @@
 // 	return (0);
 // }
 
-void	sh_exec(t_app *app)
+
+/**
+ * @brief Executes a command, itterate through the AST and execute the command, handle the redirections, pipes, heredocs, etc.
+ * @param app The application
+ * @return 
+ * -1 on failure (malloc failed),
+ *  0 on success, 
+ *  1 on failure (command not found),
+*/
+int	sh_exec(t_app *app)
 {
 	int		status;
 	t_ast_node	*node;
 
 	node = app->root;
 	if (!node)
-		return ;
+		return (0);
 
 	if (node->type == NODE_PIPE)
 	{
@@ -60,14 +69,15 @@ void	sh_exec(t_app *app)
 	}
 	else if (node->type == NODE_CMD)
 	{
+		// -1 - malloc failed
+		//  0 - success
+		//  1 - too many arguments
+		//  2 - command is not a builtin
 		status = exec_builtin(app, node->data);
-		if (status != 1 || status == -1) // command is not a builtin or malloc failed
-		{
-			app->exit_status = status;
-			return ;
-		}
-		// return (exec_external(app, token));
-		app->exit_status = 0;
-		return ;
+		if (status == 2) // command is not a builtin
+			status = exec_external(app, node->data);
+		app->exit_status = status;
+		return (status);
 	}
+	return (0);
 }
