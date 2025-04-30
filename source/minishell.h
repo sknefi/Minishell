@@ -23,6 +23,9 @@ int	ft_isspace(char	c);
 int	ft_strcmp(const char *s1, const char *s2);
 int	is_command(char *str);
 
-
+char	*handle_quotes(char *line, int *i);
+char	*handle_operators(char *line, int *i);
+char	*handle_word(char *line, int *i);
+char *ft_strjoin_free(char *s1, char *s2);
 
 #endif

@@ -27,7 +27,10 @@ int	prompt(t_token **token, t_ast_node **node)
 	{
 		add_history(line);
 		if (tokenization(token, line))
+		{
+			free(line);
 			return (1);
+		}
 	}
 	free(line);
 	return (0);
@@ -49,8 +52,8 @@ static int	tokenization(t_token **token, char *line)
 		tmp = extract_token(line, &i);
 		if (NULL == tmp)
 			return (1);
-		if (ft_strchr(tmp, '$') && *tmp != '\'')
-			tmp = get_env_var(tmp);
+		//if (ft_strchr(tmp, '$') && *tmp != '\'')
+		//	tmp = get_env_var(tmp);
 		type = assign_type(tmp);
 		*token = token_append(*token, tmp, type);
 		free(tmp);
@@ -82,56 +85,15 @@ void	remove_quotes(char *str)
 
 static char	*extract_token(char *line, int *i)
 {
-	int		start;
-	char	quote;
 	char	*token;
 
-	quote = 0;
-	start = *i;
-	if (line[*i] == '\'' || line[*i] == '"')
-	{
-		quote = line[*i];
-		(*i)++;
-		while (line[*i] && line[*i] != quote)
-			(*i)++;
-		if (line[*i] == quote)
-			(*i)++;
-	}
-	else if (line[*i] == '|' || line[*i] == '<' || line[*i] == '>')
-	{
-		if (line[*i + 1])
-		{
-			if (((line[*i] == '>' && line[*i + 1] == '>') || (line[*i] == '<' && line[*i + 1] == '<')))
-			{
-				if (line[*i + 2])
-					(*i) += 2;
-				else
-				{
-					ft_printf("Syntax error near unexpected token\n");
-					return (NULL);
-				}
-			}
-			else
-				(*i)++;
-		}
-		else
-		{
-			ft_printf("Syntax error near unexpected token\n");
-			return (NULL);
-		}
-	}
+	token = NULL;
+	//if (line[*i] == '\'' || line[*i] == '"')
+	//	token = handle_word(line, i);
+	if (line[*i] == '|' || line[*i] == '<' || line[*i] == '>')
+		token = handle_operators(line, i);
 	else
-	{
-		while (line[*i] && !ft_isspace(line[*i]) && line[*i] != '|' && line[*i] != '<' && line[*i] != '>')
-			(*i)++;
-		token = ft_substr(line, start, *i - start);
-		remove_quotes(token);
-		return (token);
-	}
-	if (quote == 0)
-		token = ft_substr(line, start, *i - start);
-	else
-		token = ft_substr(line, start + 1, *i - start - 2);
+		token = handle_word(line, i);
 	if (!token)
 		return (NULL);
 	return (token);

@@ -37,9 +37,6 @@ t_ast_node	*ast_node_insert(t_ast_node *root, t_node_types type, char **data)
 
 void	free_ast(t_ast_node *node)
 {
-	int	i;
-
-	i = 0;
 	if (!node)
 		return ;
 	free_ast(node->left);

@@ -2,6 +2,8 @@
 
 static char	*extract_env(const char *str);
 
+
+
 char	*get_env_var(char *token)
 {
 	char	*env;
@@ -18,14 +20,14 @@ char	*get_env_var(char *token)
 			tmp = extract_env(&token[i + 1]);
 			env = getenv(tmp);
 			if (env)
-				result = ft_strjoin(result, env);
+				result = ft_strjoin_free(result, env);
 			free(tmp);
 			while (token[i] && (ft_isalnum(token[i]) || token[i] == '_'))
 				i++;
 			}
 		i++;
 	}
-	free(token);
+	//free(token);
 	return (result);
 }
 
