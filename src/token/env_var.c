@@ -10,19 +10,35 @@ char	*get_env_var_token(char *token)
 	int		i;
 
 	result = ft_strdup("");
+	if (!result)
+		return (NULL);
 	i = 0;
 	while (token[i])
 	{
 		if (token[i] == '$' && ft_isalpha(token[i + 1]))
 		{
 			tmp = extract_env(&token[i + 1]);
+			if (!tmp)
+			{
+				free(result);
+				return (NULL);
+			}
 			env = getenv(tmp);
 			if (env)
-				result = ft_strjoin(result, env);
+			{
+				char *new_result = ft_strjoin(result, env);
+				free(result);
+				if (!new_result)
+				{
+					free(tmp);
+					return (NULL);
+				}
+				result = new_result;
+			}
 			free(tmp);
 			while (token[i] && (ft_isalnum(token[i]) || token[i] == '_'))
 				i++;
-			}
+		}
 		i++;
 	}
 	free(token);
