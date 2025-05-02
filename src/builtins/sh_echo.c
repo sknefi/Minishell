@@ -18,12 +18,12 @@ static int	is_n_flag(char *arg)
 	return (true);	
 }
 
-static int	count_chars(char **cmd_args)
+static int	count_chars(char **cmd_args, int start)
 {
 	int		i;
 	size_t	count;
 
-	i = 0;
+	i = start;
 	count = 0;
 	while (cmd_args[i])
 	{
@@ -34,22 +34,28 @@ static int	count_chars(char **cmd_args)
 }
 
 // Merge all arguments into one string
-static char	*merge_args(char **cmd_args, int n_flag)
+static char	*merge_args(char **cmd_args, int start, int n_flag)
 {
 	int		i;
 	char	*result;
+	size_t	pos;
 
-	result = malloc(count_chars(cmd_args) + n_flag + 1);
+	int count = count_chars(cmd_args, start) - n_flag + 1;
+	result = ft_calloc(count, sizeof(char));
 	if (!result)
 		return (NULL);
-	i = 0;
+	i = start;
+	pos = 0;
 	while (cmd_args[i])
 	{
-		ft_strlcpy(result, cmd_args[i], ft_strlen(cmd_args[i]));
+		ft_strlcpy(result + pos, cmd_args[i], ft_strlen(cmd_args[i]) + 1);
+		pos += ft_strlen(cmd_args[i]);
+		if (cmd_args[i + 1])
+			result[pos++] = ' ';
 		i++;
 	}
-	if (n_flag)
-		result[i] = '\n';
+	if (!n_flag)
+		result[pos] = '\n';
 	return (result);
 }
 
@@ -63,22 +69,20 @@ int	sh_echo(t_app *app, char **cmd_args)
 	(void)app;
 	// set n_flag to true if there is -n flag
 	// and break the loop if there is no more ARGS
-	i = 0;
+	i = 1; // after the echo word
 	n_flag = 0;
 	while (cmd_args[i])
 	{
 		if (is_n_flag(cmd_args[i]))
 			n_flag = 1;
-		if (cmd_args[i + 1])
-			break;
+		else
+			break ;
 		i++;
 	}
-
-	// count how many characters are in the result (how much memory to allocate)
-	result = merge_args(cmd_args, n_flag);
+	result = merge_args(cmd_args, i, n_flag);
 	if (!result)
 		return (-1);
-	p(result);
+	ft_printf(Y "result: %s\n" RST, result);
 	free(result);
 	return (0);
 }
