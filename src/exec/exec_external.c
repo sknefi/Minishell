@@ -61,6 +61,6 @@ int	exec_external(t_app *app, char **cmd_args)
 		waitpid(pid, &status, 0);
 		if (WIFEXITED(status))
 			return (WEXITSTATUS(status));
-		return (1);
+		return (1); // Return 1 if the child process did not exit correctly
 	}
 }

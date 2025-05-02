@@ -3,29 +3,6 @@
 /**
  * @brief Executes a command, itterate through the AST and execute the command, handle the redirections, pipes, heredocs, etc.
  * @param app The application
- * @return 0 on success, 1 on failure (command not found), -1 on failure (malloc failed)
-*/
-// int	sh_exec(t_app *app)
-// {
-// 	int		status;
-
-// 	status = 1;
-// 	if (token->type != TOKEN_COMMAND)
-// 	{
-// 		p(RED "bash: %s: command not found\n" RST, token->data);
-// 		return (127);
-// 	}
-// 	status = exec_builtin(app, token);
-// 	if (status != 1 || status == -1) // command is not a builtin or malloc failed
-// 		return (status);
-// 	// return (exec_external(app, token));
-// 	return (0);
-// }
-
-
-/**
- * @brief Executes a command, itterate through the AST and execute the command, handle the redirections, pipes, heredocs, etc.
- * @param app The application
  * @return 
  * -1 on failure (malloc failed),
  *  0 on success, 
@@ -76,6 +53,7 @@ int	sh_exec(t_app *app)
 		status = exec_builtin(app, node->data);
 		if (status == 2) // command is not a builtin
 			status = exec_external(app, node->data);
+		ft_printf("status: %d\n", status);
 		app->exit_status = status;
 		return (status);
 	}

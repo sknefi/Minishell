@@ -16,7 +16,6 @@ SRCS =  \
 		./src/ast/ast_utils.c \
 		./src/visualizer.c \
 		\
-		./src/builtins/builtin.c \
 		./src/builtins/env_utils_01.c \
 		./src/builtins/env_utils_02.c \
 		./src/builtins/sh_cd.c \
@@ -33,6 +32,7 @@ SRCS =  \
 		\
 		./src/exec/sh_exec.c \
 		./src/exec/exec_external.c \
+		./src/exec/exec_builtin.c \
 		\
 		./src/utils/utils_01_dpp.c \
 		\
