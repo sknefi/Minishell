@@ -23,6 +23,8 @@
 # include "utils.h"
 # include "ast.h"
 # include "visualizer.h"
+# include "handlers.h"
+
 # define Y		"\033[1;33m"
 # define G		"\033[1;32m"
 # define C 		"\033[1;36m"
@@ -78,6 +80,16 @@ int	sh_exec(t_app *app);
  * @return 0 on success, 1 on failure (command not found), -1 on failure (malloc failed)
 */
 int	exec_external(t_app *app, char **cmd_args);
+
+/**
+ * @brief Executes an AST node
+ * @param node The AST node
+ * @param app The application
+ * @return 0 on success, 1 on failure (command not found), -1 on failure (malloc failed)
+*/
+int	exec_ast_node(t_ast_node *node, t_app *app);
+
+
 
 int	prompt(t_token **token, t_app *app);
 void	sig_handler();

@@ -36,6 +36,8 @@ SRCS =  \
 		\
 		./src/utils/utils_01_dpp.c \
 		\
+		./src/handlers/redirection.c \
+		
         
 OBJS         = $(SRCS:.c=.o)
 

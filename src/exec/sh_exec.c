@@ -1,50 +1,13 @@
 #include "../../include/minishell.h"
 
-/**
- * @brief Executes a command, itterate through the AST and execute the command, handle the redirections, pipes, heredocs, etc.
- * @param app The application
- * @return 
- * -1 on failure (malloc failed),
- *  0 on success, 
- *  1 on failure (command not found),
-*/
-int	sh_exec(t_app *app)
+int	exec_ast_node(t_ast_node *node, t_app *app)
 {
-	int		status;
-	t_ast_node	*node;
+	int	status;
 
-	node = app->root;
 	if (!node)
 		return (0);
 
-	if (node->type == NODE_PIPE)
-	{
-		// create pipe
-		// fork left
-		// in left child: redirect stdout to pipe write-end, close read-end, exec_ast(left)
-		// fork right
-		// in right child: redirect stdin to pipe read-end, close write-end, exec_ast(right)
-		// in parent: wait for both
-	}
-	else if (node->type == NODE_REDIRECTION_IN)
-	{
-		// open the infile
-		// dup2 to stdin
-		// exec_ast(left)
-	}
-	else if (node->type == NODE_REDIRECTION_OUT)
-	{
-		// open outfile with O_TRUNC
-		// dup2 to stdout
-		// exec_ast(left)
-	}
-	else if (node->type == NODE_APPEND)
-	{
-		// open outfile with O_APPEND
-		// dup2 to stdout
-		// exec_ast(left)
-	}
-	else if (node->type == NODE_CMD)
+	if (node->type == NODE_CMD)
 	{
 		// -1 - malloc failed
 		//  0 - success
@@ -53,9 +16,38 @@ int	sh_exec(t_app *app)
 		status = exec_builtin(app, node->data);
 		if (status == 2) // command is not a builtin
 			status = exec_external(app, node->data);
-		ft_printf("status: %d\n", status);
-		app->exit_status = status;
 		return (status);
 	}
+	else if (node->type == NODE_REDIRECTION_IN)
+	{
+		// open the infile
+		// dup2 to stdin
+		// exec_ast(left)
+	}
+	else if (node->type == NODE_REDIRECTION_OUT)
+		return (handle_redirection(app, node, 1));
+	else if (node->type == NODE_APPEND)
+		return (handle_redirection(app, node, 2));
+	else if (node->type == NODE_PIPE)
+	{
+		// create pipe
+		// fork left
+		// in left child: redirect stdout to pipe write-end, close read-end, exec_ast(left)
+		// fork right
+		// in right child: redirect stdin to pipe read-end, close write-end, exec_ast(right)
+		// in parent: wait for both
+	}
 	return (0);
+}
+
+int	sh_exec(t_app *app)
+{
+    int status;
+    
+    if (!app->root)
+        return (0);
+    
+    status = exec_ast_node(app->root, app);
+    app->exit_status = status;
+    return (status);
 }
