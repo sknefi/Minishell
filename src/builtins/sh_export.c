@@ -41,7 +41,7 @@ int	handle_append_export(t_app *app, char *key)
 
 	if (!contains_equal_sign(key))
 	{
-		p(RED "export: not a valid identifier\n" RST);
+		ft_printf(RED "export: not a valid identifier\n" RST);
 		return (1);
 	}
 	env_size = count_pointer(app->env);
@@ -60,7 +60,7 @@ int	handle_replace_export(t_app *app, char *key)
 
 	if (!contains_equal_sign(key))
 	{
-		p(RED "export: not a valid identifier\n" RST);
+		ft_printf(RED "export: not a valid identifier\n" RST);
 		return (1);
 	}
 	i = 0;
@@ -92,7 +92,7 @@ int	sh_export(t_app *app, char **cmd_args)
 	}
 	if (cmd_args[1] && cmd_args[2])
 	{
-		p(RED "export: too many arguments\n" RST);
+		ft_printf(RED "export: too many arguments\n" RST);
 		return (1);
 	}
 	key = get_env_key(cmd_args[1], app->env);

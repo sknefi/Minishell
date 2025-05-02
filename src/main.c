@@ -18,7 +18,7 @@
 // 	app->exit_status = sh_exec(app, token);
 // 	if (app->exit_status == -1)
 // 		return (EXIT_FAILURE);
-// 	p("exit status: %d\n", app->exit_status);
+// 	ft_printf("exit status: %d\n", app->exit_status);
 // 	token_clean(token);
 // 	clean_app(app);
 // 	return (EXIT_SUCCESS);

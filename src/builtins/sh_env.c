@@ -36,7 +36,7 @@ void	show_env(char **env)
 	i = 0;
 	while (env[i])
 	{
-		p("%s\n", env[i]);
+		ft_printf("%s\n", env[i]);
 		i++;
 	}
 }
@@ -46,7 +46,7 @@ int	sh_env(t_app *app, char **cmd_args)
 	(void)cmd_args;
 	if (cmd_args[1])
 	{
-		p(RED "env: %s: No such file or directory\n" RST, cmd_args[1]);
+		ft_printf(RED "env: %s: No such file or directory\n" RST, cmd_args[1]);
 		return (1);
 	}
 	show_env(app->env);

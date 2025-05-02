@@ -50,7 +50,7 @@ int	sh_cd(t_app *app, char **cmd_args)
 		return (-1);
 	if (cmd_args[1] && cmd_args[2])
 	{
-		p(RED "cd: too many arguments\n" RST);
+		ft_printf(RED "cd: too many arguments\n" RST);
 		free(old_pwd);
 		return (1);
 	}
@@ -62,7 +62,7 @@ int	sh_cd(t_app *app, char **cmd_args)
 		path = cmd_args[1];
 	if (chdir(path) == -1)
 	{
-		p(RED "cd: %s: No such file or directory\n" RST, cmd_args[1]);
+		ft_printf(RED "cd: %s: No such file or directory\n" RST, cmd_args[1]);
 		free(old_pwd);
 		return (1);
 	}

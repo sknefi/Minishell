@@ -18,7 +18,7 @@ int	prompt(t_token **token, t_app *app)
 	free(shell_path);
 	if (!line)
 	{
-		p(RED "recieved EOF\n" RST);
+		ft_printf(RED "recieved EOF\n" RST);
 		free(line);
 		clean_app(app);
 		exit(EXIT_SUCCESS);
