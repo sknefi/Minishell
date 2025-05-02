@@ -17,7 +17,7 @@ int	handle_redirection_out(t_app *app, t_ast_node *node, int type)
 	if (fd < 0)
 	{
 		ft_printf(RED "Error: cannot open file %s\n" RST, node->data[0]);
-		return (1);
+		return (-1);
 	}
 	saved_stdout = dup(STDOUT_FILENO); // keep original stdout
 	dup2(fd, STDOUT_FILENO); // redirect stdout to outfile
@@ -41,7 +41,7 @@ int	handle_redirection_in(t_app *app, t_ast_node *node)
 	if (fd < 0)
 	{
 		ft_printf(RED "Error: cannot open file %s\n" RST, node->data[0]);
-		return (1);
+		return (-1);
 	}
 	saved_stdin = dup(STDIN_FILENO); // keep original stdin
 	dup2(fd, STDIN_FILENO); // redirect stdin from infile
