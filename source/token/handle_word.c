@@ -33,11 +33,28 @@ char	*handle_word(char *line, int *i)
 static void	handle_single_quotes(char *line, int *i, char **token, size_t *size)
 {
 	(*i)++;
+	while (line[*i] && line[*i] != '\'')
+		grow_token(*token, size, line[*i++]);
+	if (line[*i] != '\'')
+		ft_printf("Syntax error: quotes not closed honey\n");
+	else
+		(*i)++;
 }
 
 static void	handle_double_quotes(char *line, int *i, char **token, size_t *size)
 {
 	(*i)++;
+	while (line[*i] && line[*i] != '\"')
+	{
+		if (line[*i] == '$')
+			expand_env(line, i, *token, size);
+		else
+			grow_token(*token, size, line[*i++])
+	}
+	if (line[*i] != '\"')
+		ft_printf("Syntax error: quotes not closed honey\n");
+	else
+		(*i)++;
 }
 
 static void	expand_env(char *line, int *i, char **token, size_t *size)
