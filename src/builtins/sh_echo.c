@@ -82,7 +82,7 @@ int	sh_echo(t_app *app, char **cmd_args)
 	result = merge_args(cmd_args, i, n_flag);
 	if (!result)
 		return (-1);
-	ft_printf(Y "result: %s\n" RST, result);
+	ft_printf(Y "result: %s" RST, result);
 	free(result);
 	return (0);
 }

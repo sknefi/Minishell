@@ -30,7 +30,7 @@ static char	*get_cmd_path(t_app *app, char **cmd_args)
 			free_dpp(all_paths);
 			return (NULL);
 		}
-		if (access(tmp, F_OK) == 0)
+		if (access(tmp, F_OK | X_OK) == 0)
 		{
 			free_dpp(all_paths);
 			return (tmp);
@@ -69,12 +69,11 @@ int	exec_external(t_app *app, char **cmd_args)
 		free(cmd_path);
 		exit(1); // Exit the child process
 	}
-	else  // Parent process
-	{
-		waitpid(pid, &status, 0);
-		free(cmd_path);
-		if (WIFEXITED(status))
-			return (WEXITSTATUS(status));
-		return (1); // Return 1 if the child process did not exit correctly
-	}
+	
+	// Parent process
+	waitpid(pid, &status, 0);
+	free(cmd_path);
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	return (1); // Return 1 if the child process did not exit correctly
 }
