@@ -19,15 +19,11 @@ int	exec_ast_node(t_ast_node *node, t_app *app)
 		return (status);
 	}
 	else if (node->type == NODE_REDIRECTION_IN)
-	{
-		// open the infile
-		// dup2 to stdin
-		// exec_ast(left)
-	}
+		return (handle_redirection_in(app, node));
 	else if (node->type == NODE_REDIRECTION_OUT)
-		return (handle_redirection(app, node, 1));
+		return (handle_redirection_out(app, node, 1));
 	else if (node->type == NODE_APPEND)
-		return (handle_redirection(app, node, 2));
+		return (handle_redirection_out(app, node, 2));
 	else if (node->type == NODE_PIPE)
 	{
 		// create pipe
