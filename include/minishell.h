@@ -24,7 +24,7 @@
 # include "ast.h"
 # include "visualizer.h"
 # include "handlers.h"
-
+# include "reasignthis.h"
 # define Y		"\033[1;33m"
 # define G		"\033[1;32m"
 # define C 		"\033[1;36m"
@@ -91,14 +91,12 @@ int	exec_ast_node(t_ast_node *node, t_app *app);
 
 
 
-int	prompt(t_token **token, t_app *app);
 void	sig_handler();
 
 t_token	*token_append(t_token *head, char *data, int type);
 void	free_tokens(t_token *token);
 int	ft_isspace(char	c);
 int	ft_strcmp(const char *s1, const char *s2);
-int	is_command(char *str);
 
 
 #endif

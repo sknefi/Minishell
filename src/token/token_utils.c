@@ -48,8 +48,7 @@ void	free_tokens(t_token *token)
 	{
 		tmp = token;
 		token = token->next;
-		if (tmp->data)
-			free(tmp->data);
+		free(tmp->data);
 		free(tmp);
 	}
 }
