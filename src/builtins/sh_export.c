@@ -42,7 +42,7 @@ int	handle_append_export(t_app *app, char *key)
 	if (!contains_equal_sign(key))
 	{
 		ft_printf(RED "export: not a valid identifier\n" RST);
-		return (1);
+		return (0); // idk why, bash behavior
 	}
 	env_size = count_pointer(app->env);
 	new_env = malloc(sizeof(char *) * (env_size + 2)); // +2 for new var and NULL terminator
@@ -61,7 +61,7 @@ int	handle_replace_export(t_app *app, char *key)
 	if (!contains_equal_sign(key))
 	{
 		ft_printf(RED "export: not a valid identifier\n" RST);
-		return (1);
+		return (0); // idk why, bash behavior
 	}
 	i = 0;
 	while (app->env[i])
@@ -92,8 +92,8 @@ int	sh_export(t_app *app, char **cmd_args)
 	}
 	if (cmd_args[1] && cmd_args[2])
 	{
-		ft_printf(RED "export: too many arguments\n" RST);
-		return (1);
+		ft_printf(RED "export: too many arguments - do nothing\n" RST);
+		return (0);
 	}
 	key = get_env_key(cmd_args[1], app->env);
 	if (!key)

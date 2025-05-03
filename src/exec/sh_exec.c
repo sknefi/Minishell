@@ -20,9 +20,9 @@ int	exec_ast_node(t_ast_node *node, t_app *app)
 	else if (node->type == NODE_REDIRECTION_IN)
 		return (handle_redirection_in(app, node));
 	else if (node->type == NODE_REDIRECTION_OUT)
-		return (handle_redirection_out(app, node, 1));
+		return (handle_redirection_out(app, node));
 	else if (node->type == NODE_APPEND)
-		return (handle_redirection_out(app, node, 2));
+		return (handle_redirection_out(app, node));
 	else if (node->type == NODE_PIPE)
 	{
 		// create pipe

@@ -102,6 +102,11 @@ typedef struct s_ast_node
 
 /**
  * @brief Struct of the app, stores every information about the app
+ * exit_status: exit status of the last command
+ * env: environment variables
+ * builtins: builtins, we were supposed to implement
+ * token: linked list of tokens
+ * root: root of the AST
 */
 typedef struct s_app
 {

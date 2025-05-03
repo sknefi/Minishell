@@ -25,27 +25,13 @@
 # include "visualizer.h"
 # include "handlers.h"
 # include "reasignthis.h"
+# include "signals.h"
+# include "env.h"
 # define Y		"\033[1;33m"
 # define G		"\033[1;32m"
 # define C 		"\033[1;36m"
 # define RED	"\033[1;31m"
 # define RST 	"\033[0m"
-
-// # define ft_printf(...)	ft_printf(__VA_ARGS__)
-
-/**
- * @brief Initializes the environment variables
- * @param env The environment variables
- * @return The initialized environment variables on heap
-*/
-char	**init_env(char **env);
-
-/**
- * @brief Frees the environment variables
- * @param env The environment variables
- */
-void	free_env(char **env);
-
 
 /**
  * @brief Initialize the app struct
@@ -56,14 +42,6 @@ t_app	*init_app(char **env);
  * @brief Frees the app struct
 */
 void	clean_app(t_app *app);
-
-/**
- * @brief Executes an external command
- * @param app The application
- * @param token The token
- * @return 0 on success, 1 if command not found, -1 on error
-*/
-// int	exec_external(t_app *app, t_token *token);
 
 /**
  * @brief Executes a command (builtin or external)
@@ -89,14 +67,7 @@ int	exec_external(t_app *app, char **cmd_args);
 */
 int	exec_ast_node(t_ast_node *node, t_app *app);
 
-
-
-void	sig_handler();
-
-t_token	*token_append(t_token *head, char *data, int type);
-void	free_tokens(t_token *token);
-int	ft_isspace(char	c);
-int	ft_strcmp(const char *s1, const char *s2);
-
+// TYM_COMMENT
+int		prompt(t_token **token, t_ast_node **node);
 
 #endif

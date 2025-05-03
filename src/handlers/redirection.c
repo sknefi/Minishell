@@ -1,16 +1,11 @@
 #include "../../include/minishell.h"
 
-/**
- * Type 1: > (truncate)
- * Type 2: >> (append)
- */
-int	handle_redirection_out(t_app *app, t_ast_node *node, int type)
+int	handle_redirection_out(t_app *app, t_ast_node *node)
 {
 	int			status;
 	int			saved_stdout;
 	t_ast_node	*cmd_node;
 
-	(void)type;
 	saved_stdout = dup(STDOUT_FILENO); // keep original stdout
 	cmd_node = find_command_node(node); // find the command node to execute
 	status = create_files(node, saved_stdout); // create files and redirect stdout to the top file
@@ -22,9 +17,6 @@ int	handle_redirection_out(t_app *app, t_ast_node *node, int type)
 	return (status);
 }
 
-/**
- * Handle input redirection (<)
- */
 int	handle_redirection_in(t_app *app, t_ast_node *node)
 {
 	int	fd;
