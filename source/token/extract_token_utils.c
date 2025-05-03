@@ -10,38 +10,6 @@ char *ft_strjoin_free(char *s1, char *s2)
     return (result);
 }
 
-char	*handle_quotes(char *line, int *i)
-{
-	int		start;
-	char	quote;
-	char	*token;
-
-	token = NULL;
-	quote = 0;
-	start = *i;
-	if (line[*i] == '\'' || line[*i] == '"')
-	{
-		quote = line[*i];
-		(*i)++;
-		while (line[*i] && line[*i] != quote)
-			(*i)++;
-		if (!line[*i])
-		{
-			ft_printf("Syntax error: quotes not closed honey\n");
-			return (NULL);
-		}
-		(*i)++;
-		if ('"' == quote)
-		{
-			token = ft_substr(line, start + 1, *i - start - 2);
-			token = get_env_var(token);
-		}
-		else
-			token = ft_substr(line, start + 1, *i - start - 2);
-	}
-	return (token);
-}
-
 char	*handle_operators(char *line, int *i)
 {
 	int		start;
@@ -72,7 +40,7 @@ char	*handle_operators(char *line, int *i)
 	return (token);
 }
 
-char	*handle_word(char *line, int *i)
+/*char	*handle_word(char *line, int *i)
 {
     int buffer_size = 256;
     char *buffer = malloc(buffer_size);
@@ -170,4 +138,4 @@ char	*handle_word(char *line, int *i)
 
     buffer[pos] = '\0';
     return buffer;
-}
+} */

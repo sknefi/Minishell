@@ -17,7 +17,7 @@ SOURCES	=	ft_atoi.c ft_bzero.c ft_isalnum.c ft_isalpha.c ft_tolower.c \
 			ft_strtrim.c ft_substr.c ft_split.c ft_itoa.c ft_striteri.c \
 			ft_printf/ft_printf.c ft_printf/ft_putchar.c ft_printf/ft_put_str.c \
 			ft_printf/ft_put_ptr.c ft_printf/ft_put_num.c ft_printf/ft_put_unum.c \
-			ft_printf/ft_low_hex.c ft_printf/ft_upper_hex.c ft_realloc.c
+			ft_printf/ft_low_hex.c ft_printf/ft_upper_hex.c ft_realloc.c \
 
 BSOURCES =	ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c ft_lstadd_back.c \
 			ft_lstdelone.c ft_lstclear.c ft_lstiter.c ft_lstmap.c

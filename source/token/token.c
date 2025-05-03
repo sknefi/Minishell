@@ -52,8 +52,6 @@ static int	tokenization(t_token **token, char *line)
 		tmp = extract_token(line, &i);
 		if (NULL == tmp)
 			return (1);
-		//if (ft_strchr(tmp, '$') && *tmp != '\'')
-		//	tmp = get_env_var(tmp);
 		type = assign_type(tmp);
 		*token = token_append(*token, tmp, type);
 		free(tmp);
@@ -88,8 +86,6 @@ static char	*extract_token(char *line, int *i)
 	char	*token;
 
 	token = NULL;
-	//if (line[*i] == '\'' || line[*i] == '"')
-	//	token = handle_word(line, i);
 	if (line[*i] == '|' || line[*i] == '<' || line[*i] == '>')
 		token = handle_operators(line, i);
 	else
@@ -101,8 +97,6 @@ static char	*extract_token(char *line, int *i)
 
 static int	assign_type(char *token)
 {
-	//if (is_command(token))
-	//	return (TOKEN_COMMAND);
 	if (!ft_strcmp(token, "|"))
 		return (TOKEN_PIPE);
 	else if (!ft_strcmp(token, ">"))
@@ -113,8 +107,6 @@ static int	assign_type(char *token)
 		return (TOKEN_APPEND);
 	else if (!ft_strcmp(token, "<<"))
 		return (TOKEN_HEREDOC);
-	//else if (ft_strchr(token, 34))
-	//	return (TOKEN_SINGLE_QUOTES);
 	return (TOKEN_WORD);
 }
 

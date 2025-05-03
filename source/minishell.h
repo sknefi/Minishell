@@ -27,5 +27,6 @@ char	*handle_quotes(char *line, int *i);
 char	*handle_operators(char *line, int *i);
 char	*handle_word(char *line, int *i);
 char *ft_strjoin_free(char *s1, char *s2);
+void    *ft_realloc_token(void *ptr, size_t size);
 
 #endif
