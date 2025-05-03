@@ -25,12 +25,16 @@ t_ast_node	*ast_node_insert(t_ast_node *root, t_node_types type, char **data)
 		node = ast_new_node(type, NULL);
 		node->left = root;
 		node->right = NULL;
+		
+		if (!data)
+			return (node);
 	}
-	if (!data)
+	else if (!data)
 	{
-		node->right = ast_new_node(NODE_CMD, data);
+		node = ast_new_node(NODE_CMD, data);
 		return (node);
 	}
+	
 	root->right = ast_node_insert(root->right, type, data);
 	return (root);
 }
