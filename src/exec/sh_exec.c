@@ -1,18 +1,17 @@
 #include "../../include/minishell.h"
 
+// -1 - malloc failed
+//  0 - success
+//  1 - too many arguments
+//  2 - command is not a builtin
 int	exec_ast_node(t_ast_node *node, t_app *app)
 {
 	int	status;
 
 	if (!node)
 		return (0);
-
 	if (node->type == NODE_CMD)
 	{
-		// -1 - malloc failed
-		//  0 - success
-		//  1 - too many arguments
-		//  2 - command is not a builtin
 		status = exec_builtin(app, node->data);
 		if (status == 2) // command is not a builtin
 			status = exec_external(app, node->data);
@@ -38,12 +37,11 @@ int	exec_ast_node(t_ast_node *node, t_app *app)
 
 int	sh_exec(t_app *app)
 {
-    int status;
-    
-    if (!app->root)
-        return (0);
-    
-    status = exec_ast_node(app->root, app);
-    app->exit_status = status;
-    return (status);
+	int status;
+
+	if (!app->root)
+		return (0);
+	status = exec_ast_node(app->root, app);
+	app->exit_status = status;
+	return (status);
 }

@@ -7,14 +7,15 @@ BLUE          = \033[34m
 RESET         = \033[0m
 
 SRCS =  \
-		./src/main.c \
 		./src/signal/signals.c \
-		./src/token/token.c \
-		./src/token/env_var.c \
 		./src/token/token_utils.c \
+		./src/token/handle_word.c \
+		./src/token/ft_realloc_token.c \
+		./src/token/extract_token_utils.c \
+		./src/token/token.c \
+		\
 		./src/ast/ast.c \
 		./src/ast/ast_utils.c \
-		./src/visualizer.c \
 		\
 		./src/builtins/env_utils_01.c \
 		./src/builtins/env_utils_02.c \
@@ -35,9 +36,12 @@ SRCS =  \
 		./src/exec/exec_builtin.c \
 		\
 		./src/utils/utils_01_dpp.c \
+		./src/utils/visualizer.c \
 		\
 		./src/handlers/redirection.c \
-		
+		./src/handlers/redirection_utils.c \
+		\
+		./src/main.c \
         
 OBJS         = $(SRCS:.c=.o)
 

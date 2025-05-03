@@ -1,4 +1,0 @@
-USER = filip 
-CITY = Prague
-DEVICE = PC
-OS = MACOS
