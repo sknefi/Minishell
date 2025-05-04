@@ -1,39 +1,45 @@
-#include "../libft_divinus/libft.h"
+#include "../include/minishell.h"
 
-char	*get_val_of_var(const char *s)
+int	main(int argc, char **argv, char **env)
 {
-	int		i;
+	t_app		*app;
+	t_token		*tmp;
 
-	i = 0;
-	while (s[i] && s[i] != '=')
-		i++;
-	if (s[i] == '=' && s[i + 1])
-		return ((char *)s + i + 1);
-	return (NULL);
-}
-
-char	*get_env_var(const char *name, char **env)
-{
-	int		i;
-	size_t	len;
-
-	if (!name || !env)
-		return (NULL);
-	len = ft_strlen(name);
-	i = 0;
-	while (env[i])
-	{
-		if (ft_strncmp(env[i], name, len) == 0 && env[i][len] == '=')
-			return (get_val_of_var(env[i]));
-		i++;
-	}
-	return (NULL);
-}
-
-int		main(int argc, char **argv, char **env)
-{
 	(void)argc;
 	(void)argv;
-	ft_printf("PATH: %s\n", get_env_var("PATH", env));
-	return 0;
+	app = init_app(env);
+	if (!app)
+		return (EXIT_FAILURE);
+	sig_handler();
+	while (1)
+	{
+		int prompt_res = prompt(&app->token, &app->root);
+		if (prompt_res == 1)
+		{
+			free_tokens(app->token);
+			continue ;
+		}
+		else if (prompt_res == -1)
+			return (clean_app(app), EXIT_FAILURE);
+		app->exit_status = prompt_res;
+		app->root = parse(app->token);
+		if (!app->root)
+		{
+			free_tokens(app->token);
+			continue ;
+		}
+		print_ast(app->root, 0, 0);
+		tmp = app->token;
+    	while (tmp)
+    	{
+        	printf("Token: %-10s | Typ: %d\n", tmp->data, tmp->type);
+        	tmp = tmp->next;
+    	}
+		sh_exec(app);
+		free_ast(app->root);
+		free_tokens(app->token);
+		app->root = NULL;
+	}
+	clean_app(app);
+	return (EXIT_SUCCESS);
 }
