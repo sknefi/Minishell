@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   token.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/04 16:03:49 by tmateja           #+#    #+#             */
+/*   Updated: 2025/05/04 16:05:31 by tmateja          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 static int	tokenization(t_token **token, char *line);
 static char	*extract_token(char *line, int *i);
 static int	assign_type(char *token);
-static char	*get_path();
+static char	*get_path(void);
 
 int	prompt(t_token **token, t_ast_node **node)
 {
@@ -18,7 +30,6 @@ int	prompt(t_token **token, t_ast_node **node)
 	if (!line)
 	{
 		free(line);
-		write(1, "exit\n", 5);
 		free_ast(*node);
 		exit(EXIT_SUCCESS);
 	}
@@ -58,28 +69,6 @@ static int	tokenization(t_token **token, char *line)
 	return (0);
 }
 
-
-void	remove_quotes(char *str)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	if (NULL == str)
-		return ;
-	while (str[i] != '\0')
-	{
-		if (str[i] != '\'' && str[i] != '\"')
-		{
-			str[j] = str[i];
-			j++;
-		}
-		i++;
-	}
-	str[j] = '\0';
-}
-
 static char	*extract_token(char *line, int *i)
 {
 	char	*token;
@@ -109,7 +98,7 @@ static int	assign_type(char *token)
 	return (TOKEN_WORD);
 }
 
-static char	*get_path()
+static char	*get_path(void)
 {
 	char	*str;
 	char	*tmp;

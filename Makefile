@@ -11,7 +11,7 @@ SRCS =  \
 		./src/token/token_utils.c \
 		./src/token/handle_word.c \
 		./src/token/ft_realloc_token.c \
-		./src/token/extract_token_utils.c \
+		./src/token/handle_operators.c \
 		./src/token/token.c \
 		\
 		./src/ast/ast.c \
@@ -51,7 +51,7 @@ LDFLAGS        = -lreadline
 RM            = rm -f
 
 LIBFT_NAME    = libft.a
-LIBFT_DIR    = ./libft
+LIBFT_DIR    = ./libft_divinus
 LIBFT        = $(LIBFT_DIR)/$(LIBFT_NAME)
 
 

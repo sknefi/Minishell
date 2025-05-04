@@ -15,6 +15,10 @@
 # include <readline/history.h>
 # include <signal.h>
 # include <limits.h>
+# include <fcntl.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+
 
 # include "../libft_divinus/libft.h"
 # include "structs.h"

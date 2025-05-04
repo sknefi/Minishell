@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   token_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/04 16:06:30 by tmateja           #+#    #+#             */
+/*   Updated: 2025/05/04 16:07:36 by tmateja          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 static t_token	*token_init(char *data, int type);
@@ -53,13 +65,12 @@ void	free_tokens(t_token *token)
 	}
 }
 
-int	ft_isspace(char	c)
+int	ft_isspace(char c)
 {
 	if (c == 32)
 		return (1);
 	return (0);
 }
-
 
 int	ft_strcmp(const char *s1, const char *s2)
 {

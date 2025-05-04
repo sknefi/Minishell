@@ -1,21 +1,36 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   handle_word.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/04 16:09:17 by tmateja           #+#    #+#             */
+/*   Updated: 2025/05/04 16:12:23 by tmateja          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
-static void	handle_single_quotes(char *line, int *i, char **token, size_t *size);
-static void	handle_double_quotes(char *line, int *i, char **token, size_t *size);
+static void	handle_single_quotes(char *line, int *i, char **token, \
+	size_t *size);
+static void	handle_double_quotes(char *line, int *i, char **token, \
+	size_t *size);
 static void	expand_env(char *line, int *i, char **token, size_t *size);
 static int	grow_token(char **token, size_t *size, char c);
 
 char	*handle_word(char *line, int *i)
 {
 	char	*token;
-	size_t		size;
+	size_t	size;
 
 	token = malloc(1);
 	size = 0;
 	if (!token)
 		return (NULL);
 	token[0] = '\0';
-	while (line[*i] && !ft_isspace(line[*i]) && line[*i] != '|' && line[*i] != '<' && line[*i] != '>')
+	while (line[*i] && !ft_isspace(line[*i]) && line[*i] != '|' \
+		&& line[*i] != '<' && line[*i] != '>')
 	{
 		if (line[*i] == '\'')
 			handle_single_quotes(line, i, &token, &size);
@@ -24,7 +39,7 @@ char	*handle_word(char *line, int *i)
 		else if (line[*i] == '$')
 			expand_env(line, i, &token, &size);
 		else
-			if(grow_token(&token, &size, line[(*i)++]))
+			if (grow_token(&token, &size, line[(*i)++]))
 				return (NULL);
 	}
 	return (token);
