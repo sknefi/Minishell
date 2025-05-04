@@ -6,14 +6,14 @@
 /*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 16:03:49 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/04 20:01:22 by tmateja          ###   ########.fr       */
+/*   Updated: 2025/05/04 20:21:27 by tmateja          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static int	tokenization(t_token **token, char *line);
-static char	*extract_token(char *line, int *i);
+static int	tokenization(t_app *app, char *line);
+static char	*extract_token(char *line, int *i, t_app *app);
 static int	assign_type(char *token);
 static char	*get_path(void);
 
@@ -30,7 +30,7 @@ int	prompt(t_app *app)
 	char	*line;
 	char	*shell_path;
 
-	*token = NULL;
+	app->token = NULL;
 	line = NULL;
 	shell_path = get_path();
 	line = readline(shell_path);
@@ -38,13 +38,13 @@ int	prompt(t_app *app)
 	if (!line)
 	{
 		free(line);
-		free_ast(*node);
+		free_ast(app->root);
 		exit(EXIT_SUCCESS);
 	}
 	if (*line)
 	{
 		add_history(line);
-		if (tokenization(token, line))
+		if (tokenization(app, line))
 		{
 			free(line);
 			return (1);
@@ -63,7 +63,7 @@ int	prompt(t_app *app)
  * Return 1, when fails, 0 on success.
  */
 
-static int	tokenization(t_token **token, char *line)
+static int	tokenization(t_app *app, char *line)
 {
 	int		i;
 	int		type;
@@ -76,17 +76,17 @@ static int	tokenization(t_token **token, char *line)
 			i++;
 		if (!line || !line[i])
 			break ;
-		tmp = extract_token(line, &i);
+		tmp = extract_token(line, &i, app);
 		if (NULL == tmp)
 			return (1);
 		type = assign_type(tmp);
-		*token = token_append(*token, tmp, type);
+		app->token = token_append(app->token, tmp, type);
 		free(tmp);
 	}
 	return (0);
 }
 
-static char	*extract_token(char *line, int *i)
+static char	*extract_token(char *line, int *i, t_app *app)
 {
 	char	*token;
 
@@ -94,7 +94,7 @@ static char	*extract_token(char *line, int *i)
 	if (line[*i] == '|' || line[*i] == '<' || line[*i] == '>')
 		token = handle_operators(line, i);
 	else
-		token = handle_word(line, i);
+		token = handle_word(line, i, app);
 	if (!token)
 		return (NULL);
 	return (token);

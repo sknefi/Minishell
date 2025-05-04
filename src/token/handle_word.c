@@ -6,7 +6,7 @@
 /*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 16:09:17 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/04 19:56:35 by tmateja          ###   ########.fr       */
+/*   Updated: 2025/05/04 20:24:54 by tmateja          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 static void	handle_single_quotes(char *line, int *i, char **token, \
 	size_t *size);
 static void	handle_double_quotes(char *line, int *i, char **token, \
-	size_t *size);
-static void	expand_env(char *line, int *i, char **token, size_t *size);
+	size_t *size, t_app *app);
+static void	expand_env(char *line, int *i, char **token, size_t *size, t_app *app);
 static int	grow_token(char **token, size_t *size, char c);
 
-char	*handle_word(char *line, int *i)
+char	*handle_word(char *line, int *i, t_app *app)
 {
 	char	*token;
 	size_t	size;
@@ -35,9 +35,9 @@ char	*handle_word(char *line, int *i)
 		if (line[*i] == '\'')
 			handle_single_quotes(line, i, &token, &size);
 		else if (line[*i] == '\"')
-			handle_double_quotes(line, i, &token, &size);
+			handle_double_quotes(line, i, &token, &size, app);
 		else if (line[*i] == '$')
-			expand_env(line, i, &token, &size);
+			expand_env(line, i, &token, &size, app);
 		else
 			if (grow_token(&token, &size, line[(*i)++]))
 				return (NULL);
@@ -56,13 +56,13 @@ static void	handle_single_quotes(char *line, int *i, char **token, size_t *size)
 		(*i)++;
 }
 
-static void	handle_double_quotes(char *line, int *i, char **token, size_t *size)
+static void	handle_double_quotes(char *line, int *i, char **token, size_t *size, t_app *app)
 {
 	(*i)++;
 	while (line[*i] && line[*i] != '\"')
 	{
 		if (line[*i] == '$')
-			expand_env(line, i, token, size);
+			expand_env(line, i, token, size, app);
 		else
 			grow_token(token, size, line[(*i)++]);
 	}
@@ -72,7 +72,7 @@ static void	handle_double_quotes(char *line, int *i, char **token, size_t *size)
 		(*i)++;
 }
 
-static void	expand_env(char *line, int *i, char **token, size_t *size)
+static void	expand_env(char *line, int *i, char **token, size_t *size, t_app *app)
 {
 	char	var_name[256];
 	char	*val;
