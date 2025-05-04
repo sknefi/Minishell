@@ -125,7 +125,7 @@ char	*get_env_var(const char *name, char **env);
  * @brief Sorts an array of environment variables
  * @param env The array of environment variables
 */
-char	**show_env_sort(char **env);
+char	**env_sort(char **env);
 
 /**
  * @brief Prints an array of environment variables

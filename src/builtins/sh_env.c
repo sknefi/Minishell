@@ -2,7 +2,7 @@
 
 #define PREFIX_ENV "declare -x "
 
-char	**show_env_sort(char **env)
+char	**env_sort(char **env)
 {
 	int		i;
 	int		j;
@@ -46,11 +46,26 @@ void	show_env(char **env)
 void	show_env_prefix(char **env)
 {
 	int		i;
+	int		j;
+	int		first_es;
 
 	i = 0;
 	while (env[i])
 	{
-		ft_printf("%s%s\n", PREFIX_ENV, env[i]);
+		ft_printf("%s", PREFIX_ENV);
+		j = 0;
+		first_es = 0;
+		while (env[i][j])
+		{
+			write(STDOUT_FILENO, &env[i][j], 1);
+			if (env[i][j] == '=' && !first_es)
+			{
+				first_es = 1;
+				write(STDOUT_FILENO, "\"", 1);
+			}
+			j++;
+		}
+		write(STDOUT_FILENO, "\"\n", 2);
 		i++;
 	}
 }
