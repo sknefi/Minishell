@@ -1,5 +1,7 @@
 #include "../../include/minishell.h"
 
+#define PREFIX_ENV "declare -x "
+
 char	**show_env_sort(char **env)
 {
 	int		i;
@@ -37,6 +39,18 @@ void	show_env(char **env)
 	while (env[i])
 	{
 		ft_printf("%s\n", env[i]);
+		i++;
+	}
+}
+
+void	show_env_prefix(char **env)
+{
+	int		i;
+
+	i = 0;
+	while (env[i])
+	{
+		ft_printf("%s%s\n", PREFIX_ENV, env[i]);
 		i++;
 	}
 }

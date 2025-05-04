@@ -13,7 +13,7 @@ static char	**append_env(char **from, char **to, char *new_var, t_app *app)
 		free(from[i]);
 		i++;
 	}
-	to[i] = ft_strdup(new_var);
+	to[i] = create_env_row_with_quotes(new_var);
 	if (!to[i])
 		return (free_dpp_i(to, i), NULL);
 	to[i + 1] = NULL;
@@ -29,7 +29,7 @@ static int	handle_only_export(t_app *app)
 	new_env = show_env_sort(app->env);
 	if (!new_env)
 		return (-1);
-	show_env(new_env);
+	show_env_prefix(new_env);
 	free_env(new_env);
 	return (0);
 }
@@ -39,11 +39,6 @@ int	handle_append_export(t_app *app, char *key)
 	char	**new_env;
 	size_t	env_size;
 
-	if (!contains_equal_sign(key))
-	{
-		ft_printf(RED "export: not a valid identifier\n" RST);
-		return (0); // idk why, bash behavior
-	}
 	env_size = count_pointer(app->env);
 	new_env = malloc(sizeof(char *) * (env_size + 2)); // +2 for new var and NULL terminator
 	if (!new_env)
@@ -58,18 +53,16 @@ int	handle_replace_export(t_app *app, char *key)
 {
 	int	i;
 
-	if (!contains_equal_sign(key))
-	{
-		ft_printf(RED "export: not a valid identifier\n" RST);
-		return (0); // idk why, bash behavior
-	}
 	i = 0;
 	while (app->env[i])
 	{
 		if (ft_strncmp(app->env[i], key, get_env_key_len(key)) == 0)
 		{
 			free(app->env[i]);
-			app->env[i] = ft_strdup(key);
+			if (!contains_equal_sign(key))
+				app->env[i] = ft_strdup(key);
+			else
+				app->env[i] = create_env_row_with_quotes(key);
 			if (!app->env[i])
 				return (-1);
 			break ;
@@ -79,25 +72,32 @@ int	handle_replace_export(t_app *app, char *key)
 	return (0);
 }
 
-// example: export VAR=VALUE
+// export VAR=VALUE
+// export VAR=VALUE1 VALUE2
+// after first equal sign the rest is value and should be in quotes
+// export VAR="VALUE1 VALUE2"
 int	sh_export(t_app *app, char **cmd_args)
 {
+	int		i;
 	char	*key;
 	
 	if (!cmd_args[1])
+		return (handle_only_export(app));
+	i = 1;
+	while (cmd_args[i])
 	{
-		if (handle_only_export(app) == -1)
-			return (-1);
-		return (0);
+		key = get_env_key(cmd_args[i], app->env);
+		if (!key)
+		{
+			if (handle_append_export(app, cmd_args[i]) == -1)
+				return (-1);
+		}
+		else
+		{
+			if (handle_replace_export(app, cmd_args[i]) == -1)
+				return (-1);
+		}
+		i++;
 	}
-	if (cmd_args[1] && cmd_args[2])
-	{
-		ft_printf(RED "export: too many arguments - do nothing\n" RST);
-		return (0);
-	}
-	key = get_env_key(cmd_args[1], app->env);
-	if (!key)
-		return (handle_append_export(app, cmd_args[1]));
-	else
-		return (handle_replace_export(app, cmd_args[1]));
+	return (0);
 }
