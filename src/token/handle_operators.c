@@ -6,7 +6,7 @@
 /*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 15:01:11 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/04 17:51:23 by tmateja          ###   ########.fr       */
+/*   Updated: 2025/05/04 19:13:32 by tmateja          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*handle_operators(char *line, int *i)
 	start = *i;
 	if (line[*i + 1])
 	{
-		if (((line[*i] == '>' && line[*i + 1] == '>') || 
+		if (((line[*i] == '>' && line[*i + 1] == '>') || \
 				(line[*i] == '<' && line[*i + 1] == '<')))
 		{
 			if (line[*i + 2] && (line[*i + 2] != '>' || line[*i + 2] != '>'))

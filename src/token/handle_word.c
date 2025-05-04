@@ -6,7 +6,7 @@
 /*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 16:09:17 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/04 16:12:23 by tmateja          ###   ########.fr       */
+/*   Updated: 2025/05/04 19:56:35 by tmateja          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ static void	expand_env(char *line, int *i, char **token, size_t *size)
 	}
 	var_name[j] = '\0';
 	val = getenv(var_name);
+	printf("%s\n", val);
 	j = 0;
 	if (val)
 	{

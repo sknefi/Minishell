@@ -6,7 +6,7 @@
 /*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 16:03:49 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/04 16:05:31 by tmateja          ###   ########.fr       */
+/*   Updated: 2025/05/04 20:01:22 by tmateja          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,15 @@ static char	*extract_token(char *line, int *i);
 static int	assign_type(char *token);
 static char	*get_path(void);
 
-int	prompt(t_token **token, t_ast_node **node)
+/*
+ * Basicly main fucntion for this part of program.
+ * Getting prompt from get_path().
+ * Reading line, if CTRL + D was pressed, it will exit.
+ * If something was typed, then passing token and line to tokenization.
+ * Return 1 to main, when fails, 0 on success.
+ */
+
+int	prompt(t_app *app)
 {
 	char	*line;
 	char	*shell_path;
@@ -45,6 +53,15 @@ int	prompt(t_token **token, t_ast_node **node)
 	free(line);
 	return (0);
 }
+
+/*
+ * Tokenization function, takes token and line as parameter.
+ * Variable i is for iterating throught line. Every other function has i as 
+ * pointer, so they are always changing same i.
+ * When found character, its extracting token (extract_token()).
+ * Then assigning type and at last appending it.
+ * Return 1, when fails, 0 on success.
+ */
 
 static int	tokenization(t_token **token, char *line)
 {
