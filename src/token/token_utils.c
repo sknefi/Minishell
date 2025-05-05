@@ -14,7 +14,9 @@
 
 static t_token	*token_init(char *data, int type);
 
-
+/*
+ *
+ */
 
 t_token	*token_append(t_token *head, char *data, int type)
 {
@@ -35,6 +37,10 @@ t_token	*token_append(t_token *head, char *data, int type)
 	return (head);
 }
 
+/*
+ *
+ */
+
 static t_token	*token_init(char *data, int type)
 {
 	t_token	*token;
@@ -54,6 +60,10 @@ static t_token	*token_init(char *data, int type)
 	return (token);
 }
 
+/*
+ *
+ */
+
 void	free_tokens(t_token *token)
 {
 	t_token	*tmp;
@@ -66,6 +76,10 @@ void	free_tokens(t_token *token)
 		free(tmp);
 	}
 }
+
+/*
+ *
+ */
 
 int	ft_isspace(char c)
 {

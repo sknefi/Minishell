@@ -19,6 +19,10 @@ static void	handle_double_quotes(char *line, int *i, char **token, \
 static void	expand_env(char *line, int *i, char **token, size_t *size, t_app *app);
 static int	grow_token(char **token, size_t *size, char c);
 
+/*
+ *
+ */
+
 char	*handle_word(char *line, int *i, t_app *app)
 {
 	char	*token;
@@ -55,6 +59,10 @@ static void	handle_single_quotes(char *line, int *i, char **token, size_t *size)
 	else
 		(*i)++;
 }
+
+/*
+ *
+ */
 
 static void	handle_double_quotes(char *line, int *i, char **token, size_t *size, t_app *app)
 {
@@ -124,6 +132,10 @@ static void	expand_env(char *line, int *i, char **token, size_t *size, t_app *ap
 		}
 	}
 }
+
+/*
+ *
+ */
 
 static int	grow_token(char **token, size_t *size, char c)
 {

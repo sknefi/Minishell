@@ -89,6 +89,11 @@ static int	tokenization(t_app *app, char *line)
 	return (0);
 }
 
+/*
+ *
+ *
+ */
+
 static char	*extract_token(char *line, int *i, t_app *app)
 {
 	char	*token;
@@ -102,6 +107,10 @@ static char	*extract_token(char *line, int *i, t_app *app)
 		return (NULL);
 	return (token);
 }
+
+/*
+ *
+ */
 
 static int	assign_type(char *token)
 {
@@ -117,6 +126,11 @@ static int	assign_type(char *token)
 		return (TOKEN_HEREDOC);
 	return (TOKEN_WORD);
 }
+
+/*
+ *
+ *
+ */
 
 static char	*get_path(void)
 {
