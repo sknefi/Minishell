@@ -72,6 +72,24 @@ static void	handle_double_quotes(char *line, int *i, char **token, size_t *size,
 		(*i)++;
 }
 
+char	*find_env(t_app *app, const char *name)
+{
+	size_t	len;
+	size_t	i;
+
+	if (!app || !app->env || !name)
+		return (NULL);
+	i = 0;
+	len = ft_strlen(name);
+	while (app->env[i])
+	{
+		if (ft_strncmp(app->env[i], name, len) == 0 && app->env[i][len] == '=')
+			return (app->env[i] + len + 1);
+		i++;
+	}
+	return (NULL);
+}
+
 static void	expand_env(char *line, int *i, char **token, size_t *size, t_app *app)
 {
 	char	var_name[256];
@@ -93,11 +111,12 @@ static void	expand_env(char *line, int *i, char **token, size_t *size, t_app *ap
 			(*i)++;
 	}
 	var_name[j] = '\0';
-	val = getenv(var_name);
-	printf("%s\n", val);
-	j = 0;
+	val = find_env(app, var_name);
+	j = 0; //temp
 	if (val)
 	{
+		printf("%s\n", val);
+		//env_token();
 		while (val[j])
 		{
 			grow_token(token, size, val[j]);

@@ -79,8 +79,11 @@ static int	tokenization(t_app *app, char *line)
 		tmp = extract_token(line, &i, app);
 		if (NULL == tmp)
 			return (1);
-		type = assign_type(tmp);
-		app->token = token_append(app->token, tmp, type);
+		if (tmp && tmp[0] != '\0')
+		{
+			type = assign_type(tmp);
+			app->token = token_append(app->token, tmp, type);
+		}
 		free(tmp);
 	}
 	return (0);

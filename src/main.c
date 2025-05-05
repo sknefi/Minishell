@@ -14,7 +14,7 @@ int	main(int argc, char **argv, char **env)
 	sig_handler();
 	while (1)
 	{
-		int prompt_res = prompt(&app->token, &app->root);
+		int prompt_res = prompt(app);
 		if (prompt_res == 1)
 		{
 			free_tokens(app->token);
