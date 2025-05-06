@@ -45,4 +45,11 @@ int	create_files(t_ast_node *node, int saved_stdout);
  */
 t_ast_node	*find_command_node(t_ast_node *node);
 
+/**
+ * @brief Handle pipe
+ * @param app The application
+ * @param node The node to handle
+ */
+int	handle_pipe(t_app *app, t_ast_node *node);
+
 #endif

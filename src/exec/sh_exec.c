@@ -24,14 +24,7 @@ int	exec_ast_node(t_ast_node *node, t_app *app)
 	else if (node->type == NODE_APPEND)
 		return (handle_redirection_out(app, node));
 	else if (node->type == NODE_PIPE)
-	{
-		// create pipe
-		// fork left
-		// in left child: redirect stdout to pipe write-end, close read-end, exec_ast(left)
-		// fork right
-		// in right child: redirect stdin to pipe read-end, close write-end, exec_ast(right)
-		// in parent: wait for both
-	}
+		return (handle_pipe(app, node));
 	return (0);
 }
 
