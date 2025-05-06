@@ -37,6 +37,7 @@ int	main(int argc, char **argv, char **env)
         	tmp = tmp->next;
     	}
 		sh_exec(app);
+		printf(Y "exit status: %d\n" RST, app->exit_status);
 		free_ast(app->root);
 		free_tokens(app->token);
 		app->root = NULL;

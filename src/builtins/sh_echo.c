@@ -81,8 +81,8 @@ int	sh_echo(t_app *app, char **cmd_args)
 	}
 	result = merge_args(cmd_args, i, n_flag);
 	if (!result)
-		return (-1);
-	ft_printf(Y "result: %s" RST, result);
+		return (ES_FAILED);
+	ft_printf("%s", result);
 	free(result);
-	return (0);
+	return (ES_OK);
 }

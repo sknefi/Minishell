@@ -44,5 +44,5 @@ int	sh_unset(t_app *app, char **cmd_args)
 		unset_single_var(app, cmd_args[key_index]);
 		key_index++;
 	}
-	return (0);
+	return (ES_OK);
 }

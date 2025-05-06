@@ -7,6 +7,6 @@ int	sh_exit(t_app *app, char **cmd_args)
 	(void)cmd_args;
 	clean_app(app);
 	ft_printf(RED "exiting minishell\n" RST);
-	exit(EXIT_SUCCESS);
-	return (0);
+	exit(ES_OK);
+	return (ES_OK);
 }

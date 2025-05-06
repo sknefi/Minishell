@@ -50,7 +50,7 @@ int	exec_external(t_app *app, char **cmd_args)
 
 	cmd_path = get_cmd_path(app, cmd_args);
 	if (!cmd_path)
-		return (1);
+		return (ES_CMD_NOT_FOUND);
 	ft_printf(Y "cmd_path: %s\n" RST, cmd_path);
 	
 	pid = fork();
@@ -58,7 +58,7 @@ int	exec_external(t_app *app, char **cmd_args)
 	{
 		ft_printf(RED "Error: fork failed\n" RST);
 		free(cmd_path);
-		return (1);
+		return (ES_ERROR);
 	}
 	
 	if (pid == 0)  // Child process
@@ -75,5 +75,5 @@ int	exec_external(t_app *app, char **cmd_args)
 	free(cmd_path);
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
-	return (1); // Return 1 if the child process did not exit correctly
+	return (ES_ERROR); // Return 1 if the child process did not exit correctly
 }

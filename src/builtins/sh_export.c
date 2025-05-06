@@ -86,14 +86,14 @@ int	sh_export(t_app *app, char **cmd_args)
 		if (!key)
 		{
 			if (handle_append_export(app, cmd_args[i]) == -1)
-				return (-1);
+				return (ES_FAILED);
 		}
 		else
 		{
 			if (handle_replace_export(app, cmd_args[i]) == -1)
-				return (-1);
+				return (ES_FAILED);
 		}
 		i++;
 	}
-	return (0);
+	return (ES_OK);
 }

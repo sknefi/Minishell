@@ -76,8 +76,8 @@ int	sh_env(t_app *app, char **cmd_args)
 	if (cmd_args[1])
 	{
 		ft_printf(RED "env: %s: No such file or directory\n" RST, cmd_args[1]);
-		return (1);
+		return (ES_ERROR);
 	}
 	show_env(app->env);
-	return (0);
+	return (ES_OK);
 }

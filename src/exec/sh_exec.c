@@ -13,7 +13,7 @@ int	exec_ast_node(t_ast_node *node, t_app *app)
 	if (node->type == NODE_CMD)
 	{
 		status = exec_builtin(app, node->data);
-		if (status == 2) // command is not a builtin
+		if (status == NOT_BUILTIN) // command is not a builtin
 			status = exec_external(app, node->data);
 		return (status);
 	}
@@ -25,7 +25,7 @@ int	exec_ast_node(t_ast_node *node, t_app *app)
 		return (handle_redirection_out(app, node));
 	else if (node->type == NODE_PIPE)
 		return (handle_pipe(app, node));
-	return (0);
+	return (ES_ERROR);
 }
 
 int	sh_exec(t_app *app)
@@ -33,7 +33,7 @@ int	sh_exec(t_app *app)
 	int status;
 
 	if (!app->root)
-		return (0);
+		return (ES_ERROR);
 	status = exec_ast_node(app->root, app);
 	app->exit_status = status;
 	return (status);

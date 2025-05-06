@@ -2,7 +2,10 @@
 # define MINISHEL_H
 
 // sh -> shell
+// ast -> abstract syntax tree
+// env -> environment
 
+// LIBRARIES
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdio.h>
@@ -16,6 +19,7 @@
 # include <signal.h>
 # include <limits.h>
 
+// INCLUDES
 # include "../libft_divinus/libft.h"
 # include "structs.h"
 # include "builtin.h"
@@ -27,11 +31,20 @@
 # include "reasignthis.h"
 # include "signals.h"
 # include "env.h"
+
+// COLORS
 # define Y		"\033[1;33m"
 # define G		"\033[1;32m"
 # define C 		"\033[1;36m"
 # define RED	"\033[1;31m"
 # define RST 	"\033[0m"
+
+// EXIT STATUS
+# define NOT_BUILTIN		 -2 // command is not a builtin, exec external command
+# define ES_FAILED	 		 -1
+# define ES_OK				  0
+# define ES_ERROR			  1
+# define ES_CMD_NOT_FOUND	127
 
 /**
  * @brief Initialize the app struct
