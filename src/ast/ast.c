@@ -4,6 +4,11 @@ static t_ast_node	*handle_pipes(t_token **token);
 static t_ast_node	*ast_command(t_token **tokens);
 static t_ast_node	*parse_redirection(t_token **tokens, t_ast_node *cmd);
 
+/*
+ * Main ast function, which takes tokens and returns root node
+ * if everytihng was successful or NULL when error.
+ */
+
 t_ast_node	*parse(t_token *tokens)
 {
 	t_ast_node	*root;
@@ -15,6 +20,10 @@ t_ast_node	*parse(t_token *tokens)
 	}
 	return (root);
 }
+
+/*
+ *
+ */
 
 static t_ast_node	*handle_pipes(t_token  **tokens)
 {
@@ -32,6 +41,10 @@ static t_ast_node	*handle_pipes(t_token  **tokens)
 	return (left);
 }
 
+/*
+ *
+ */
+
 static t_ast_node	*ast_command(t_token **tokens)
 {
 	char	**data;
@@ -43,7 +56,7 @@ static t_ast_node	*ast_command(t_token **tokens)
 	i = 0;
 	j = 0;
 	tmp = *tokens;
-	while (tmp && (tmp->type == TOKEN_WORD || tmp->type == TOKEN_SINGLE_QUOTES || tmp->type == TOKEN_DOUBLE_QUOTES)) //TODO
+	while (tmp && tmp->type == TOKEN_WORD)
 	{
 		i++;
 		tmp = tmp->next;
@@ -51,7 +64,7 @@ static t_ast_node	*ast_command(t_token **tokens)
 	data = malloc(sizeof(char *) * (i + 1));
 	if (!data)
 		return (NULL);
-	while (*tokens && ((*tokens)->type == TOKEN_WORD || (*tokens)->type == TOKEN_SINGLE_QUOTES || (*tokens)->type == TOKEN_DOUBLE_QUOTES)) //TODO
+	while (*tokens && (*tokens)->type == TOKEN_WORD)
 	{
 		data[j++] = ft_strdup((*tokens)->data);
 		*tokens = (*tokens)->next;
@@ -62,6 +75,10 @@ static t_ast_node	*ast_command(t_token **tokens)
 		cmd = parse_redirection(tokens, cmd);
 	return (cmd);
 }
+
+/*
+ *
+ */
 
 static t_ast_node	*parse_redirection(t_token **tokens, t_ast_node *cmd)
 {
