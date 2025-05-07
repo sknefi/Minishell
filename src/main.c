@@ -14,10 +14,12 @@ int	main(int argc, char **argv, char **env)
 	sig_handler();
 	while (1)
 	{
+		app->exit_status = 0;
 		int prompt_res = prompt(app);
 		if (prompt_res == 1)
 		{
 			free_tokens(app->token);
+			//printf("%d\n", app->exit_status); ONLY FOR TEST
 			continue ;
 		}
 		else if (prompt_res == -1)

@@ -6,7 +6,7 @@
 /*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 15:01:11 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/04 19:13:32 by tmateja          ###   ########.fr       */
+/*   Updated: 2025/05/07 19:36:09 by tmateja          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
  * Returns token.
  */
 
-char	*handle_operators(char *line, int *i)
+char	*handle_operators(char *line, int *i, t_app *app)
 {
 	int		start;
 	char	*token;
@@ -34,13 +34,14 @@ char	*handle_operators(char *line, int *i)
 				(*i) += 2;
 			else
 				return (ft_printf("Syntax error near unexpected token\n"), \
-					NULL);
+					app->exit_status = 1, NULL);
 		}
 		else
 			(*i)++;
 	}
 	else
-		return (ft_printf("Syntax error near unexpected token\n"), NULL);
+		return (ft_printf("Syntax error near unexpected token\n"), \
+			app->exit_status = 1, NULL);
 	token = ft_substr(line, start, *i - start);
 	return (token);
 }

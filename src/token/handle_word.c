@@ -6,14 +6,14 @@
 /*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 16:09:17 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/04 20:24:54 by tmateja          ###   ########.fr       */
+/*   Updated: 2025/05/07 19:44:37 by tmateja          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 static void	handle_single_quotes(char *line, int *i, char **token, \
-	size_t *size);
+	size_t *size, t_app *app);
 static void	handle_double_quotes(char *line, int *i, char **token, \
 	size_t *size, t_app *app);
 static void	expand_env(char *line, int *i, char **token, size_t *size, t_app *app);
@@ -37,7 +37,7 @@ char	*handle_word(char *line, int *i, t_app *app)
 		&& line[*i] != '<' && line[*i] != '>')
 	{
 		if (line[*i] == '\'')
-			handle_single_quotes(line, i, &token, &size);
+			handle_single_quotes(line, i, &token, &size, app);
 		else if (line[*i] == '\"')
 			handle_double_quotes(line, i, &token, &size, app);
 		else if (line[*i] == '$')
@@ -49,13 +49,16 @@ char	*handle_word(char *line, int *i, t_app *app)
 	return (token);
 }
 
-static void	handle_single_quotes(char *line, int *i, char **token, size_t *size)
+static void	handle_single_quotes(char *line, int *i, char **token, size_t *size, t_app *app)
 {
 	(*i)++;
 	while (line[*i] && line[*i] != '\'')
 		grow_token(token, size, line[(*i)++]);
 	if (line[*i] != '\'')
-		ft_printf("Syntax error: quotes not closed honey\n");
+	{
+			ft_printf("Syntax error: quotes not closed honey\n");
+			app->exit_status = 1;
+	}
 	else
 		(*i)++;
 }
@@ -75,7 +78,10 @@ static void	handle_double_quotes(char *line, int *i, char **token, size_t *size,
 			grow_token(token, size, line[(*i)++]);
 	}
 	if (line[*i] != '\"')
+	{
 		ft_printf("Syntax error: quotes not closed honey\n");
+		app->exit_status = 1;
+	}
 	else
 		(*i)++;
 }
