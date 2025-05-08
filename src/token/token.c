@@ -6,14 +6,14 @@
 /*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 16:03:49 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/08 17:14:02 by tmateja          ###   ########.fr       */
+/*   Updated: 2025/05/08 19:37:46 by tmateja          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static int	tokenization(t_app *app, char *line);
-static char	*extract_token(char *line, int *i, t_app *app);
+static int	tokenization(t_app *app, t_input *input);
+static char	*extract_token(t_input *input, t_app *app);
 static int	assign_type(char *token);
 static char	*get_path(void);
 
@@ -25,32 +25,31 @@ static char	*get_path(void);
  * Return 1 to main, when fails, 0 on success.
  */
 
-int	prompt(t_app *app)
+int	prompt(t_app *app, t_input *input)
 {
-	char	*line;
 	char	*shell_path;
 
 	app->token = NULL;
-	line = NULL;
+	input->line = NULL;
+	input->i = 0;
 	shell_path = get_path();
-	line = readline(shell_path);
+	input->line = readline(shell_path);
 	free(shell_path);
-	if (!line)
+	if (!input->line)
 	{
-		free(line);
-		free_ast(app->root);
-		exit(EXIT_SUCCESS);
+		free(input->line);
+		return (-1);
 	}
-	if (*line)
+	if (input->line)
 	{
-		add_history(line);
-		if (tokenization(app, line))
+		add_history(input->line);
+		if (tokenization(app, input))
 		{
-			free(line);
+			free(input->line);
 			return (1);
 		}
 	}
-	free(line);
+	free(input->line);
 	return (0);
 }
 
@@ -63,21 +62,20 @@ int	prompt(t_app *app)
  * Return 1, when fails, 0 on success.
  */
 
-static int	tokenization(t_app *app, char *line)
+static int	tokenization(t_app *app, t_input *input)
 {
-	int		i;
 	int		type;
 	char	*tmp;
 
-	i = 0;
+	input->i = 0;
 	app->token_error = 0;
-	while (line[i])
+	while (input->line[input->i])
 	{
-		while (line[i] && ft_isspace(line[i]))
-			i++;
-		if (!line || !line[i])
+		while (input->line[input->i] && ft_isspace(input->line[input->i]))
+			input->i++;
+		if (!input->line || !input->line[input->i])
 			break ;
-		tmp = extract_token(line, &i, app);
+		tmp = extract_token(input, app);
 		if (NULL == tmp || app->token_error == 1)
 			return (1);
 		if (tmp && tmp[0] != '\0')
@@ -95,15 +93,16 @@ static int	tokenization(t_app *app, char *line)
  *
  */
 
-static char	*extract_token(char *line, int *i, t_app *app)
+static char	*extract_token(t_input *input, t_app *app)
 {
 	char	*token;
 
 	token = NULL;
-	if (line[*i] == '|' || line[*i] == '<' || line[*i] == '>')
-		token = handle_operators(line, i, app);
+	if (input->line[input->i] == '|' || input->line[input->i] == '<' \
+			|| input->line[input->i] == '>')
+		token = handle_operators(input, app);
 	else
-		token = handle_word(line, i, app);
+		token = handle_word(input, app);
 	if (token && app->token_error == 1)
 		free(token);
 	if (!token)

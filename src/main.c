@@ -1,29 +1,42 @@
 #include "../include/minishell.h"
 
+// t_input	*init_input(void)
+// {
+// 	t_input	*input;
+
+// 	input = NULL;
+// 	input->i = 0;
+// 	input->line = NULL;
+// 	return(input);
+// }
+
 int	main(int argc, char **argv, char **env)
 {
 	t_app		*app;
+	t_input		*input;
 	t_token		*tmp;
 
 	// TYM was here
 	(void)argc;
 	(void)argv;
 	app = init_app(env);
+	input = malloc(sizeof(t_input));
+	if (!input)
+		return (free(app), EXIT_FAILURE);
 	if (!app)
 		return (EXIT_FAILURE);
 	sig_handler();
 	while (1)
 	{
 		app->exit_status = 0;
-		int prompt_res = prompt(app);
+		int prompt_res = prompt(app, input);
 		if (prompt_res == 1)
 		{
 			free_tokens(app->token);
-			//printf("%d\n", app->exit_status); ONLY FOR TEST
 			continue ;
 		}
 		else if (prompt_res == -1)
-			return (clean_app(app), EXIT_FAILURE);
+			return (clean_app(app), free(input), EXIT_FAILURE);
 		app->exit_status = prompt_res;
 		app->root = parse(app->token);
 		if (!app->root)
