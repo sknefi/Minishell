@@ -39,11 +39,27 @@ static char	*merge_args(char **cmd_args, int start, int n_flag)
 	int		i;
 	char	*result;
 	size_t	pos;
+	int		arg_count;
+	size_t	total_len;
 
-	int count = count_chars(cmd_args, start) - n_flag + 1;
-	result = ft_calloc(count, sizeof(char));
+	// Count number of arguments
+	arg_count = 0;
+	i = start;
+	while (cmd_args[i++])
+		arg_count++;
+	
+	// Calculate total length: sum of arg lengths + spaces between args + newline if needed
+	total_len = count_chars(cmd_args, start);
+	if (arg_count > 1)
+		total_len += (arg_count - 1); // Add spaces between arguments
+	if (!n_flag)
+		total_len += 1; // Add space for newline character
+	
+	// Allocate memory with one extra byte for null terminator
+	result = ft_calloc(total_len + 1, sizeof(char));
 	if (!result)
 		return (NULL);
+	
 	i = start;
 	pos = 0;
 	while (cmd_args[i])
@@ -56,6 +72,7 @@ static char	*merge_args(char **cmd_args, int start, int n_flag)
 	}
 	if (!n_flag)
 		result[pos] = '\n';
+	
 	return (result);
 }
 
