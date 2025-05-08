@@ -7,7 +7,7 @@
  * @param pipefd The pipe file descriptors
  * @return Exit status (never returns in child process)
  */
-static void handle_left_child(t_app *app, t_ast_node *node, int *pipefd)
+static void	handle_left_child(t_app *app, t_ast_node *node, int *pipefd)
 {
 	close(pipefd[0]);
 	dup2(pipefd[1], STDOUT_FILENO);
@@ -22,7 +22,7 @@ static void handle_left_child(t_app *app, t_ast_node *node, int *pipefd)
  * @param pipefd The pipe file descriptors
  * @return Exit status (never returns in child process)
  */
-static void handle_right_child(t_app *app, t_ast_node *node, int *pipefd)
+static void	handle_right_child(t_app *app, t_ast_node *node, int *pipefd)
 {
 	close(pipefd[1]);
 	dup2(pipefd[0], STDIN_FILENO);
@@ -40,7 +40,7 @@ static void	close_pipe(int *pipefd)
 	close(pipefd[1]);
 }
 
-int handle_pipe(t_app *app, t_ast_node *node)
+int	handle_pipe(t_app *app, t_ast_node *node)
 {
 	int pipefd[2];
 	int status;
