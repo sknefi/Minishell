@@ -6,7 +6,7 @@
 /*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 16:09:17 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/07 19:44:37 by tmateja          ###   ########.fr       */
+/*   Updated: 2025/05/08 17:06:52 by tmateja          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ static void	handle_single_quotes(char *line, int *i, char **token, size_t *size,
 	if (line[*i] != '\'')
 	{
 			ft_printf("Syntax error: quotes not closed honey\n");
+			app->token_error = 1;
 			app->exit_status = 1;
 	}
 	else
@@ -80,6 +81,7 @@ static void	handle_double_quotes(char *line, int *i, char **token, size_t *size,
 	if (line[*i] != '\"')
 	{
 		ft_printf("Syntax error: quotes not closed honey\n");
+		app->token_error = 1;
 		app->exit_status = 1;
 	}
 	else
