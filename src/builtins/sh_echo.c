@@ -1,10 +1,8 @@
 #include "../../include/minishell.h"
-
-static int	is_n_flag(char *arg)
+static int  is_n_flag(char *arg)
 {
-	size_t	i;
-	size_t	arg_len;
-
+	size_t  i;
+	size_t  arg_len;
 	arg_len = strlen(arg);
 	if (arg_len <= 1 || arg[0] != '-')
 		return (false);
@@ -15,57 +13,69 @@ static int	is_n_flag(char *arg)
 			return (false);
 		i++;
 	}
-	return (true);	
+	return (true);
 }
-
-static int	count_chars(char **cmd_args, int start)
-{
-	int		i;
-	size_t	count;
-
-	i = start;
-	count = 0;
-	while (cmd_args[i])
-	{
-		count += ft_strlen(cmd_args[i]);
-		i++;
-	}
-	return (count);
-}
-
-// Merge all arguments into one string
-static char	*merge_args(char **cmd_args, int start, int n_flag)
+// static int   count_chars(char **cmd_args, int start)
+// {
+//  int     i;
+//  size_t  count;
+//  i = start;
+//  count = 0;
+//  while (cmd_args[i])
+//  {
+//      count += ft_strlen(cmd_args[i]);
+//      i++;
+//  }
+//  return (count);
+// }
+static char *merge_args(char **cmd_args, int start, int n_flag)
 {
 	int		i;
 	char	*result;
 	size_t	pos;
-
-	int count = count_chars(cmd_args, start) - n_flag + 1;
-	result = ft_calloc(count, sizeof(char));
+	size_t	total_len;
+	// Step 1: Calculate total length needed for result
+	total_len = 0;
+	i = start;
+	while (cmd_args[i])
+	{
+		total_len += ft_strlen(cmd_args[i]);
+		if (cmd_args[i + 1])
+			total_len += 1; // for space
+		i++;
+	}
+	if (!n_flag)
+		total_len += 1; // for final newline
+	total_len += 1; // for null terminator
+	// Step 2: Allocate memory
+	result = ft_calloc(total_len, sizeof(char));
 	if (!result)
 		return (NULL);
+	// Step 3: Copy arguments to result string
 	i = start;
 	pos = 0;
 	while (cmd_args[i])
 	{
-		ft_strlcpy(result + pos, cmd_args[i], ft_strlen(cmd_args[i]) + 1);
-		pos += ft_strlen(cmd_args[i]);
+		size_t len = ft_strlen(cmd_args[i]);
+		ft_strlcpy(result + pos, cmd_args[i], len + 1);
+		pos += len;
 		if (cmd_args[i + 1])
 			result[pos++] = ' ';
 		i++;
 	}
+	// Step 4: Add newline if no -n
 	if (!n_flag)
-		result[pos] = '\n';
+		result[pos++] = '\n';
+	// Step 5: Null terminate
+	result[pos] = '\0';
 	return (result);
 }
-
 // Function to print the arguments passed to echo
-int	sh_echo(t_app *app, char **cmd_args)
+int sh_echo(t_app *app, char **cmd_args)
 {
-	int		i;
-	int		n_flag;
-	char	*result;
-
+	int     i;
+	int     n_flag;
+	char    *result;
 	(void)app;
 	// set n_flag to true if there is -n flag
 	// and break the loop if there is no more ARGS
