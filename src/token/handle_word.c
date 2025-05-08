@@ -34,7 +34,7 @@ char	*handle_word(char *line, int *i, t_app *app)
 		return (NULL);
 	token[0] = '\0';
 	while (line[*i] && !ft_isspace(line[*i]) && line[*i] != '|' \
-		&& line[*i] != '<' && line[*i] != '>')
+		&& line[*i] != '<' && line[*i] != '>' && token != NULL)
 	{
 		if (line[*i] == '\'')
 			handle_single_quotes(line, i, &token, &size, app);

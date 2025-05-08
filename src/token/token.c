@@ -77,7 +77,7 @@ static int	tokenization(t_app *app, char *line)
 		if (!line || !line[i])
 			break ;
 		tmp = extract_token(line, &i, app);
-		if (NULL == tmp || app->exit_status == 1)
+		if (NULL == tmp)
 			return (1);
 		if (tmp && tmp[0] != '\0')
 		{
