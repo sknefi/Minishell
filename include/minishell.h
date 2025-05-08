@@ -18,6 +18,10 @@
 # include <readline/history.h>
 # include <signal.h>
 # include <limits.h>
+# include <fcntl.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+
 
 // INCLUDES
 # include "../libft_divinus/libft.h"
@@ -81,6 +85,6 @@ int	exec_external(t_app *app, char **cmd_args);
 int	exec_ast_node(t_ast_node *node, t_app *app);
 
 // TYM_COMMENT
-int		prompt(t_token **token, t_ast_node **node);
+int		prompt(t_app *app);
 
 #endif
