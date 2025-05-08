@@ -9,17 +9,10 @@
  */
 static void	handle_left_child(t_app *app, t_ast_node *node, int *pipefd)
 {
-	int exit_status;
-	
 	close(pipefd[0]);
-	if (dup2(pipefd[1], STDOUT_FILENO) < 0)
-	{
-		ft_printf(RED "Error: dup2 failed in left child\n" RST);
-		exit(1);
-	}
+	dup2(pipefd[1], STDOUT_FILENO);
 	close(pipefd[1]);
-	exit_status = exec_ast_node(node->left, app);
-	exit(exit_status);
+	exit(exec_ast_node(node->left, app));
 }
 
 /**
@@ -31,17 +24,10 @@ static void	handle_left_child(t_app *app, t_ast_node *node, int *pipefd)
  */
 static void	handle_right_child(t_app *app, t_ast_node *node, int *pipefd)
 {
-	int exit_status;
-	
 	close(pipefd[1]);
-	if (dup2(pipefd[0], STDIN_FILENO) < 0)
-	{
-		ft_printf(RED "Error: dup2 failed in right child\n" RST);
-		exit(1);
-	}
+	dup2(pipefd[0], STDIN_FILENO);
 	close(pipefd[0]);
-	exit_status = exec_ast_node(node->right, app);
-	exit(exit_status);
+	exit(exec_ast_node(node->right, app));
 }
 
 /**
@@ -73,20 +59,13 @@ int	handle_pipe(t_app *app, t_ast_node *node)
 	// Fork right child
 	right_pid = fork();
 	if (right_pid < 0)
-	{
-		close_pipe(pipefd);
-		waitpid(left_pid, NULL, 0); // Wait for left child to avoid zombie
-		return (ft_printf(RED "Error: fork failed\n" RST), 1);
-	}
+		return (close_pipe(pipefd), ft_printf(RED "Error: fork failed\n" RST), 1);
 	if (right_pid == 0)
 		handle_right_child(app, node, pipefd);
 
 	// Parent process: close pipes and wait for children
 	close_pipe(pipefd);
-	
-	// Wait for both children to finish
-	waitpid(left_pid, NULL, 0);
+	waitpid(left_pid, &status, 0);
 	waitpid(right_pid, &status, 0);
-	
 	return (WEXITSTATUS(status));
 }

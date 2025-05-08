@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fkarika <fkarika@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 16:03:49 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/08 17:14:02 by tmateja          ###   ########.fr       */
+/*   Updated: 2025/05/08 18:47:57 by fkarika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,7 @@ int	prompt(t_app *app)
 	line = readline(shell_path);
 	free(shell_path);
 	if (!line)
-	{
-		free(line);
-		free_ast(app->root);
-		exit(EXIT_SUCCESS);
-	}
+		return (free(line), -1);
 	if (*line)
 	{
 		add_history(line);
