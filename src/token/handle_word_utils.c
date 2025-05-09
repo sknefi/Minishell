@@ -6,7 +6,7 @@
 /*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 21:46:31 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/09 20:47:15 by tmateja          ###   ########.fr       */
+/*   Updated: 2025/05/09 21:08:24 by tmateja          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	grow_token(char **token, size_t *size, char c)
 
 	buffer = ft_realloc_token(*token, *size + 2);
 	if (!buffer)
-		return (1);
+		return (app->error_status = 1, 1); //TODO change to ES_FAILED
 	*token = buffer;
 	(*token)[(*size)++] = c;
 	(*token)[(*size)] = '\0';
@@ -40,7 +40,10 @@ void	expand_exit_status(t_input *input, char **token, \
 	len = ft_strlen(status);
 	i = 0;
 	while (i < len)
-		grow_token(token, size, status[i++]);
+	{
+		if (grow_token(token, size, status[i++]))
+			return (NULL); //TODO
+	}
 	free(status);
 }
 
@@ -95,6 +98,9 @@ static void	env_to_token(char *val, char **token, size_t *size)
 	if (val)
 	{
 		while (val[i])
-			grow_token(token, size, val[i++]);
+		{
+			if (grow_token(token, size, val[i++]))
+				return (NULL); //TODO
+			}
 	}
 }
