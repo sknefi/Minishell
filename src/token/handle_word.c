@@ -16,8 +16,8 @@ static void	handle_single_quotes(t_input *input, char **token, \
 	size_t *size, t_app *app);
 static void	handle_double_quotes(t_input *input, char **token, \
 	size_t *size, t_app *app);
-static void	expand_env(t_input *input, char **token, size_t *size, t_app *app);
-static int	grow_token(char **token, size_t *size, char c);
+static void	expand_dollar(t_input *input, char **token, \
+		size_t *size, t_app *app);
 
 /*
  *
@@ -43,7 +43,8 @@ char	*handle_word(t_input *input, t_app *app)
 		else if (input->line[input->i] == '\"')
 			handle_double_quotes(input, &token, &size, app);
 		else if (input->line[input->i] == '$')
-			expand_env(input, &token, &size, app);
+			//expand_env(input, &token, &size, app);
+			expand_dollar(input, &token, &size, app);
 		else
 			if (grow_token(&token, &size, input->line[input->i++]))
 				return (NULL);
@@ -92,72 +93,11 @@ static void	handle_double_quotes(t_input *input, char **token, \
 		input->i++;
 }
 
-char	*find_env(t_app *app, const char *name)
+static void	expand_dollar(t_input *input, char **token, \
+		size_t *size, t_app *app)
 {
-	size_t	len;
-	size_t	i;
-
-	if (!app || !app->env || !name)
-		return (NULL);
-	i = 0;
-	len = ft_strlen(name);
-	while (app->env[i])
-	{
-		if (ft_strncmp(app->env[i], name, len) == 0 && app->env[i][len] == '=')
-			return (app->env[i] + len + 1);
-		i++;
-	}
-	return (NULL);
-}
-
-static void	expand_env(t_input *input, char **token, size_t *size, t_app *app)
-{
-	char	var_name[256];
-	char	*val;
-	int		j;
-
-	j = 0;
-	input->i++;
-	if (!ft_isalnum(input->line[input->i]) && input->line[input->i] != '_')
-	{
-		grow_token(token, size, '$');
-		return ;
-	}
-	while (ft_isalnum(input->line[input->i]) || input->line[input->i] == '_')
-	{
-		if (j < 255)
-			var_name[j++] = input->line[input->i++];
-		else
-			input->i++;
-	}
-	var_name[j] = '\0';
-	val = find_env(app, var_name);
-	j = 0; //temp
-	if (val)
-	{
-		printf("%s\n", val);
-		//env_token();
-		while (val[j])
-		{
-			grow_token(token, size, val[j]);
-			j++;
-		}
-	}
-}
-
-/*
- *
- */
-
-static int	grow_token(char **token, size_t *size, char c)
-{
-	char	*buffer;
-
-	buffer = ft_realloc_token(*token, *size + 2);
-	if (!buffer)
-		return (1);
-	*token = buffer;
-	(*token)[(*size)++] = c;
-	(*token)[(*size)] = '\0';
-	return (0);
+	if (input->line[input->i + 1] && input->line[input->i + 1] == '?')
+		expand_exit_status(input, token, size, app);
+	else
+		expand_env(input, token, size, app);
 }

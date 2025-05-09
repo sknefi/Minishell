@@ -8,6 +8,8 @@ RESET         = \033[0m
 
 SRCS =  \
 		./src/signal/signals.c \
+		\
+		./src/token/handle_word_utils.c \
 		./src/token/token_utils.c \
 		./src/token/handle_word.c \
 		./src/token/ft_realloc_token.c \

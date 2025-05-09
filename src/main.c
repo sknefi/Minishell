@@ -28,7 +28,6 @@ int	main(int argc, char **argv, char **env)
 	sig_handler();
 	while (1)
 	{
-		app->exit_status = 0;
 		int prompt_res = prompt(app, input);
 		if (prompt_res == 1)
 		{
