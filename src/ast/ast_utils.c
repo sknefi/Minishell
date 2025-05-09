@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ast_utils.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/09 20:47:41 by tmateja           #+#    #+#             */
+/*   Updated: 2025/05/09 20:48:06 by tmateja          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 /*
@@ -51,7 +63,6 @@ t_ast_node	*ast_node_insert(t_ast_node *root, t_node_types type, char **data)
 		node = ast_new_node(NODE_CMD, data);
 		return (node);
 	}
-	
 	root->right = ast_node_insert(root->right, type, data);
 	return (root);
 }

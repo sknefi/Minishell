@@ -6,13 +6,14 @@
 /*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 21:46:31 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/08 21:47:13 by tmateja          ###   ########.fr       */
+/*   Updated: 2025/05/09 20:47:15 by tmateja          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 static char	*find_env(t_app *app, const char *name);
+static void	env_to_token(char *val, char **token, size_t *size);
 
 int	grow_token(char **token, size_t *size, char c)
 {
@@ -43,7 +44,6 @@ void	expand_exit_status(t_input *input, char **token, \
 	free(status);
 }
 
-
 void	expand_env(t_input *input, char **token, size_t *size, t_app *app)
 {
 	char	var_name[256];
@@ -66,17 +66,7 @@ void	expand_env(t_input *input, char **token, size_t *size, t_app *app)
 	}
 	var_name[j] = '\0';
 	val = find_env(app, var_name);
-	j = 0; //temp
-	if (val)
-	{
-		printf("%s\n", val);
-		//env_token();
-		while (val[j])
-		{
-			grow_token(token, size, val[j]);
-			j++;
-		}
-	}
+	env_to_token(val, token, size);
 }
 
 static char	*find_env(t_app *app, const char *name)
@@ -95,4 +85,16 @@ static char	*find_env(t_app *app, const char *name)
 		i++;
 	}
 	return (NULL);
+}
+
+static void	env_to_token(char *val, char **token, size_t *size)
+{
+	size_t	i;
+
+	i = 0;
+	if (val)
+	{
+		while (val[i])
+			grow_token(token, size, val[i++]);
+	}
 }

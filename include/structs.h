@@ -27,6 +27,7 @@ typedef struct s_input
 {
 	char	*line;
 	int		i;
+	int		token_error;
 }	t_input;
 
 /**
@@ -117,7 +118,6 @@ typedef struct s_ast_node
 typedef struct s_app
 {
 	int			exit_status;
-	int			token_error;
 	char		**env;
 	t_builtin	**builtins;
 	t_token		*token;

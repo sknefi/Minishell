@@ -6,7 +6,7 @@
 /*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 16:09:17 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/08 19:03:22 by tmateja          ###   ########.fr       */
+/*   Updated: 2025/05/09 20:30:02 by tmateja          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ char	*handle_word(t_input *input, t_app *app)
 		else if (input->line[input->i] == '\"')
 			handle_double_quotes(input, &token, &size, app);
 		else if (input->line[input->i] == '$')
-			//expand_env(input, &token, &size, app);
 			expand_dollar(input, &token, &size, app);
 		else
 			if (grow_token(&token, &size, input->line[input->i++]))
@@ -61,7 +60,7 @@ static void	handle_single_quotes(t_input *input, char **token, \
 	if (input->line[input->i] != '\'')
 	{
 		ft_printf("Syntax error: quotes not closed honey\n");
-		app->token_error = 1;
+		input->token_error = 1;
 		app->exit_status = 1;
 	}
 	else
@@ -86,7 +85,7 @@ static void	handle_double_quotes(t_input *input, char **token, \
 	if (input->line[input->i] != '\"')
 	{
 		ft_printf("Syntax error: quotes not closed honey\n");
-		app->token_error = 1;
+		input->token_error = 1;
 		app->exit_status = 1;
 	}
 	else

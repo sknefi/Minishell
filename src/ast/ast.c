@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ast.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/09 20:47:33 by tmateja           #+#    #+#             */
+/*   Updated: 2025/05/09 20:50:07 by tmateja          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 static t_ast_node	*handle_pipes(t_token **token);
@@ -31,7 +43,7 @@ t_ast_node	*parse(t_token *tokens)
  * Returns pointer to the root of AST tree segment.
  */
 
-static t_ast_node	*handle_pipes(t_token  **tokens)
+static t_ast_node	*handle_pipes(t_token **tokens)
 {
 	t_ast_node	*left;
 	t_ast_node	*right;
@@ -59,10 +71,10 @@ static t_ast_node	*handle_pipes(t_token  **tokens)
 
 static t_ast_node	*ast_command(t_token **tokens)
 {
-	char	**data;
-	int		i;
-	int		j;
-	t_token *tmp;
+	char		**data;
+	int			i;
+	int			j;
+	t_token		*tmp;
 	t_ast_node	*cmd;
 
 	i = 0;
@@ -83,7 +95,9 @@ static t_ast_node	*ast_command(t_token **tokens)
 	}
 	data[j] = NULL;
 	cmd = ast_new_node(NODE_CMD, data);
-	while (*tokens && ((*tokens)->type == TOKEN_REDIRECTION_IN || (*tokens)->type == TOKEN_REDIRECTION_OUT || (*tokens)->type == TOKEN_APPEND || (*tokens)->type == TOKEN_HEREDOC))
+	while (*tokens && ((*tokens)->type == TOKEN_REDIRECTION_IN || \
+		(*tokens)->type == TOKEN_REDIRECTION_OUT || \
+		(*tokens)->type == TOKEN_APPEND || (*tokens)->type == TOKEN_HEREDOC))
 		cmd = parse_redirection(tokens, cmd);
 	return (cmd);
 }
@@ -100,9 +114,9 @@ static t_ast_node	*ast_command(t_token **tokens)
 
 static t_ast_node	*parse_redirection(t_token **tokens, t_ast_node *cmd)
 {
-	t_token *redir;
-	t_ast_node *redir_node;
-	char	**data;
+	t_token		*redir;
+	t_ast_node	*redir_node;
+	char		**data;
 
 	redir = *tokens;
 	*tokens = (*tokens)->next;

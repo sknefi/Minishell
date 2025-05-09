@@ -6,7 +6,7 @@
 /*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 16:03:49 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/08 19:37:46 by tmateja          ###   ########.fr       */
+/*   Updated: 2025/05/09 20:31:27 by tmateja          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static int	tokenization(t_app *app, t_input *input)
 	char	*tmp;
 
 	input->i = 0;
-	app->token_error = 0;
+	input->token_error = 0;
 	while (input->line[input->i])
 	{
 		while (input->line[input->i] && ft_isspace(input->line[input->i]))
@@ -76,7 +76,7 @@ static int	tokenization(t_app *app, t_input *input)
 		if (!input->line || !input->line[input->i])
 			break ;
 		tmp = extract_token(input, app);
-		if (NULL == tmp || app->token_error == 1)
+		if (NULL == tmp || input->token_error == 1)
 			return (1);
 		if (tmp && tmp[0] != '\0')
 		{
@@ -103,7 +103,7 @@ static char	*extract_token(t_input *input, t_app *app)
 		token = handle_operators(input, app);
 	else
 		token = handle_word(input, app);
-	if (token && app->token_error == 1)
+	if (token && input->token_error == 1)
 		free(token);
 	if (!token)
 		return (NULL);
