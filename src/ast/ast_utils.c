@@ -1,7 +1,11 @@
 #include "../../include/minishell.h"
 
 /*
- *
+ * Takes type of AST node and data array it should contain.
+ * Allocates memory for node.
+ * Assigns type and data to it.
+ * Left and right nodes are NULL.
+ * Returns node.
  */
 
 t_ast_node	*ast_new_node(t_node_types type, char **data)
@@ -19,7 +23,11 @@ t_ast_node	*ast_new_node(t_node_types type, char **data)
 }
 
 /*
- *
+ * Takes root node, type of node and data array.
+ * If pipe, it connects left and right subtree.
+ * If not pipe and no data, return NODE_CMD without args.
+ * Then it recursive insert new node in right subtree.
+ * Returns root node.
  */
 
 t_ast_node	*ast_node_insert(t_ast_node *root, t_node_types type, char **data)
@@ -31,9 +39,10 @@ t_ast_node	*ast_node_insert(t_ast_node *root, t_node_types type, char **data)
 	if (NODE_PIPE == type)
 	{
 		node = ast_new_node(type, NULL);
+		if (!node)
+			return (NULL);
 		node->left = root;
 		node->right = NULL;
-		
 		if (!data)
 			return (node);
 	}
@@ -48,7 +57,8 @@ t_ast_node	*ast_node_insert(t_ast_node *root, t_node_types type, char **data)
 }
 
 /*
- *
+ * Takes root node.
+ * Free all nodes, by going to the left and right.
  */
 
 void	free_ast(t_ast_node *node)

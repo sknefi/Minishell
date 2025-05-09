@@ -22,7 +22,13 @@ t_ast_node	*parse(t_token *tokens)
 }
 
 /*
- *
+ * Takes pointer to current token.
+ * First token is always command node.
+ * Continue looping as long as token is pipe.
+ * Right node is also a command node.
+ * So, if pipe token, it creates NODE_PIPE.
+ * On the left it assigns left node and put right node as a command node.
+ * Returns pointer to the root of AST tree segment.
  */
 
 static t_ast_node	*handle_pipes(t_token  **tokens)
@@ -42,7 +48,13 @@ static t_ast_node	*handle_pipes(t_token  **tokens)
 }
 
 /*
- *
+ * Builds AST command node.
+ * It takes pointer to current token.
+ * First counts how many TOKEN_WORD is it working with. (ls -la)(2)
+ * Then allocates memory for it + NULL.
+ * Then it fills data array with TOKEN_WORDs.
+ * After it creates AST node NODE_CMD.
+ * If redirections, parse it.
  */
 
 static t_ast_node	*ast_command(t_token **tokens)
@@ -77,7 +89,13 @@ static t_ast_node	*ast_command(t_token **tokens)
 }
 
 /*
- *
+ * Takes pointer to current token and cmd node.
+ * Saves redirection in redir.
+ * Moving to the next, it checks syntax.
+ * Then it creates redirection node depending on redirection.
+ * Cmd node is stored at the right.
+ * Store filename in data.
+ * Returns redirection node.
  */
 
 static t_ast_node	*parse_redirection(t_token **tokens, t_ast_node *cmd)
@@ -111,7 +129,6 @@ static t_ast_node	*parse_redirection(t_token **tokens, t_ast_node *cmd)
 	data[0] = ft_strdup((*tokens)->data);
 	data[1] = NULL;
 	redir_node->data = data;
-	redir_node->right = cmd;
 	*tokens = (*tokens)->next;
 	return (redir_node);
 }
