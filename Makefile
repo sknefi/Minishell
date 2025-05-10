@@ -10,9 +10,9 @@ SRCS =  \
 		./src/signal/signals.c \
 		\
 		./src/token/token.c \
-		.src/token/token_utils.c \
-		.src/token/handle_operators.c \
-		.src/token/handle_word.c \
+		./src/token/token_utils.c \
+		./src/token/handle_operators.c \
+		./src/token/handle_word.c \
 		./src/token/handle_word_utils.c \
 		./src/token/ft_realloc_token.c \
 		\
