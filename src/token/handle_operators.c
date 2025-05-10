@@ -16,7 +16,7 @@
  * Taking line and index that is iterating in whole line.
  * It creates allocated token with substr.
  * When error, returns NULL.
- * Returns token.
+ * Returns NULL on error, token on success.
  */
 
 char	*handle_operators(t_input *input, t_app *app)

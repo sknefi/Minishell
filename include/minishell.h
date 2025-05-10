@@ -28,7 +28,6 @@
 # include "ast.h"
 # include "visualizer.h"
 # include "handlers.h"
-# include "reasignthis.h"
 # include "signals.h"
 # include "env.h"
 # define Y		"\033[1;33m"
@@ -70,8 +69,5 @@ int	exec_external(t_app *app, char **cmd_args);
  * @return 0 on success, 1 on failure (command not found), -1 on failure (malloc failed)
 */
 int	exec_ast_node(t_ast_node *node, t_app *app);
-
-// TYM_COMMENT
-int		prompt(t_app *app, t_input *input);
 
 #endif

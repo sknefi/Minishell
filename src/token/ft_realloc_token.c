@@ -16,7 +16,7 @@
  * Realloc for tokens.
  * Because it's used only in handle_word, everytime it has been caled
  * the old size is size - 2.
- * return the same as man 3 realloc.
+ * Returns the same as man 3 realloc.
  */
 
 void	*ft_realloc_token(void *ptr, size_t size)

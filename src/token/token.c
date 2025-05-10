@@ -91,8 +91,12 @@ static int	tokenization(t_app *app, t_input *input)
 }
 
 /*
- *
- *
+ * Takes input and app struct.
+ * Creates token variable (char).
+ * If redirection, then token becomes redirection token.
+ * Else creates word token.
+ * On error free token and returning NULL.
+ * Returns token.
  */
 
 static char	*extract_token(t_input *input, t_app *app)
@@ -105,7 +109,7 @@ static char	*extract_token(t_input *input, t_app *app)
 		token = handle_operators(input, app);
 	else
 		token = handle_word(input, app);
-	if (token && input->token_error == 1)
+	if (token &&input->token_error == 1)
 		free(token);
 	if (!token)
 		return (NULL);
@@ -113,7 +117,9 @@ static char	*extract_token(t_input *input, t_app *app)
 }
 
 /*
- *
+ * Takes token.
+ * Assigns token type to token.
+ * Returns token.
  */
 
 static int	assign_type(char *token)
@@ -132,8 +138,11 @@ static int	assign_type(char *token)
 }
 
 /*
- *
- *
+ * Gets current workind directory and adding "$ " to it
+ * making it prompt of our programe.
+ * Prompt gets updates every directory change.
+ * Prompt is malloc'd, so need to free it afterwards.
+ * Returns prompt.
  */
 
 static char	*get_path(void)

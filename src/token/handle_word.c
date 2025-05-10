@@ -22,7 +22,11 @@ static int	expand_dollar(t_input *input, char **token, \
 		size_t *size, t_app *app);
 
 /*
- *
+ * Main function to handle words.
+ * Malloc 1 byte for token and assigns null-terminator.
+ * If the current char (input->line[input->i]) is not an operator
+ * grow token.
+ * Returns NULL on error and and token on success.
  */
 
 char	*handle_word(t_input *input, t_app *app)
@@ -39,9 +43,16 @@ char	*handle_word(t_input *input, t_app *app)
 		&& input->line[input->i] != '|' \
 		&& input->line[input->i] != '<' && input->line[input->i] != '>' \
 		&& token != NULL)
-		handle_char(input, &token, &size, app);
+		if (handle_char(input, &token, &size, app))
+			return (NULL);
 	return (token);
 }
+
+/*
+ * Function because of norminette.
+ * Handles every possible case.
+ * Returns 1 on error, 0 on success.
+ */
 
 static int	handle_char(t_input *input, char **token, \
 		size_t *size, t_app *app)
@@ -69,6 +80,14 @@ static int	handle_char(t_input *input, char **token, \
 	return (0);
 }
 
+/*
+ * Expanding single quotes.
+ * It is not expanding env variables.
+ * If quotes not closed, prinitng error message
+ * and changing exit_status and token_error to 1.
+ * Returns 1 on error, 0 on success.
+ */
+
 static int	handle_single_quotes(t_input *input, char **token, \
 	size_t *size, t_app *app)
 {
@@ -90,7 +109,12 @@ static int	handle_single_quotes(t_input *input, char **token, \
 }
 
 /*
- *
+ * Handles double quotes.
+ * Grow token every char.
+ * If current char is dollar sign '$', it expands it.
+ * If quotes are not closed, prinitng error message 
+ * and changing exit_status and token_error to 1.
+ * Returns 1 on error, 0 on success
  */
 
 static int	handle_double_quotes(t_input *input, char **token, \
@@ -121,6 +145,11 @@ static int	handle_double_quotes(t_input *input, char **token, \
 	return (0);
 }
 
+/*
+ * Function decides whether it is $? (to expand exit_status)
+ * or env variable.
+ * Returns 1 on error, o on success.
+ */
 static int	expand_dollar(t_input *input, char **token, \
 		size_t *size, t_app *app)
 {
