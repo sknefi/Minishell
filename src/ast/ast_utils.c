@@ -68,6 +68,33 @@ t_ast_node	*ast_node_insert(t_ast_node *root, t_node_types type, char **data)
 }
 
 /*
+ * Norminette function.
+ * Check for redirection type and creates new node.
+ * If error, prints "Error\n" and return NULL.
+ * Returns redirection_node.
+ */
+
+t_ast_node	*redirection_node(t_token *redir)
+{
+	t_ast_node	*redir_node;
+
+	if (redir->type == TOKEN_REDIRECTION_IN)
+		redir_node = ast_new_node(NODE_REDIRECTION_IN, NULL);
+	else if (redir->type == TOKEN_REDIRECTION_OUT)
+		redir_node = ast_new_node(NODE_REDIRECTION_OUT, NULL);
+	else if (redir->type == TOKEN_APPEND)
+		redir_node = ast_new_node(NODE_APPEND, NULL);
+	else if (redir->type == TOKEN_HEREDOC)
+		redir_node = ast_new_node(NODE_HEREDOC, NULL);
+	else
+	{
+		ft_printf("Error\n");
+		return (NULL);
+	}
+	return (redir_node);
+}
+
+/*
  * Takes root node.
  * Free all nodes, by going to the left and right.
  */

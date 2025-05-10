@@ -15,6 +15,7 @@
 static t_ast_node	*handle_pipes(t_token **token);
 static t_ast_node	*ast_command(t_token **tokens);
 static t_ast_node	*parse_redirection(t_token **tokens, t_ast_node *cmd);
+static t_ast_node	*ast_command_norminette(t_ast_node *cmd, t_token **tokens, char **data);
 
 /*
  * Main ast function, which takes tokens and returns root node
@@ -49,11 +50,17 @@ static t_ast_node	*handle_pipes(t_token **tokens)
 	t_ast_node	*right;
 
 	left = ast_command(tokens);
+	if (!left)
+		return (NULL);
 	while (*tokens && (*tokens)->type == TOKEN_PIPE)
 	{
 		*tokens = (*tokens)->next;
 		right = ast_command(tokens);
+		if (!right)
+			return (NULL);
 		left = ast_node_insert(left, NODE_PIPE, NULL);
+		if (!left)
+			return (NULL);
 		left->right = right;
 	}
 	return (left);
@@ -79,6 +86,7 @@ static t_ast_node	*ast_command(t_token **tokens)
 
 	i = 0;
 	j = 0;
+	cmd = NULL;
 	tmp = *tokens;
 	while (tmp && tmp->type == TOKEN_WORD)
 	{
@@ -94,11 +102,7 @@ static t_ast_node	*ast_command(t_token **tokens)
 		*tokens = (*tokens)->next;
 	}
 	data[j] = NULL;
-	cmd = ast_new_node(NODE_CMD, data);
-	while (*tokens && ((*tokens)->type == TOKEN_REDIRECTION_IN || \
-		(*tokens)->type == TOKEN_REDIRECTION_OUT || \
-		(*tokens)->type == TOKEN_APPEND || (*tokens)->type == TOKEN_HEREDOC))
-		cmd = parse_redirection(tokens, cmd);
+	cmd = ast_command_norminette(cmd, tokens, data);
 	return (cmd);
 }
 
@@ -125,19 +129,9 @@ static t_ast_node	*parse_redirection(t_token **tokens, t_ast_node *cmd)
 		ft_printf("Error\n");
 		return (NULL);
 	}
-	if (redir->type == TOKEN_REDIRECTION_IN)
-		redir_node = ast_new_node(NODE_REDIRECTION_IN, NULL);
-	else if (redir->type == TOKEN_REDIRECTION_OUT)
-		redir_node = ast_new_node(NODE_REDIRECTION_OUT, NULL);
-	else if (redir->type == TOKEN_APPEND)
-		redir_node = ast_new_node(NODE_APPEND, NULL);
-	else if (redir->type == TOKEN_HEREDOC)
-		redir_node = ast_new_node(NODE_HEREDOC, NULL);
-	else
-	{
-		ft_printf("Error\n");
+	redir_node = redirection_node(redir);
+	if (!redir_node)
 		return (NULL);
-	}
 	redir_node->right = cmd;
 	data = malloc(2 * sizeof(char *));
 	data[0] = ft_strdup((*tokens)->data);
@@ -145,4 +139,25 @@ static t_ast_node	*parse_redirection(t_token **tokens, t_ast_node *cmd)
 	redir_node->data = data;
 	*tokens = (*tokens)->next;
 	return (redir_node);
+}
+
+/*
+ * Function just for norminette purpose.
+ * Takes cmd node, tokens and data to this token.
+ * Also check for redirection.
+ * Returns cmd node.
+ */
+
+static t_ast_node	*ast_command_norminette(t_ast_node *cmd, t_token **tokens, char **data)
+{
+	cmd = ast_new_node(NODE_CMD, data);
+	if (!cmd)
+		return (NULL);
+	while (*tokens && ((*tokens)->type == TOKEN_REDIRECTION_IN || \
+		(*tokens)->type == TOKEN_REDIRECTION_OUT || \
+		(*tokens)->type == TOKEN_APPEND || (*tokens)->type == TOKEN_HEREDOC))
+		cmd = parse_redirection(tokens, cmd);
+	if (!cmd)
+		return (NULL);
+	return (cmd);
 }

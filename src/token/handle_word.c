@@ -12,11 +12,13 @@
 
 #include "../../include/minishell.h"
 
-static void	handle_single_quotes(t_input *input, char **token, \
+static int	handle_char(t_input *input, char **token, \
+		size_t *size, t_app *app);
+static int	handle_single_quotes(t_input *input, char **token, \
 	size_t *size, t_app *app);
-static void	handle_double_quotes(t_input *input, char **token, \
+static int	handle_double_quotes(t_input *input, char **token, \
 	size_t *size, t_app *app);
-static void	expand_dollar(t_input *input, char **token, \
+static int	expand_dollar(t_input *input, char **token, \
 		size_t *size, t_app *app);
 
 /*
@@ -37,26 +39,45 @@ char	*handle_word(t_input *input, t_app *app)
 		&& input->line[input->i] != '|' \
 		&& input->line[input->i] != '<' && input->line[input->i] != '>' \
 		&& token != NULL)
-	{
-		if (input->line[input->i] == '\'')
-			handle_single_quotes(input, &token, &size, app);
-		else if (input->line[input->i] == '\"')
-			handle_double_quotes(input, &token, &size, app);
-		else if (input->line[input->i] == '$')
-			expand_dollar(input, &token, &size, app);
-		else
-			if (grow_token(&token, &size, input->line[input->i++]))
-				return (NULL);
-	}
+		handle_char(input, &token, &size, app);
 	return (token);
 }
 
-static void	handle_single_quotes(t_input *input, char **token, \
+static int	handle_char(t_input *input, char **token, \
+		size_t *size, t_app *app)
+{
+	if (input->line[input->i] == '\'')
+	{
+		if (handle_single_quotes(input, token, size, app))
+			return (1);
+	}
+	else if (input->line[input->i] == '\"')
+	{
+		if (handle_double_quotes(input, token, size, app))
+			return (1);
+	}
+	else if (input->line[input->i] == '$')
+	{
+		if (expand_dollar(input, token, size, app))
+			return (1);
+	}
+	else
+	{
+		if (grow_token(app, token, size, input->line[input->i++]))
+			return (1);
+	}
+	return (0);
+}
+
+static int	handle_single_quotes(t_input *input, char **token, \
 	size_t *size, t_app *app)
 {
 	input->i++;
 	while (input->line[input->i] && input->line[input->i] != '\'')
-		grow_token(token, size, input->line[input->i++]); //TODO
+	{
+		if (grow_token(app, token, size, input->line[input->i++]))
+			return (1); //TODO
+	}
 	if (input->line[input->i] != '\'')
 	{
 		ft_printf("Syntax error: quotes not closed honey\n");
@@ -65,13 +86,14 @@ static void	handle_single_quotes(t_input *input, char **token, \
 	}
 	else
 		input->i++;
+	return (0);
 }
 
 /*
  *
  */
 
-static void	handle_double_quotes(t_input *input, char **token, \
+static int	handle_double_quotes(t_input *input, char **token, \
 	size_t *size, t_app *app)
 {
 	input->i++;
@@ -80,12 +102,12 @@ static void	handle_double_quotes(t_input *input, char **token, \
 		if (input->line[input->i] == '$')
 		{
 			if (expand_env(input, token, size, app))
-				return (NULL); //TODO
+				return (1); //TODO
 		}
 		else
 		{
-			if (grow_token(token, size, input->line[input->i++]))
-				return (NULL); //TODO
+			if (grow_token(app, token, size, input->line[input->i++]))
+				return (1); //TODO
 		}
 	}
 	if (input->line[input->i] != '\"')
@@ -96,19 +118,21 @@ static void	handle_double_quotes(t_input *input, char **token, \
 	}
 	else
 		input->i++;
+	return (0);
 }
 
-static void	expand_dollar(t_input *input, char **token, \
+static int	expand_dollar(t_input *input, char **token, \
 		size_t *size, t_app *app)
 {
 	if (input->line[input->i + 1] && input->line[input->i + 1] == '?')
 	{
 		if (expand_exit_status(input, token, size, app)) //TODO
-			return (NULL);
+			return (1);
 	}
 	else
 	{
 		if (expand_env(input, token, size, app)) //TODO
-			return (NULL);
+			return (1);
 	}
+	return (0);
 }

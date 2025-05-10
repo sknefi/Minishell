@@ -13,22 +13,22 @@
 #include "../../include/minishell.h"
 
 static char	*find_env(t_app *app, const char *name);
-static void	env_to_token(char *val, char **token, size_t *size);
+static int	env_to_token(t_app *app, char *val, char **token, size_t *size);
 
-int	grow_token(char **token, size_t *size, char c)
+int	grow_token(t_app *app, char **token, size_t *size, char c)
 {
 	char	*buffer;
 
 	buffer = ft_realloc_token(*token, *size + 2);
 	if (!buffer)
-		return (app->error_status = 1, 1); //TODO change to ES_FAILED
+		return (app->exit_status = 1, 1); //TODO change to ES_FAILED
 	*token = buffer;
 	(*token)[(*size)++] = c;
 	(*token)[(*size)] = '\0';
 	return (0);
 }
 
-void	expand_exit_status(t_input *input, char **token, \
+int	expand_exit_status(t_input *input, char **token, \
 		size_t *size, t_app *app)
 {
 	char	*status;
@@ -41,13 +41,14 @@ void	expand_exit_status(t_input *input, char **token, \
 	i = 0;
 	while (i < len)
 	{
-		if (grow_token(token, size, status[i++]))
-			return (NULL); //TODO
+		if (grow_token(app, token, size, status[i++]))
+			return (1); //TODO
 	}
 	free(status);
+	return (0);
 }
 
-void	expand_env(t_input *input, char **token, size_t *size, t_app *app)
+int	expand_env(t_input *input, char **token, size_t *size, t_app *app)
 {
 	char	var_name[256];
 	char	*val;
@@ -57,8 +58,8 @@ void	expand_env(t_input *input, char **token, size_t *size, t_app *app)
 	input->i++;
 	if (!ft_isalnum(input->line[input->i]) && input->line[input->i] != '_')
 	{
-		grow_token(token, size, '$');
-		return ;
+		grow_token(app, token, size, '$');
+		return (0);
 	}
 	while (ft_isalnum(input->line[input->i]) || input->line[input->i] == '_')
 	{
@@ -69,7 +70,9 @@ void	expand_env(t_input *input, char **token, size_t *size, t_app *app)
 	}
 	var_name[j] = '\0';
 	val = find_env(app, var_name);
-	env_to_token(val, token, size);
+	if (env_to_token(app, val, token, size))
+		return (1);
+	return (0);
 }
 
 static char	*find_env(t_app *app, const char *name)
@@ -90,7 +93,7 @@ static char	*find_env(t_app *app, const char *name)
 	return (NULL);
 }
 
-static void	env_to_token(char *val, char **token, size_t *size)
+static int	env_to_token(t_app *app, char *val, char **token, size_t *size)
 {
 	size_t	i;
 
@@ -99,8 +102,9 @@ static void	env_to_token(char *val, char **token, size_t *size)
 	{
 		while (val[i])
 		{
-			if (grow_token(token, size, val[i++]))
-				return (NULL); //TODO
+			if (grow_token(app, token, size, val[i++]))
+				return (1); //TODO
 			}
 	}
+	return (0);
 }
