@@ -69,6 +69,8 @@ static int	tokenization(t_app *app, t_input *input)
 
 	input->i = 0;
 	input->token_error = 0;
+	if (input->line[input->i] == 0x0)
+		return (1);
 	while (input->line[input->i])
 	{
 		while (input->line[input->i] && ft_isspace(input->line[input->i]))
