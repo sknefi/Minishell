@@ -37,7 +37,7 @@ int	main(int argc, char **argv, char **env)
 		else if (prompt_res == -1)
 			return (clean_app(app), free(input), EXIT_FAILURE);
 		app->exit_status = prompt_res;
-		app->root = parse(app->token);
+		app->root = parse(app->token, app);
 		if (!app->root)
 		{
 			free_tokens(app->token);

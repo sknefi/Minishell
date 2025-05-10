@@ -101,7 +101,7 @@ static int	handle_single_quotes(t_input *input, char **token, \
 	{
 		ft_printf("Syntax error: quotes not closed honey\n");
 		input->token_error = 1;
-		app->exit_status = 1;
+		app->exit_status = 1; //change to ES_ERROR
 	}
 	else
 		input->i++;
@@ -138,7 +138,7 @@ static int	handle_double_quotes(t_input *input, char **token, \
 	{
 		ft_printf("Syntax error: quotes not closed honey\n");
 		input->token_error = 1;
-		app->exit_status = 1;
+		app->exit_status = 1; //change to ES_ERROR
 	}
 	else
 		input->i++;

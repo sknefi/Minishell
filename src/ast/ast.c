@@ -22,13 +22,14 @@ static t_ast_node	*ast_command_norminette(t_ast_node *cmd, t_token **tokens, cha
  * if everytihng was successful or NULL when error.
  */
 
-t_ast_node	*parse(t_token *tokens)
+t_ast_node	*parse(t_token *tokens, t_app *app)
 {
 	t_ast_node	*root;
 
 	root = handle_pipes(&tokens);
 	if (!root)
 	{
+		app->exit_status = 1; //change to ES_ERROR
 		return (NULL);
 	}
 	return (root);

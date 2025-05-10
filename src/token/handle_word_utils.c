@@ -21,7 +21,7 @@ int	grow_token(t_app *app, char **token, size_t *size, char c)
 
 	buffer = ft_realloc_token(*token, *size + 2);
 	if (!buffer)
-		return (app->exit_status = 1, 1); //TODO change to ES_FAILED
+		return (app->exit_status = 1, 1); //TODO change to ES_ERROR
 	*token = buffer;
 	(*token)[(*size)++] = c;
 	(*token)[(*size)] = '\0';
@@ -42,7 +42,7 @@ int	expand_exit_status(t_input *input, char **token, \
 	while (i < len)
 	{
 		if (grow_token(app, token, size, status[i++]))
-			return (1); //TODO
+			return (1);
 	}
 	free(status);
 	return (0);
@@ -103,7 +103,7 @@ static int	env_to_token(t_app *app, char *val, char **token, size_t *size)
 		while (val[i])
 		{
 			if (grow_token(app, token, size, val[i++]))
-				return (1); //TODO
+				return (1);
 			}
 	}
 	return (0);

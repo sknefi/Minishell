@@ -36,14 +36,14 @@ char	*handle_operators(t_input *input, t_app *app)
 				input->i += 2;
 			else
 				return (ft_printf("Syntax error near unexpected token\n"), \
-					app->exit_status = 1, NULL);
+					app->exit_status = 1, NULL); //change to ES_ERROR
 		}
 		else
 			input->i++;
 	}
 	else
 		return (ft_printf("Syntax error near unexpected token\n"), \
-			app->exit_status = 1, NULL);
+			app->exit_status = 1, NULL); //change to ES_ERROR
 	token = ft_substr(input->line, start, input->i - start);
 	return (token);
 }
