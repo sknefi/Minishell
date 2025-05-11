@@ -1,0 +1,2 @@
+[1;33mcmd_path: /usr/bin/grep
+[0m[0mHello, this is a test file

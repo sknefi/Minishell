@@ -17,7 +17,7 @@ static void	handle_left_child(t_app *app, t_ast_node *node, int *pipefd)
 		ft_printf(RED "Error: dup2 failed in left child\n" RST);
 		close(pipefd[1]);
 		clean_app(app);
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 	close(pipefd[1]);
 	exit_status = exec_ast_node(node->left, app);
@@ -42,7 +42,7 @@ static void	handle_right_child(t_app *app, t_ast_node *node, int *pipefd)
 		ft_printf(RED "Error: dup2 failed in right child\n" RST);
 		close(pipefd[0]);
 		clean_app(app);
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 	close(pipefd[0]);
 	exit_status = exec_ast_node(node->right, app);
@@ -62,10 +62,11 @@ static void	close_pipe(int *pipefd)
 
 int	handle_pipe(t_app *app, t_ast_node *node)
 {
-	int pipefd[2];
-	int status;
-	pid_t left_pid, right_pid;
-	
+	int		status;
+	int		pipefd[2];
+	pid_t	left_pid;
+	pid_t	right_pid;
+
 	if (pipe(pipefd) < 0)
 		return (ft_printf(RED "Error: pipe creation failed\n" RST), 1);
 

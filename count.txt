@@ -1,0 +1,2 @@
+[1;33mcmd_path: /usr/bin/wc
+[0m       2

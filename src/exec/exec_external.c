@@ -1,7 +1,7 @@
 #include "../../include/minishell.h"
 
 /**
- * @brief Get the path of executable command if exists
+ * @brief Get the path of executable command if exists from the PATH environment variable
  * @param app - app struct
  * @param cmd_args - command arguments
  * @return char* - path of executable command if exists, NULL otherwise
@@ -39,15 +39,29 @@ static char	*get_cmd_path(t_app *app, char **cmd_args)
 	return (NULL);
 }
 
+/**
+ * @brief Choose the path of the command, if the command is a path, return the path, 
+ * otherwise return the path from the PATH environment variable
+ * @param app - app struct
+ * @param cmd_args - command arguments
+ * @return char* - path of the command
+ */
+static char	*choose_cmd_path(t_app *app, char **cmd_args)
+{
+	if ((cmd_args[0][0] == '/' || cmd_args[0][0] == '.') && access(cmd_args[0], F_OK | X_OK) == 0)
+		return (ft_strdup(cmd_args[0]));
+	return (get_cmd_path(app, cmd_args));
+}
+
 int	exec_external(t_app *app, char **cmd_args)
 {
 	char	*cmd_path;
 	pid_t	pid;
 	int		status;
 
-	cmd_path = get_cmd_path(app, cmd_args);
+	cmd_path = choose_cmd_path(app, cmd_args);
 	if (!cmd_path)
-		return (ES_CMD_NOT_FOUND);
+		return (ES_ERROR);
 	ft_printf(Y "cmd_path: %s\n" RST, cmd_path);
 	
 	pid = fork();

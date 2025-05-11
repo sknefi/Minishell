@@ -1,4 +1,10 @@
 #include "../../include/minishell.h"
+
+/**
+ * @brief Check if the argument is a -n flag
+ * @param arg The argument to check
+ * @return true if the argument is a -n flag, false otherwise
+ */
 static int  is_n_flag(char *arg)
 {
 	size_t  i;
@@ -15,62 +21,82 @@ static int  is_n_flag(char *arg)
 	}
 	return (true);
 }
-// static int   count_chars(char **cmd_args, int start)
-// {
-//  int     i;
-//  size_t  count;
-//  i = start;
-//  count = 0;
-//  while (cmd_args[i])
-//  {
-//      count += ft_strlen(cmd_args[i]);
-//      i++;
-//  }
-//  return (count);
-// }
-static char *merge_args(char **cmd_args, int start, int n_flag)
+
+/**
+ * @brief Count the number of characters in the arguments
+ * @param cmd_args All arguments
+ * @param start The index of the first argument (after -n flags)
+ * @param n_flag The flag to check if the -n flag is set
+ * @return The number of characters in the arguments
+ */
+static size_t count_chars(char **cmd_args, int start, int n_flag)
 {
 	int		i;
-	char	*result;
-	size_t	pos;
-	size_t	total_len;
-	// Step 1: Calculate total length needed for result
-	total_len = 0;
+	size_t	count;
+
+	count = 0;
 	i = start;
 	while (cmd_args[i])
 	{
-		total_len += ft_strlen(cmd_args[i]);
+		count += ft_strlen(cmd_args[i]);
 		if (cmd_args[i + 1])
-			total_len += 1; // for space
+			count += 1;
 		i++;
 	}
 	if (!n_flag)
-		total_len += 1; // for final newline
-	total_len += 1; // for null terminator
-	// Step 2: Allocate memory
-	result = ft_calloc(total_len, sizeof(char));
-	if (!result)
-		return (NULL);
-	// Step 3: Copy arguments to result string
+		count += 1;
+	return (count);
+}
+
+/**
+ * @brief Copy the arguments to the result string
+ * @param res The result string (allocated with count_chars)
+ * @param cmd_args All arguments
+ * @param start The index of the first argument (after -n flags)
+ * @param n_flag The flag to check if the -n flag is set
+ */
+void static copy_args(char *res, char **cmd_args, int start, int n_flag)
+{
+	int		i;
+	int		pos;
+	size_t	len;
+
 	i = start;
 	pos = 0;
 	while (cmd_args[i])
 	{
-		size_t len = ft_strlen(cmd_args[i]);
-		ft_strlcpy(result + pos, cmd_args[i], len + 1);
+		len = ft_strlen(cmd_args[i]);
+		ft_strlcpy(res + pos, cmd_args[i], len + 1);
 		pos += len;
 		if (cmd_args[i + 1])
-			result[pos++] = ' ';
+			res[pos++] = ' ';
 		i++;
 	}
-	// Step 4: Add newline if no -n
 	if (!n_flag)
-		result[pos++] = '\n';
-	// Step 5: Null terminate
-	result[pos] = '\0';
+		res[pos++] = '\n';
+	res[pos] = '\0';
+}
+
+/**
+ * @brief Merge the arguments into a single string
+ * @param cmd_args All arguments
+ * @param start The index of the first argument (after -n flags)
+ * @param n_flag The flag to check if the -n flag is set
+ * @return The merged string
+ */
+static char *merge_args(char **cmd_args, int start, int n_flag)
+{
+	char	*result;
+	size_t	total_len;
+
+	total_len = count_chars(cmd_args, start, n_flag);
+	result = ft_calloc(total_len, sizeof(char));
+	if (!result)
+		return (NULL);
+	copy_args(result, cmd_args, start, n_flag);
 	return (result);
 }
-// Function to print the arguments passed to echo
+
 int sh_echo(t_app *app, char **cmd_args)
 {
 	int     i;

@@ -44,11 +44,19 @@
 # define RST 	"\033[0m"
 
 // EXIT STATUS
-# define NOT_BUILTIN		 -2 // command is not a builtin, exec external command
+# define NOT_BUILTIN 		 -2
 # define ES_FAILED	 		 -1
 # define ES_OK				  0
 # define ES_ERROR			  1
 # define ES_CMD_NOT_FOUND	127
+
+// RETURN VALUES
+enum e_exec_type
+{
+	IS_EXEC_BUILTIN,
+	IS_EXEC_PATH,
+	IS_EXEC_EXTERNAL,
+};
 
 /**
  * @brief Initialize the app struct
@@ -83,6 +91,14 @@ int	exec_external(t_app *app, char **cmd_args);
  * @return 0 on success, 1 on failure (command not found), -1 on failure (malloc failed)
 */
 int	exec_ast_node(t_ast_node *node, t_app *app);
+
+/**
+ * @brief Switches the execution of a command based on if it is a builtin, path or external
+ * @param app The application
+ * @param node The AST node
+ * @return IS_EXEC_BUILTIN, IS_EXEC_PATH or IS_EXEC_EXTERNAL
+*/
+int	switch_exec(t_app *app, t_ast_node *node);
 
 // TYM_COMMENT
 int		prompt(t_app *app);
