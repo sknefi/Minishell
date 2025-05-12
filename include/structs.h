@@ -97,6 +97,7 @@ typedef enum e_node_types
 	NODE_REDIRECTION_OUT,
 	NODE_APPEND,
 	NODE_HEREDOC,
+	ERROR,
 }	t_node_types;
 
 typedef struct s_ast_node

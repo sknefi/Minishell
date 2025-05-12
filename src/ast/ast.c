@@ -111,34 +111,37 @@ static t_ast_node	*ast_command(t_token **tokens)
  * Takes pointer to current token and cmd node.
  * Saves redirection in redir.
  * Moving to the next, it checks syntax.
- * Then it creates redirection node depending on redirection.
+ * Then it creates redirection node depending on redirection;
+ * type gets from redirection_type() and data from redirection_data().
  * Cmd node is stored at the right.
- * Store filename in data.
  * Returns redirection node.
  */
 
 static t_ast_node	*parse_redirection(t_token **tokens, t_ast_node *cmd)
 {
-	t_token		*redir;
-	t_ast_node	*redir_node;
-	char		**data;
+	char			**data;
+	t_token			*redir;
+	t_ast_node		*redir_node;
+	t_node_types	type;
 
 	redir = *tokens;
 	*tokens = (*tokens)->next;
 	if (!*tokens || (*tokens)->type != TOKEN_WORD)
 	{
 		ft_printf("Error\n");
+		free(cmd->data);
+		free(cmd);
 		return (NULL);
 	}
-	redir_node = redirection_node(redir);
-	if (!redir_node)
+	type = redirection_type(redir);
+	if (ERROR == type)
 		return (NULL);
+	data = redirection_data(tokens, type);
+	if (!data)
+		return (NULL);
+	redir_node = ast_new_node(type, data);
 	redir_node->right = cmd;
-	data = malloc(2 * sizeof(char *));
-	data[0] = ft_strdup((*tokens)->data);
-	data[1] = NULL;
-	redir_node->data = data;
-	*tokens = (*tokens)->next;
+		*tokens = (*tokens)->next;
 	return (redir_node);
 }
 

@@ -40,6 +40,7 @@ int	main(int argc, char **argv, char **env)
 		app->root = parse(app->token, app);
 		if (!app->root)
 		{
+			free_ast(app->root);
 			free_tokens(app->token);
 			continue ;
 		}
