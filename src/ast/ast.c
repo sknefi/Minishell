@@ -6,7 +6,7 @@
 /*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 20:47:33 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/13 17:58:09 by tmateja          ###   ########.fr       */
+/*   Updated: 2025/05/13 18:27:44 by tmateja          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 static t_ast_node	*handle_pipes(t_token **token);
 static t_ast_node	*ast_command(t_token **tokens);
 static t_ast_node	*parse_redirection(t_token **tokens, t_ast_node *cmd);
-static t_ast_node	*ast_command_norminette(t_ast_node *cmd, t_token **tokens, char **data);
+static t_ast_node	*ast_command_norminette(t_ast_node *cmd, \
+	t_token **tokens, char **data);
 
 /*
  * Main ast function, which takes tokens and returns root node
@@ -81,12 +82,10 @@ static t_ast_node	*ast_command(t_token **tokens)
 {
 	char		**data;
 	int			i;
-	int			j;
 	t_token		*tmp;
 	t_ast_node	*cmd;
 
 	i = 0;
-	j = 0;
 	cmd = NULL;
 	tmp = *tokens;
 	while (tmp && tmp->type == TOKEN_WORD)
@@ -97,12 +96,13 @@ static t_ast_node	*ast_command(t_token **tokens)
 	data = malloc(sizeof(char *) * (i + 1));
 	if (!data)
 		return (NULL);
+	i = 0;
 	while (*tokens && (*tokens)->type == TOKEN_WORD)
 	{
-		data[j++] = ft_strdup((*tokens)->data);
+		data[i++] = ft_strdup((*tokens)->data);
 		*tokens = (*tokens)->next;
 	}
-	data[j] = NULL;
+	data[i] = NULL;
 	cmd = ast_command_norminette(cmd, tokens, data);
 	return (cmd);
 }
@@ -139,7 +139,7 @@ static t_ast_node	*parse_redirection(t_token **tokens, t_ast_node *cmd)
 		return (NULL);
 	redir_node = ast_new_node(type, data);
 	redir_node->right = cmd;
-		*tokens = (*tokens)->next;
+	*tokens = (*tokens)->next;
 	return (redir_node);
 }
 
@@ -150,7 +150,8 @@ static t_ast_node	*parse_redirection(t_token **tokens, t_ast_node *cmd)
  * Returns cmd node.
  */
 
-static t_ast_node	*ast_command_norminette(t_ast_node *cmd, t_token **tokens, char **data)
+static t_ast_node	*ast_command_norminette(t_ast_node *cmd, \
+	t_token **tokens, char **data)
 {
 	cmd = ast_new_node(NODE_CMD, data);
 	if (!cmd)

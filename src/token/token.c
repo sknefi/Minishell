@@ -6,7 +6,7 @@
 /*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 16:03:49 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/09 20:31:27 by tmateja          ###   ########.fr       */
+/*   Updated: 2025/05/13 18:04:25 by tmateja          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ static char	*extract_token(t_input *input, t_app *app)
 		token = handle_operators(input, app);
 	else
 		token = handle_word(input, app);
-	if (token &&input->token_error == 1)
+	if (token && input->token_error == 1)
 		free(token);
 	if (!token)
 		return (NULL);

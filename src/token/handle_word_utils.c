@@ -6,7 +6,7 @@
 /*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 21:46:31 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/09 21:08:24 by tmateja          ###   ########.fr       */
+/*   Updated: 2025/05/13 18:04:44 by tmateja          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ static int	env_to_token(t_app *app, char *val, char **token, size_t *size)
 		{
 			if (grow_token(app, token, size, val[i++]))
 				return (1);
-			}
+		}
 	}
 	return (0);
 }

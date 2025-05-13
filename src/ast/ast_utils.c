@@ -6,7 +6,7 @@
 /*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 20:47:41 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/13 17:58:33 by tmateja          ###   ########.fr       */
+/*   Updated: 2025/05/13 18:05:06 by tmateja          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ t_node_types	redirection_type(t_token *redir)
 char	**redirection_data(t_token **tokens)
 {
 	char	**data;
-	
+
 	data = malloc(2 * sizeof(char *));
 	if (!data)
 		return (NULL);
