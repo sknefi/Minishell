@@ -6,13 +6,11 @@
 /*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 20:47:41 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/09 20:48:06 by tmateja          ###   ########.fr       */
+/*   Updated: 2025/05/13 17:58:33 by tmateja          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-static char	*read_heredoc(const char *del);
 
 /*
  * Takes type of AST node and data array it should contain.
@@ -98,73 +96,19 @@ t_node_types	redirection_type(t_token *redir)
 
 /*
  * Takes tokens and type of redirection.
- * if Heredoc, it will read as long as we type del, which is "<< del"
  * Returns data or NULL if error.
  */
 
-char	**redirection_data(t_token **tokens, t_node_types type)
+char	**redirection_data(t_token **tokens)
 {
 	char	**data;
-	char	*del;
-	char	*heredoc_data;
-
-	if (NODE_HEREDOC == type)
-	{
-		del = ft_strdup((*tokens)->data);
-		if (!del)
-			return (NULL);
-		heredoc_data = read_heredoc(del);
-		if (!heredoc_data)
-			return (NULL);
-		data = malloc(3 * sizeof(char *));
-		data[0] = del;
-		data[1] = heredoc_data;
-		data[2] = NULL;
-	}
-	else
-	{
-		data = malloc(2 * sizeof(char *));
-		data[0] = ft_strdup((*tokens)->data);
-		data[1] = NULL;
-	}
-
-	return (data);
-}
-
-/*
- * Takes del as parameter.
- * Read until Ctrl + D or del is detected.
- * Returns result as string, with \n or NULL on error.
- */
-
-static char	*read_heredoc(const char *del)
-{
-	char	*result;
-	char	*line;
-	char	*tmp;
-
-	result = ft_strdup("");
-	if (!result)
+	
+	data = malloc(2 * sizeof(char *));
+	if (!data)
 		return (NULL);
-	while (1)
-	{
-		line = readline("> ");
-		if (!line)
-			break ;
-		if (ft_strcmp(line, del) == 0)
-		{
-			free(line);
-			break ;
-		}
-		tmp = result;
-		result = ft_strjoin(result, line);
-		free(tmp);
-		tmp = result;
-		result = ft_strjoin(result, "\n");
-		free(tmp);
-		free(line);
-	}
-	return (result);
+	data[0] = ft_strdup((*tokens)->data);
+	data[1] = NULL;
+	return (data);
 }
 
 /*
