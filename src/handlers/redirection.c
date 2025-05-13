@@ -37,5 +37,3 @@ int	handle_redirection_in(t_app *app, t_ast_node *node)
 	close(saved_stdin);
 	return (status);
 }
-
-

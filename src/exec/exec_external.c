@@ -1,5 +1,11 @@
 #include "../../include/minishell.h"
 
+/**
+ * @brief Get the path of executable command if exists from the PATH environment variable
+ * @param app - app struct
+ * @param cmd_args - command arguments
+ * @return char* - path of executable command if exists, NULL otherwise
+ */
 static char	*get_cmd_path(t_app *app, char **cmd_args)
 {
 	int		i;
@@ -19,27 +25,32 @@ static char	*get_cmd_path(t_app *app, char **cmd_args)
 	{
 		cmd_path = ft_strjoin(all_paths[i], "/");
 		if (!cmd_path)
-		{
-			free_dpp(all_paths);
-			return (NULL);
-		}
+			return (free_dpp(all_paths), NULL);
 		tmp = ft_strjoin(cmd_path, cmd_args[0]);
 		free(cmd_path);
 		if (!tmp)
-		{
-			free_dpp(all_paths);
-			return (NULL);
-		}
+			return (free_dpp(all_paths), NULL);
 		if (access(tmp, F_OK | X_OK) == 0)
-		{
-			free_dpp(all_paths);
-			return (tmp);
-		}
+			return (free_dpp(all_paths), tmp);
 		free(tmp);
 		i++;
 	}
 	free_dpp(all_paths);
 	return (NULL);
+}
+
+/**
+ * @brief Choose the path of the command, if the command is a path, return the path, 
+ * otherwise return the path from the PATH environment variable
+ * @param app - app struct
+ * @param cmd_args - command arguments
+ * @return char* - path of the command
+ */
+static char	*choose_cmd_path(t_app *app, char **cmd_args)
+{
+	if ((cmd_args[0][0] == '/' || cmd_args[0][0] == '.') && access(cmd_args[0], F_OK | X_OK) == 0)
+		return (ft_strdup(cmd_args[0]));
+	return (get_cmd_path(app, cmd_args));
 }
 
 int	exec_external(t_app *app, char **cmd_args)
@@ -48,9 +59,9 @@ int	exec_external(t_app *app, char **cmd_args)
 	pid_t	pid;
 	int		status;
 
-	cmd_path = get_cmd_path(app, cmd_args);
+	cmd_path = choose_cmd_path(app, cmd_args);
 	if (!cmd_path)
-		return (1);
+		return (ES_ERROR);
 	ft_printf(Y "cmd_path: %s\n" RST, cmd_path);
 	
 	pid = fork();
@@ -58,7 +69,7 @@ int	exec_external(t_app *app, char **cmd_args)
 	{
 		ft_printf(RED "Error: fork failed\n" RST);
 		free(cmd_path);
-		return (1);
+		return (ES_ERROR);
 	}
 	
 	if (pid == 0)  // Child process
@@ -75,5 +86,5 @@ int	exec_external(t_app *app, char **cmd_args)
 	free(cmd_path);
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
-	return (1); // Return 1 if the child process did not exit correctly
+	return (ES_ERROR); // Return 1 if the child process did not exit correctly
 }

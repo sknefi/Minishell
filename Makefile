@@ -40,6 +40,8 @@ SRCS =  \
 		./src/utils/utils_01_dpp.c \
 		./src/utils/visualizer.c \
 		\
+		./src/handlers/pipe.c \
+		./src/handlers/heredoc.c \
 		./src/handlers/redirection.c \
 		./src/handlers/redirection_utils.c \
 		\
@@ -53,7 +55,7 @@ LDFLAGS        = -lreadline
 RM            = rm -f
 
 LIBFT_NAME    = libft.a
-LIBFT_DIR    = ./libft_divinus
+LIBFT_DIR    = ./libft
 LIBFT        = $(LIBFT_DIR)/$(LIBFT_NAME)
 
 

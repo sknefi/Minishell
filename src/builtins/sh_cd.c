@@ -47,12 +47,12 @@ int	sh_cd(t_app *app, char **cmd_args)
 
 	old_pwd = set_var_oldpwd();
 	if (!old_pwd)
-		return (-1);
+		return (ES_FAILED);
 	if (cmd_args[1] && cmd_args[2])
 	{
 		ft_printf(RED "cd: too many arguments\n" RST);
 		free(old_pwd);
-		return (1);
+		return (ES_ERROR);
 	}
 	else if (!cmd_args[1] || ft_strncmp(cmd_args[1], "~", 1) == 0)
 		path = get_env_var("HOME", app->env);
@@ -64,11 +64,11 @@ int	sh_cd(t_app *app, char **cmd_args)
 	{
 		ft_printf(RED "cd: %s: No such file or directory\n" RST, cmd_args[1]);
 		free(old_pwd);
-		return (1);
+		return (ES_ERROR);
 	}
 	result = replace_oldpwd(app, old_pwd);
 	free(old_pwd);
-	if (result == -1)
-		return (-1);
-	return (0);
+	if (result == ES_FAILED)
+		return (ES_FAILED);
+	return (ES_OK);
 }

@@ -22,5 +22,5 @@ int	exec_builtin(t_app *app, char **cmd_args)
 			return (builtins[i]->f(app, cmd_args));
 		i++;
 	}
-	return (2); // command is not a builtin
+	return (NOT_BUILTIN); // command is not a builtin
 }

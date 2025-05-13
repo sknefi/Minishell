@@ -1,6 +1,8 @@
 #include "../../include/minishell.h"
 
-char	**show_env_sort(char **env)
+#define PREFIX_ENV "declare -x "
+
+char	**env_sort(char **env)
 {
 	int		i;
 	int		j;
@@ -41,14 +43,41 @@ void	show_env(char **env)
 	}
 }
 
+void	show_env_prefix(char **env)
+{
+	int		i;
+	int		j;
+	int		first_es;
+
+	i = 0;
+	while (env[i])
+	{
+		ft_printf("%s", PREFIX_ENV);
+		j = 0;
+		first_es = 0;
+		while (env[i][j])
+		{
+			write(STDOUT_FILENO, &env[i][j], 1);
+			if (env[i][j] == '=' && !first_es)
+			{
+				first_es = 1;
+				write(STDOUT_FILENO, "\"", 1);
+			}
+			j++;
+		}
+		write(STDOUT_FILENO, "\"\n", 2);
+		i++;
+	}
+}
+
 int	sh_env(t_app *app, char **cmd_args)
 {
 	(void)cmd_args;
 	if (cmd_args[1])
 	{
 		ft_printf(RED "env: %s: No such file or directory\n" RST, cmd_args[1]);
-		return (1);
+		return (ES_ERROR);
 	}
 	show_env(app->env);
-	return (0);
+	return (ES_OK);
 }

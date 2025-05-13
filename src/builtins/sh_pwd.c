@@ -10,9 +10,9 @@ int	sh_pwd(t_app *app, char **cmd_args)
 	if (!cwd)
 	{
 		ft_printf("getcwd FAILED\n");
-		return (-1);
+		return (ES_FAILED);
 	}
 	ft_printf("%s\n", cwd);
 	free(cwd);
-	return (0);
+	return (ES_OK);
 }
