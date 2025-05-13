@@ -39,6 +39,7 @@ SRCS =  \
 		./src/utils/visualizer.c \
 		\
 		./src/handlers/pipe.c \
+		./src/handlers/heredoc.c \
 		./src/handlers/redirection.c \
 		./src/handlers/redirection_utils.c \
 		\

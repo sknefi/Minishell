@@ -25,6 +25,8 @@ int	exec_ast_node(t_ast_node *node, t_app *app)
 		return (handle_redirection_out(app, node));
 	else if (node->type == NODE_PIPE)
 		return (handle_pipe(app, node));
+	else if (node->type == NODE_HEREDOC)
+		return (handle_heredoc(app, node));
 	return (ES_ERROR);
 }
 

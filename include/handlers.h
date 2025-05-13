@@ -52,4 +52,10 @@ t_ast_node	*find_command_node(t_ast_node *node);
  */
 int	handle_pipe(t_app *app, t_ast_node *node);
 
+/**
+ * @brief Handle heredoc
+ * @param app The application
+ * @param node The node to handle
+ */
+int	handle_heredoc(t_app *app, t_ast_node *node);
 #endif
