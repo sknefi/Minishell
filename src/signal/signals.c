@@ -6,7 +6,7 @@
 /*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 14:54:04 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/04 14:58:35 by tmateja          ###   ########.fr       */
+/*   Updated: 2025/05/13 17:42:39 by tmateja          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,9 @@ void	sig_handler(void)
 static void	sigint_handler(int sig)
 {
 	(void)sig;
+
 	write(STDOUT_FILENO, "^C\n", 3);
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
 }

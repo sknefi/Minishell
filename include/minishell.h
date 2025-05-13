@@ -32,7 +32,6 @@
 # include "ast.h"
 # include "visualizer.h"
 # include "handlers.h"
-# include "reasignthis.h"
 # include "signals.h"
 # include "env.h"
 
@@ -91,16 +90,5 @@ int	exec_external(t_app *app, char **cmd_args);
  * @return 0 on success, 1 on failure (command not found), -1 on failure (malloc failed)
 */
 int	exec_ast_node(t_ast_node *node, t_app *app);
-
-/**
- * @brief Switches the execution of a command based on if it is a builtin, path or external
- * @param app The application
- * @param node The AST node
- * @return IS_EXEC_BUILTIN, IS_EXEC_PATH or IS_EXEC_EXTERNAL
-*/
-int	switch_exec(t_app *app, t_ast_node *node);
-
-// TYM_COMMENT
-int		prompt(t_app *app);
 
 #endif

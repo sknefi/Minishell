@@ -6,24 +6,30 @@
 /*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 16:09:17 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/08 17:06:52 by tmateja          ###   ########.fr       */
+/*   Updated: 2025/05/09 21:12:17 by tmateja          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static void	handle_single_quotes(char *line, int *i, char **token, \
+static int	handle_char(t_input *input, char **token, \
+		size_t *size, t_app *app);
+static int	handle_single_quotes(t_input *input, char **token, \
 	size_t *size, t_app *app);
-static void	handle_double_quotes(char *line, int *i, char **token, \
+static int	handle_double_quotes(t_input *input, char **token, \
 	size_t *size, t_app *app);
-static void	expand_env(char *line, int *i, char **token, size_t *size, t_app *app);
-static int	grow_token(char **token, size_t *size, char c);
+static int	expand_dollar(t_input *input, char **token, \
+		size_t *size, t_app *app);
 
 /*
- *
+ * Main function to handle words.
+ * Malloc 1 byte for token and assigns null-terminator.
+ * If the current char (input->line[input->i]) is not an operator
+ * grow token.
+ * Returns NULL on error and and token on success.
  */
 
-char	*handle_word(char *line, int *i, t_app *app)
+char	*handle_word(t_input *input, t_app *app)
 {
 	char	*token;
 	size_t	size;
@@ -33,127 +39,129 @@ char	*handle_word(char *line, int *i, t_app *app)
 	if (!token)
 		return (NULL);
 	token[0] = '\0';
-	while (line[*i] && !ft_isspace(line[*i]) && line[*i] != '|' \
-		&& line[*i] != '<' && line[*i] != '>' && token != NULL)
-	{
-		if (line[*i] == '\'')
-			handle_single_quotes(line, i, &token, &size, app);
-		else if (line[*i] == '\"')
-			handle_double_quotes(line, i, &token, &size, app);
-		else if (line[*i] == '$')
-			expand_env(line, i, &token, &size, app);
-		else
-			if (grow_token(&token, &size, line[(*i)++]))
-				return (NULL);
-	}
+	while (input->line[input->i] && !ft_isspace(input->line[input->i]) \
+		&& input->line[input->i] != '|' \
+		&& input->line[input->i] != '<' && input->line[input->i] != '>' \
+		&& token != NULL)
+		if (handle_char(input, &token, &size, app))
+			return (NULL);
 	return (token);
 }
 
-static void	handle_single_quotes(char *line, int *i, char **token, size_t *size, t_app *app)
+/*
+ * Function because of norminette.
+ * Handles every possible case.
+ * Returns 1 on error, 0 on success.
+ */
+
+static int	handle_char(t_input *input, char **token, \
+		size_t *size, t_app *app)
 {
-	(*i)++;
-	while (line[*i] && line[*i] != '\'')
-		grow_token(token, size, line[(*i)++]);
-	if (line[*i] != '\'')
+	if (input->line[input->i] == '\'')
 	{
-			ft_printf("Syntax error: quotes not closed honey\n");
-			app->token_error = 1;
-			app->exit_status = 1;
+		if (handle_single_quotes(input, token, size, app))
+			return (1);
+	}
+	else if (input->line[input->i] == '\"')
+	{
+		if (handle_double_quotes(input, token, size, app))
+			return (1);
+	}
+	else if (input->line[input->i] == '$')
+	{
+		if (expand_dollar(input, token, size, app))
+			return (1);
 	}
 	else
-		(*i)++;
+	{
+		if (grow_token(app, token, size, input->line[input->i++]))
+			return (1);
+	}
+	return (0);
 }
 
 /*
- *
+ * Expanding single quotes.
+ * It is not expanding env variables.
+ * If quotes not closed, prinitng error message
+ * and changing exit_status and token_error to 1.
+ * Returns 1 on error, 0 on success.
  */
 
-static void	handle_double_quotes(char *line, int *i, char **token, size_t *size, t_app *app)
+static int	handle_single_quotes(t_input *input, char **token, \
+	size_t *size, t_app *app)
 {
-	(*i)++;
-	while (line[*i] && line[*i] != '\"')
+	input->i++;
+	while (input->line[input->i] && input->line[input->i] != '\'')
 	{
-		if (line[*i] == '$')
-			expand_env(line, i, token, size, app);
-		else
-			grow_token(token, size, line[(*i)++]);
+		if (grow_token(app, token, size, input->line[input->i++]))
+			return (1); //TODO
 	}
-	if (line[*i] != '\"')
+	if (input->line[input->i] != '\'')
 	{
 		ft_printf("Syntax error: quotes not closed honey\n");
-		app->token_error = 1;
-		app->exit_status = 1;
+		input->token_error = 1;
+		app->exit_status = 1; //change to ES_ERROR
 	}
 	else
-		(*i)++;
-}
-
-char	*find_env(t_app *app, const char *name)
-{
-	size_t	len;
-	size_t	i;
-
-	if (!app || !app->env || !name)
-		return (NULL);
-	i = 0;
-	len = ft_strlen(name);
-	while (app->env[i])
-	{
-		if (ft_strncmp(app->env[i], name, len) == 0 && app->env[i][len] == '=')
-			return (app->env[i] + len + 1);
-		i++;
-	}
-	return (NULL);
-}
-
-static void	expand_env(char *line, int *i, char **token, size_t *size, t_app *app)
-{
-	char	var_name[256];
-	char	*val;
-	int		j;
-
-	j = 0;
-	(*i)++;
-	if (!ft_isalnum(line[*i]) && line[*i] != '_')
-	{
-		grow_token(token, size, '$');
-		return ;
-	}
-	while (ft_isalnum(line[*i]) || line[*i] == '_')
-	{
-		if (j < 255)
-			var_name[j++] = line[(*i)++];
-		else
-			(*i)++;
-	}
-	var_name[j] = '\0';
-	val = find_env(app, var_name);
-	j = 0; //temp
-	if (val)
-	{
-		printf("%s\n", val);
-		//env_token();
-		while (val[j])
-		{
-			grow_token(token, size, val[j]);
-			j++;
-		}
-	}
+		input->i++;
+	return (0);
 }
 
 /*
- *
+ * Handles double quotes.
+ * Grow token every char.
+ * If current char is dollar sign '$', it expands it.
+ * If quotes are not closed, prinitng error message 
+ * and changing exit_status and token_error to 1.
+ * Returns 1 on error, 0 on success
  */
 
-static int	grow_token(char **token, size_t *size, char c)
+static int	handle_double_quotes(t_input *input, char **token, \
+	size_t *size, t_app *app)
 {
-	char	*buffer;
+	input->i++;
+	while (input->line[input->i] && input->line[input->i] != '\"')
+	{
+		if (input->line[input->i] == '$')
+		{
+			if (expand_env(input, token, size, app))
+				return (1); //TODO
+		}
+		else
+		{
+			if (grow_token(app, token, size, input->line[input->i++]))
+				return (1); //TODO
+		}
+	}
+	if (input->line[input->i] != '\"')
+	{
+		ft_printf("Syntax error: quotes not closed honey\n");
+		input->token_error = 1;
+		app->exit_status = 1; //change to ES_ERROR
+	}
+	else
+		input->i++;
+	return (0);
+}
 
-	buffer = ft_realloc_token(*token, *size + 2);
-	if (!buffer)
-		return (1);
-	*token = buffer;
-	(*token)[(*size)++] = c;
-	(*token)[(*size)] = '\0';
+/*
+ * Function decides whether it is $? (to expand exit_status)
+ * or env variable.
+ * Returns 1 on error, o on success.
+ */
+static int	expand_dollar(t_input *input, char **token, \
+		size_t *size, t_app *app)
+{
+	if (input->line[input->i + 1] && input->line[input->i + 1] == '?')
+	{
+		if (expand_exit_status(input, token, size, app)) //TODO
+			return (1);
+	}
+	else
+	{
+		if (expand_env(input, token, size, app)) //TODO
+			return (1);
+	}
 	return (0);
 }
