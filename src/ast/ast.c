@@ -6,7 +6,7 @@
 /*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 20:47:33 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/09 20:50:07 by tmateja          ###   ########.fr       */
+/*   Updated: 2025/05/13 17:45:57 by tmateja          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,8 +129,6 @@ static t_ast_node	*parse_redirection(t_token **tokens, t_ast_node *cmd)
 	if (!*tokens || (*tokens)->type != TOKEN_WORD)
 	{
 		ft_printf("Error\n");
-		free(cmd->data);
-		free(cmd);
 		return (NULL);
 	}
 	type = redirection_type(redir);
