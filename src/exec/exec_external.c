@@ -61,7 +61,7 @@ int	exec_external(t_app *app, char **cmd_args)
 
 	cmd_path = choose_cmd_path(app, cmd_args);
 	if (!cmd_path)
-		return (ES_ERROR);
+		return (ES_CMD_NOT_FOUND);
 	ft_printf(Y "cmd_path: %s\n" RST, cmd_path);
 	
 	pid = fork();

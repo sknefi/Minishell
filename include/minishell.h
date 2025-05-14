@@ -49,14 +49,6 @@
 # define ES_ERROR			  1
 # define ES_CMD_NOT_FOUND	127
 
-// RETURN VALUES
-enum e_exec_type
-{
-	IS_EXEC_BUILTIN,
-	IS_EXEC_PATH,
-	IS_EXEC_EXTERNAL,
-};
-
 /**
  * @brief Initialize the app struct
 */
