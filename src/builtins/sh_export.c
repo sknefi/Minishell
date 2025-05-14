@@ -40,9 +40,9 @@ int	handle_append_export(t_app *app, char *key)
 	size_t	env_size;
 
 	if (!contains_equal_sign(key))
-		return (0); // idk why, bash behavior
+		return (0);
 	env_size = count_pointer(app->env);
-	new_env = malloc(sizeof(char *) * (env_size + 2)); // +2 for new var and NULL terminator
+	new_env = malloc(sizeof(char *) * (env_size + 2));
 	if (!new_env)
 		return (-1);
 	if (!append_env(app->env, new_env, key, app))
@@ -55,7 +55,7 @@ int	handle_replace_export(t_app *app, char *key)
 	int	i;
 
 	if (!contains_equal_sign(key))
-		return (0); // idk why, bash behavior
+		return (0);
 	i = 0;
 	while (app->env[i])
 	{
@@ -76,7 +76,7 @@ int	sh_export(t_app *app, char **cmd_args)
 {
 	int		i;
 	char	*key;
-	
+
 	if (!cmd_args[1])
 		return (handle_only_export(app));
 	i = 1;

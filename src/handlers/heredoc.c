@@ -2,17 +2,16 @@
 
 #define HEREDOC_INPUT "> "
 
-int	handle_heredoc(t_app *app, t_ast_node *node)
+/**
+ * @brief Read input from heredoc and write to pipe
+ * @param delimeter The delimiter to stop reading
+ * @param pipe_write File descriptor to write to
+ * @return 0 on success, 1 on failure
+ */
+static int read_heredoc_input(char *delimeter, int pipe_write)
 {
-	int		status;
-	int		saved_stdin;
-	int		pipefd[2];
-	char	*line;
-	char	*delimeter;
+	char *line;
 
-	if (pipe(pipefd) < 0)
-		return (ft_printf(""), 1);
-	delimeter = node->data[0];
 	while (1)
 	{
 		line = readline(HEREDOC_INPUT);
@@ -23,23 +22,34 @@ int	handle_heredoc(t_app *app, t_ast_node *node)
 			free(line);
 			break;
 		}
-		write(pipefd[1], line, ft_strlen(line));
-		write(pipefd[1], "\n", 1);
+		write(pipe_write, line, ft_strlen(line));
+		write(pipe_write, "\n", 1);
 		free(line);
 	}
-    close(pipefd[1]);
+	return (0);
+}
 
-    // Save stdin and redirect it from the pipe
-    saved_stdin = dup(STDIN_FILENO);
-    dup2(pipefd[0], STDIN_FILENO);
-    close(pipefd[0]);
+/**
+ * @brief Handle heredoc redirection
+ * @param app The application
+ * @param node The node to handle
+ * @return 0 on success, 1 on failure
+ */
+int	handle_heredoc(t_app *app, t_ast_node *node)
+{
+	int		status;
+	int		pipefd[2];
+	int		saved_stdin;
 
-    // Execute the command
-    status = exec_ast_node(node->right, app);
-
-    // Restore stdin
-    dup2(saved_stdin, STDIN_FILENO);
-    close(saved_stdin);
-
-    return status;
+	if (pipe(pipefd) < 0)
+		return (ft_printf(""), 1);
+	read_heredoc_input(node->data[0], pipefd[1]);
+	close(pipefd[1]);
+	saved_stdin = dup(STDIN_FILENO);
+	dup2(pipefd[0], STDIN_FILENO);
+	close(pipefd[0]);
+	status = exec_ast_node(node->right, app);
+	dup2(saved_stdin, STDIN_FILENO);
+	close(saved_stdin);
+	return (status);
 }

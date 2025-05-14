@@ -4,7 +4,7 @@
  * @brief Allocates a new token with the oldpwd variable
  * @return The new token OLDPWD=...
  */
-static char	*set_var_oldpwd()
+static char	*set_var_oldpwd(void)
 {
 	char	*cwd;
 	char	*tmp;
@@ -38,21 +38,14 @@ static int	replace_oldpwd(t_app *app, char *old_pwd)
 		return (handle_append_export(app, old_pwd));
 }
 
-// Function to change the current working directory
-int	sh_cd(t_app *app, char **cmd_args)
+static char	*set_path(t_app *app, char **cmd_args)
 {
 	char	*path;
-	char	*old_pwd;
-	int     result;
 
-	old_pwd = set_var_oldpwd();
-	if (!old_pwd)
-		return (ES_FAILED);
 	if (cmd_args[1] && cmd_args[2])
 	{
 		ft_printf(RED "cd: too many arguments\n" RST);
-		free(old_pwd);
-		return (ES_ERROR);
+		return (NULL);
 	}
 	else if (!cmd_args[1] || ft_strncmp(cmd_args[1], "~", 1) == 0)
 		path = get_env_var("HOME", app->env);
@@ -60,6 +53,22 @@ int	sh_cd(t_app *app, char **cmd_args)
 		path = get_env_var("OLDPWD", app->env);
 	else
 		path = cmd_args[1];
+	return (path);
+}
+
+// Function to change the current working directory
+int	sh_cd(t_app *app, char **cmd_args)
+{
+	int		result;
+	char	*path;
+	char	*old_pwd;
+
+	old_pwd = set_var_oldpwd();
+	if (!old_pwd)
+		return (ES_FAILED);
+	path = set_path(app, cmd_args);
+	if (!path)
+		return (free(old_pwd), ES_ERROR);
 	if (chdir(path) == -1)
 	{
 		ft_printf(RED "cd: %s: No such file or directory\n" RST, cmd_args[1]);

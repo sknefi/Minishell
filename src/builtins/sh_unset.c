@@ -17,8 +17,8 @@ static int	unset_single_var(t_app *app, char *key)
 	i = 0;
 	while (app->env[i])
 	{
-		if (ft_strncmp(app->env[i], key, key_len) == 0 &&
-			(app->env[i][key_len] == '=' || app->env[i][key_len] == '\0'))
+		if (ft_strncmp(app->env[i], key, key_len) == 0
+			&& (app->env[i][key_len] == '=' || app->env[i][key_len] == '\0'))
 		{
 			free(app->env[i]);
 			while (app->env[i + 1])
@@ -27,7 +27,7 @@ static int	unset_single_var(t_app *app, char *key)
 				i++;
 			}
 			app->env[i] = NULL;
-			break;
+			break ;
 		}
 		i++;
 	}
@@ -37,7 +37,7 @@ static int	unset_single_var(t_app *app, char *key)
 int	sh_unset(t_app *app, char **cmd_args)
 {
 	int	key_index;
-	
+
 	key_index = 1;
 	while (cmd_args[key_index])
 	{

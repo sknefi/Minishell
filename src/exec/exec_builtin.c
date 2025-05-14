@@ -16,11 +16,13 @@ int	exec_builtin(t_app *app, char **cmd_args)
 	i = 0;
 	cmd_name = cmd_args[0];
 	builtins = app->builtins;
+	if (!cmd_args || !cmd_args[0])
+		return (ES_OK);
 	while (builtins[i])
 	{
 		if (ft_strcmp(builtins[i]->name, cmd_name) == 0)
 			return (builtins[i]->f(app, cmd_args));
 		i++;
 	}
-	return (NOT_BUILTIN); // command is not a builtin
+	return (NOT_BUILTIN);
 }

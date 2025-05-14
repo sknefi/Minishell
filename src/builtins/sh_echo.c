@@ -5,10 +5,11 @@
  * @param arg The argument to check
  * @return true if the argument is a -n flag, false otherwise
  */
-static int  is_n_flag(char *arg)
+static int	is_n_flag(char *arg)
 {
-	size_t  i;
-	size_t  arg_len;
+	size_t	i;
+	size_t	arg_len;
+
 	arg_len = strlen(arg);
 	if (arg_len <= 1 || arg[0] != '-')
 		return (false);
@@ -29,7 +30,7 @@ static int  is_n_flag(char *arg)
  * @param n_flag The flag to check if the -n flag is set
  * @return The number of characters in the arguments
  */
-static size_t count_chars(char **cmd_args, int start, int n_flag)
+static size_t	count_chars(char **cmd_args, int start, int n_flag)
 {
 	int		i;
 	size_t	count;
@@ -55,7 +56,7 @@ static size_t count_chars(char **cmd_args, int start, int n_flag)
  * @param start The index of the first argument (after -n flags)
  * @param n_flag The flag to check if the -n flag is set
  */
-void static copy_args(char *res, char **cmd_args, int start, int n_flag)
+static void	copy_args(char *res, char **cmd_args, int start, int n_flag)
 {
 	int		i;
 	int		pos;
@@ -84,7 +85,7 @@ void static copy_args(char *res, char **cmd_args, int start, int n_flag)
  * @param n_flag The flag to check if the -n flag is set
  * @return The merged string
  */
-static char *merge_args(char **cmd_args, int start, int n_flag)
+static char	*merge_args(char **cmd_args, int start, int n_flag)
 {
 	char	*result;
 	size_t	total_len;
@@ -97,15 +98,14 @@ static char *merge_args(char **cmd_args, int start, int n_flag)
 	return (result);
 }
 
-int sh_echo(t_app *app, char **cmd_args)
+int	sh_echo(t_app *app, char **cmd_args)
 {
-	int     i;
-	int     n_flag;
-	char    *result;
+	int		i;
+	int		n_flag;
+	char	*result;
+
 	(void)app;
-	// set n_flag to true if there is -n flag
-	// and break the loop if there is no more ARGS
-	i = 1; // after the echo word
+	i = 1;
 	n_flag = 0;
 	while (cmd_args[i])
 	{

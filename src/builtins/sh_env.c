@@ -8,7 +8,7 @@ char	**env_sort(char **env)
 	int		j;
 	char	*temp;
 	char	**new_env;
-	
+
 	i = 0;
 	new_env = init_env(env);
 	if (!new_env)
