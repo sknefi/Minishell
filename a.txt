@@ -1,2 +1,0 @@
-[1;33mcmd_path: /usr/bin/grep
-[0m
