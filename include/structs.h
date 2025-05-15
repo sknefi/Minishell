@@ -121,6 +121,7 @@ typedef struct s_app
 	int			exit_status;
 	char		**env;
 	t_builtin	**builtins;
+	t_input		*input;
 	t_token		*token;
 	t_ast_node	*root;
 }				t_app;
