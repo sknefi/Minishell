@@ -42,6 +42,7 @@ static void	handle_right_child(t_app *app, t_ast_node *node, int *pipefd)
 		ft_printf(RED "Error: dup2 failed in right child\n" RST);
 		close(pipefd[0]);
 		clean_app(app);
+		// 
 		exit(EXIT_FAILURE);
 	}
 	close(pipefd[0]);
