@@ -26,10 +26,10 @@ static int	handle_only_export(t_app *app)
 {
 	char	**new_env;
 
-	new_env = show_env_sort(app->env);
+	new_env = env_sort(app->env);
 	if (!new_env)
 		return (-1);
-	show_env(new_env);
+	show_env_prefix(new_env);
 	free_env(new_env);
 	return (0);
 }
@@ -40,12 +40,9 @@ int	handle_append_export(t_app *app, char *key)
 	size_t	env_size;
 
 	if (!contains_equal_sign(key))
-	{
-		ft_printf(RED "export: not a valid identifier\n" RST);
-		return (0); // idk why, bash behavior
-	}
+		return (0);
 	env_size = count_pointer(app->env);
-	new_env = malloc(sizeof(char *) * (env_size + 2)); // +2 for new var and NULL terminator
+	new_env = malloc(sizeof(char *) * (env_size + 2));
 	if (!new_env)
 		return (-1);
 	if (!append_env(app->env, new_env, key, app))
@@ -53,16 +50,12 @@ int	handle_append_export(t_app *app, char *key)
 	return (0);
 }
 
-// ASDW=testing
 int	handle_replace_export(t_app *app, char *key)
 {
 	int	i;
 
 	if (!contains_equal_sign(key))
-	{
-		ft_printf(RED "export: not a valid identifier\n" RST);
-		return (0); // idk why, bash behavior
-	}
+		return (0);
 	i = 0;
 	while (app->env[i])
 	{
@@ -79,25 +72,28 @@ int	handle_replace_export(t_app *app, char *key)
 	return (0);
 }
 
-// example: export VAR=VALUE
 int	sh_export(t_app *app, char **cmd_args)
 {
+	int		i;
 	char	*key;
-	
+
 	if (!cmd_args[1])
+		return (handle_only_export(app));
+	i = 1;
+	while (cmd_args[i])
 	{
-		if (handle_only_export(app) == -1)
-			return (-1);
-		return (0);
+		key = get_env_key(cmd_args[i], app->env);
+		if (!key)
+		{
+			if (handle_append_export(app, cmd_args[i]) == -1)
+				return (ES_FAILED);
+		}
+		else
+		{
+			if (handle_replace_export(app, cmd_args[i]) == -1)
+				return (ES_FAILED);
+		}
+		i++;
 	}
-	if (cmd_args[1] && cmd_args[2])
-	{
-		ft_printf(RED "export: too many arguments - do nothing\n" RST);
-		return (0);
-	}
-	key = get_env_key(cmd_args[1], app->env);
-	if (!key)
-		return (handle_append_export(app, cmd_args[1]));
-	else
-		return (handle_replace_export(app, cmd_args[1]));
+	return (ES_OK);
 }

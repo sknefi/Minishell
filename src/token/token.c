@@ -1,98 +1,126 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   token.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fkarika <fkarika@student.42prague.com>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/04 16:03:49 by tmateja           #+#    #+#             */
+/*   Updated: 2025/05/13 18:04:25 by tmateja          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
-static int	tokenization(t_token **token, char *line);
-static char	*extract_token(char *line, int *i);
+static int	tokenization(t_app *app, t_input *input);
+static char	*extract_token(t_input *input, t_app *app);
 static int	assign_type(char *token);
-static char	*get_path();
+static char	*get_path(void);
 
-int	prompt(t_token **token, t_ast_node **node)
+/*
+ * Basicly main fucntion for this part of program.
+ * Getting prompt from get_path().
+ * Reading line, if CTRL + D was pressed, it will exit.
+ * If something was typed, then passing token and line to tokenization.
+ * Return 1 to main, when fails, 0 on success.
+ */
+
+int	prompt(t_app *app, t_input *input)
 {
-	char	*line;
 	char	*shell_path;
 
-	*token = NULL;
-	line = NULL;
+	app->token = NULL;
+	input->line = NULL;
+	input->i = 0;
 	shell_path = get_path();
-	line = readline(shell_path);
+	input->line = readline(shell_path);
 	free(shell_path);
-	if (!line)
+	if (!input->line)
 	{
-		free(line);
-		write(1, "exit\n", 5);
-		free_ast(*node);
-		exit(EXIT_SUCCESS);
+		free(input->line);
+		return (-1);
 	}
-	if (*line)
+	if (input->line)
 	{
-		add_history(line);
-		if (tokenization(token, line))
+		add_history(input->line);
+		if (tokenization(app, input))
 		{
-			free(line);
+			free(input->line);
 			return (1);
 		}
 	}
-	free(line);
+	free(input->line);
 	return (0);
 }
 
-static int	tokenization(t_token **token, char *line)
+/*
+ * Tokenization function, takes token and line as parameter.
+ * Variable i is for iterating throught line. Every other function has i as 
+ * pointer, so they are always changing same i.
+ * When found character, its extracting token (extract_token()).
+ * Then assigning type and at last appending it.
+ * Return 1, when fails, 0 on success.
+ */
+
+static int	tokenization(t_app *app, t_input *input)
 {
-	int		i;
 	int		type;
 	char	*tmp;
 
-	i = 0;
-	while (line[i])
+	input->i = 0;
+	input->token_error = 0;
+	if (input->line[input->i] == 0x0)
+		return (1);
+	while (input->line[input->i])
 	{
-		while (line[i] && ft_isspace(line[i]))
-			i++;
-		if (!line || !line[i])
+		while (input->line[input->i] && ft_isspace(input->line[input->i]))
+			input->i++;
+		if (!input->line || !input->line[input->i])
 			break ;
-		tmp = extract_token(line, &i);
-		if (NULL == tmp)
+		tmp = extract_token(input, app);
+		if (NULL == tmp || input->token_error == 1)
 			return (1);
-		type = assign_type(tmp);
-		*token = token_append(*token, tmp, type);
+		if (tmp && tmp[0] != '\0')
+		{
+			type = assign_type(tmp);
+			app->token = token_append(app->token, tmp, type);
+		}
 		free(tmp);
 	}
 	return (0);
 }
 
+/*
+ * Takes input and app struct.
+ * Creates token variable (char).
+ * If redirection, then token becomes redirection token.
+ * Else creates word token.
+ * On error free token and returning NULL.
+ * Returns token.
+ */
 
-void	remove_quotes(char *str)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	if (NULL == str)
-		return ;
-	while (str[i] != '\0')
-	{
-		if (str[i] != '\'' && str[i] != '\"')
-		{
-			str[j] = str[i];
-			j++;
-		}
-		i++;
-	}
-	str[j] = '\0';
-}
-
-static char	*extract_token(char *line, int *i)
+static char	*extract_token(t_input *input, t_app *app)
 {
 	char	*token;
 
 	token = NULL;
-	if (line[*i] == '|' || line[*i] == '<' || line[*i] == '>')
-		token = handle_operators(line, i);
+	if (input->line[input->i] == '|' || input->line[input->i] == '<' \
+			|| input->line[input->i] == '>')
+		token = handle_operators(input, app);
 	else
-		token = handle_word(line, i);
+		token = handle_word(input, app);
+	if (token && input->token_error == 1)
+		free(token);
 	if (!token)
 		return (NULL);
 	return (token);
 }
+
+/*
+ * Takes token.
+ * Assigns token type to token.
+ * Returns token.
+ */
 
 static int	assign_type(char *token)
 {
@@ -109,7 +137,15 @@ static int	assign_type(char *token)
 	return (TOKEN_WORD);
 }
 
-static char	*get_path()
+/*
+ * Gets current workind directory and adding "$ " to it
+ * making it prompt of our programe.
+ * Prompt gets updates every directory change.
+ * Prompt is malloc'd, so need to free it afterwards.
+ * Returns prompt.
+ */
+
+static char	*get_path(void)
 {
 	char	*str;
 	char	*tmp;

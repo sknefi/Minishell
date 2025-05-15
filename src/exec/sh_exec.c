@@ -13,7 +13,7 @@ int	exec_ast_node(t_ast_node *node, t_app *app)
 	if (node->type == NODE_CMD)
 	{
 		status = exec_builtin(app, node->data);
-		if (status == 2) // command is not a builtin
+		if (status == NOT_BUILTIN)
 			status = exec_external(app, node->data);
 		return (status);
 	}
@@ -24,23 +24,18 @@ int	exec_ast_node(t_ast_node *node, t_app *app)
 	else if (node->type == NODE_APPEND)
 		return (handle_redirection_out(app, node));
 	else if (node->type == NODE_PIPE)
-	{
-		// create pipe
-		// fork left
-		// in left child: redirect stdout to pipe write-end, close read-end, exec_ast(left)
-		// fork right
-		// in right child: redirect stdin to pipe read-end, close write-end, exec_ast(right)
-		// in parent: wait for both
-	}
-	return (0);
+		return (handle_pipe(app, node));
+	else if (node->type == NODE_HEREDOC)
+		return (handle_heredoc(app, node));
+	return (ES_ERROR);
 }
 
 int	sh_exec(t_app *app)
 {
-	int status;
+	int	status;
 
 	if (!app->root)
-		return (0);
+		return (ES_ERROR);
 	status = exec_ast_node(app->root, app);
 	app->exit_status = status;
 	return (status);

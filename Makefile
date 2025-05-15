@@ -8,11 +8,13 @@ RESET         = \033[0m
 
 SRCS =  \
 		./src/signal/signals.c \
-		./src/token/token_utils.c \
-		./src/token/handle_word.c \
-		./src/token/ft_realloc_token.c \
-		./src/token/extract_token_utils.c \
+		\
 		./src/token/token.c \
+		./src/token/token_utils.c \
+		./src/token/handle_operators.c \
+		./src/token/handle_word.c \
+		./src/token/handle_word_utils.c \
+		./src/token/ft_realloc_token.c \
 		\
 		./src/ast/ast.c \
 		./src/ast/ast_utils.c \
@@ -38,6 +40,8 @@ SRCS =  \
 		./src/utils/utils_01_dpp.c \
 		./src/utils/visualizer.c \
 		\
+		./src/handlers/pipe.c \
+		./src/handlers/heredoc.c \
 		./src/handlers/redirection.c \
 		./src/handlers/redirection_utils.c \
 		\

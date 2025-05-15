@@ -23,6 +23,13 @@ typedef struct s_token
 	struct s_token	*prev;
 }	t_token;
 
+typedef struct s_input
+{
+	char	*line;
+	int		i;
+	int		token_error;
+}	t_input;
+
 /**
  * @brief Struct of builtins
  * name: name of the builtin
@@ -90,11 +97,12 @@ typedef enum e_node_types
 	NODE_REDIRECTION_OUT,
 	NODE_APPEND,
 	NODE_HEREDOC,
+	ERROR,
 }	t_node_types;
 
 typedef struct s_ast_node
 {
-	t_node_types				type;
+	t_node_types		type;
 	char				**data;
 	struct s_ast_node	*left;
 	struct s_ast_node	*right;

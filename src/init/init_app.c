@@ -19,7 +19,7 @@ t_app	*init_app(char **env)
 	app = (t_app *)malloc(sizeof(t_app));
 	if (!app)
 		return (NULL);
-	app->env = init_env(env); // this is for better memory management (for example - free on export)
+	app->env = init_env(env);
 	if (!app->env)
 		return (clean_app(app), NULL);
 	app->builtins = init_builtins();

@@ -1,34 +1,48 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signals.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fkarika <fkarika@student.42prague.com>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/04 14:54:04 by tmateja           #+#    #+#             */
+/*   Updated: 2025/05/14 20:29:45 by fkarika          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 static void	sigint_handler(int sig);
-// static void	sigquit_handler(int sig);
 
-void	sig_handler()
+/*
+ * Signal handler
+ * When Ctrl + C ...
+ * Ignoring Ctrl + D, as it is EOF and it will be detected
+ * in token.c
+ */
+
+void	sig_handler(void)
 {
 	struct sigaction	sa;
 
-	// Handle SIGINT
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = 0;
 	sa.sa_handler = sigint_handler;
 	sigaction(SIGINT, &sa, NULL);
-
-	//Handle SIGQUIT
 	sa.sa_handler = SIG_IGN;
 	sigaction(SIGQUIT, &sa, NULL);
 }
 
-//TODO error codes
+/*
+ * Handler for Ctrl + C
+ */
 
 static void	sigint_handler(int sig)
 {
 	(void)sig;
 
 	write(STDOUT_FILENO, "^C\n", 3);
+	// rl_replace_line("", 0);
+	// rl_on_new_line();
+	// rl_redisplay();
 }
-
-// static void	sigquit_handler(int sig)
-// {
-// 	(void)sig;
-// 	//TODO
-// }
