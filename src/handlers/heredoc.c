@@ -8,23 +8,29 @@
  * @param pipe_write File descriptor to write to
  * @return 0 on success, 1 on failure
  */
-static int read_heredoc_input(char *delimeter, int pipe_write)
+static int	read_heredoc_input(char *delimeter, int pipe_write, t_app *app)
 {
-	char *line;
+	char	*line;
+	t_input	input;
 
 	while (1)
 	{
 		line = readline(HEREDOC_INPUT);
 		if (!line)
-			break;
+			break ;
 		if (ft_strcmp(line, delimeter) == 0)
 		{
 			free(line);
-			break;
+			break ;
 		}
+		ft_memset(&input, 0, sizeof(t_input));
+		input.line = ft_strdup(line);
+		free(line);
+		line = handle_word(&input, app);
 		write(pipe_write, line, ft_strlen(line));
 		write(pipe_write, "\n", 1);
 		free(line);
+		free(input.line);
 	}
 	return (0);
 }
@@ -43,7 +49,7 @@ int	handle_heredoc(t_app *app, t_ast_node *node)
 
 	if (pipe(pipefd) < 0)
 		return (ft_printf(""), 1);
-	read_heredoc_input(node->data[0], pipefd[1]);
+	read_heredoc_input(node->data[0], pipefd[1], app);
 	close(pipefd[1]);
 	saved_stdin = dup(STDIN_FILENO);
 	dup2(pipefd[0], STDIN_FILENO);

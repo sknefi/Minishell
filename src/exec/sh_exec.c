@@ -1,9 +1,5 @@
 #include "../../include/minishell.h"
 
-// -1 - malloc failed
-//  0 - success
-//  1 - too many arguments
-//  2 - command is not a builtin
 int	exec_ast_node(t_ast_node *node, t_app *app)
 {
 	int	status;

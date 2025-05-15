@@ -91,7 +91,7 @@ static char	*merge_args(char **cmd_args, int start, int n_flag)
 	size_t	total_len;
 
 	total_len = count_chars(cmd_args, start, n_flag);
-	result = ft_calloc(total_len, sizeof(char));
+	result = ft_calloc(total_len + 1, sizeof(char));
 	if (!result)
 		return (NULL);
 	copy_args(result, cmd_args, start, n_flag);
