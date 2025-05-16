@@ -38,7 +38,6 @@ SRCS =  \
 		./src/exec/exec_builtin.c \
 		\
 		./src/utils/utils_01_dpp.c \
-		./src/utils/visualizer.c \
 		\
 		./src/handlers/pipe.c \
 		./src/handlers/heredoc.c \

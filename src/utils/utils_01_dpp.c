@@ -1,5 +1,4 @@
 #include "../../include/minishell.h"
-// utils for double pointer functions
 
 size_t	count_pointer(char **str)
 {

@@ -21,4 +21,11 @@ void	free_env(char **env);
  */
 void	show_env_prefix(char **env);
 
+/**
+ * @brief Sorts the environment variables
+ * @param env The environment variables
+ * @return The sorted environment variables on heap
+ */
+char	**env_sort(char **env);
+
 #endif
