@@ -76,7 +76,7 @@ static int	tokenization(t_app *app, t_input *input)
 	{
 		while (input->line[input->i] && ft_isspace(input->line[input->i]))
 			input->i++;
-		if (!input->line || !input->line[input->i])
+		if (!input->line)
 			return (1);
 		tmp = extract_token(input, app);
 		if (NULL == tmp || input->token_error == 1)
