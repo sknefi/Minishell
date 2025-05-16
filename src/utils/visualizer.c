@@ -43,6 +43,7 @@ void	print_ast(const t_ast_node *node, int depth, int is_left)
 	}
 
 	print_prefix(depth, is_left);
+	printf("%s", is_left ? "L" : "R");
 	printf("[%s", node_type_to_str(node->type));
 	print_cmd_data(node->data);
 	printf("]\n");
@@ -58,3 +59,13 @@ void	print_ast(const t_ast_node *node, int depth, int is_left)
 }
 
 /* ----- End of visualizer ----- */
+
+/* ----- Put into main	   -----*/
+	//t_token	*tmp;
+	//print_ast(app->root, 0, 0);
+	// tmp = app->token;
+	// while (tmp)
+	// {
+	// 	printf("Token: %-10s | Typ: %d\n", tmp->data, tmp->type);
+	// 	tmp = tmp->next;
+	// 		// }

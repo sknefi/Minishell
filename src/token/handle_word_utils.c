@@ -6,7 +6,7 @@
 /*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 21:46:31 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/13 18:04:44 by tmateja          ###   ########.fr       */
+/*   Updated: 2025/05/16 13:01:32 by tmateja          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	grow_token(t_app *app, char **token, size_t *size, char c)
 
 	buffer = ft_realloc_token(*token, *size + 2);
 	if (!buffer)
-		return (app->exit_status = 1, 1); //TODO change to ES_ERROR
+		return (app->exit_status = ES_FAILED, 1);
 	*token = buffer;
 	(*token)[(*size)++] = c;
 	(*token)[(*size)] = '\0';

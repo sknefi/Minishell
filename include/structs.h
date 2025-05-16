@@ -118,6 +118,7 @@ typedef struct s_ast_node
 */
 typedef struct s_app
 {
+	int			term_stdout;
 	int			exit_status;
 	char		**env;
 	t_builtin	**builtins;

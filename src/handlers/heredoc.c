@@ -3,22 +3,43 @@
 #define HEREDOC_INPUT "> "
 
 /**
- * @brief Read input from heredoc and write to pipe
- * @param delimeter The delimiter to stop reading
- * @param pipe_write File descriptor to write to
+ * @brief Read a single line from heredoc prompt,
+ * ensuring output goes to terminal
+ * @param app The application (contains saved terminal stdout)
+ * @return The input line (must be freed by caller), or NULL on EOF
+ */
+char	*read_heredoc_line(t_app *app)
+{
+	int		saved_stdout;
+	char	*line;
+
+	saved_stdout = dup(STDOUT_FILENO);
+	if (app->term_stdout >= 0)
+		dup2(app->term_stdout, STDOUT_FILENO);
+	line = readline(HEREDOC_INPUT);
+	dup2(saved_stdout, STDOUT_FILENO);
+	close(saved_stdout);
+	return (line);
+}
+
+/**
+ * @brief Read heredoc input and write to pipe until the delimiter is matched
+ * @param delimiter The string that ends the heredoc
+ * @param pipe_write The write-end of the heredoc pipe
+ * @param app Shell context (used for terminal FD and word expansion)
  * @return 0 on success, 1 on failure
  */
-static int	read_heredoc_input(char *delimeter, int pipe_write, t_app *app)
+int	read_heredoc_input(char *delimiter, int pipe_write, t_app *app)
 {
 	char	*line;
 	t_input	input;
 
 	while (1)
 	{
-		line = readline(HEREDOC_INPUT);
+		line = read_heredoc_line(app);
 		if (!line)
 			break ;
-		if (ft_strcmp(line, delimeter) == 0)
+		if (ft_strcmp(line, delimiter) == 0)
 		{
 			free(line);
 			break ;
