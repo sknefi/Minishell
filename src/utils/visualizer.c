@@ -43,6 +43,7 @@ void	print_ast(const t_ast_node *node, int depth, int is_left)
 	}
 
 	print_prefix(depth, is_left);
+	printf("%s", is_left ? "L" : "R");
 	printf("[%s", node_type_to_str(node->type));
 	print_cmd_data(node->data);
 	printf("]\n");

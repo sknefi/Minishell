@@ -31,7 +31,7 @@ int	main(int argc, char **argv, char **env)
 			continue ;
 		}
 		else if (prompt_res == -1)
-			return (clean_app(app), EXIT_FAILURE);
+			return (clean_app(app), EXIT_SUCCESS);
 		app->exit_status = prompt_res;
 		app->root = parse(app->token, app);
 		if (!app->root)
