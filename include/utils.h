@@ -28,14 +28,13 @@ void	free_dpp(char **str);
  * @param str The string to check
  * @return 1 if the string contains an equal sign, 0 otherwise
  */
-int	contains_equal_sign(char *str);
+int		contains_equal_sign(char *str);
 
 // TYM_COMMENT
-char	*ft_strjoin_free(char *s1, char *s2);
 void	*ft_realloc_token(void *ptr, size_t size);
-int		ft_isspace(char	c);
+int		ft_isspace(char c);
 int		ft_strcmp(const char *s1, const char *s2);
-int		ft_isspace(char	c);
+int		ft_isspace(char c);
 int		ft_strcmp(const char *s1, const char *s2);
 
 #endif

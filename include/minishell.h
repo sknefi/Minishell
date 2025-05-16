@@ -1,5 +1,5 @@
-#ifndef MINISHEL_H
-# define MINISHEL_H
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
 // sh -> shell
 // ast -> abstract syntax tree
@@ -21,7 +21,6 @@
 # include <fcntl.h>
 # include <sys/types.h>
 # include <sys/stat.h>
-
 
 // INCLUDES
 # include "../libft_divinus/libft.h"
@@ -63,24 +62,27 @@ void	clean_app(t_app *app);
  * @brief Executes a command (builtin or external)
  * @param app The application
  * @param token The token
- * @return 0 on success, 1 on failure (command not found), -1 on failure (malloc failed)
+ * @return 0 on success, 1 on failure (command not found), 
+ * -1 on failure (malloc failed) or anything that exec_external returns
 */
-int	sh_exec(t_app *app);
+int		sh_exec(t_app *app);
 
 /**
  * @brief Executes an external command
  * @param app The application
  * @param cmd_args The command arguments
- * @return 0 on success, 1 on failure (command not found), -1 on failure (malloc failed)
+ * @return 0 on success, 1 on failure (command not found), 
+ * -1 on failure (malloc failed) or anything that exec_external returns
 */
-int	exec_external(t_app *app, char **cmd_args);
+int		exec_external(t_app *app, char **cmd_args);
 
 /**
  * @brief Executes an AST node
  * @param node The AST node
  * @param app The application
- * @return 0 on success, 1 on failure (command not found), -1 on failure (malloc failed)
+ * @return 0 on success, 1 on failure (command not found), 
+ * -1 on failure (malloc failed) or anything that exec_external returns
 */
-int	exec_ast_node(t_ast_node *node, t_app *app);
+int		exec_ast_node(t_ast_node *node, t_app *app);
 
 #endif
