@@ -36,6 +36,7 @@ int	main(int argc, char **argv, char **env)
 		app->root = parse(app->token, app);
 		if (!app->root)
 		{
+			free(app->input->line);
 			free_ast(app->root);
 			free_tokens(app->token);
 			continue ;
@@ -43,6 +44,7 @@ int	main(int argc, char **argv, char **env)
 		sh_exec(app);
 		free_ast(app->root);
 		free_tokens(app->token);
+		free(app->input->line);
 		app->root = NULL;
 	}
 	clean_app(app);

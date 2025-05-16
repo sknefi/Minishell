@@ -45,7 +45,6 @@ int	prompt(t_app *app, t_input *input)
 		if (tokenization(app, input))
 			return (free(input->line), 1);
 	}
-	free(input->line);
 	return (0);
 }
 
