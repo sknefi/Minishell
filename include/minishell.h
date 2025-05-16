@@ -29,7 +29,6 @@
 # include "token.h"
 # include "utils.h"
 # include "ast.h"
-# include "visualizer.h"
 # include "handlers.h"
 # include "signals.h"
 # include "env.h"

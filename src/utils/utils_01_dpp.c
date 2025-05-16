@@ -3,7 +3,7 @@
 
 size_t	count_pointer(char **str)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while (str[i])
