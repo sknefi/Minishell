@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 16:03:49 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/15 19:05:36 by tmateja          ###   ########.fr       */
+/*   Updated: 2025/05/15 20:34:22 by fkarika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,7 @@ int	prompt(t_app *app, t_input *input)
 	input->line = readline(shell_path);
 	free(shell_path);
 	if (!input->line)
-	{
-		free(input->line);
 		return (-1);
-	}
 	if (input->line[input->i] == 0x0)
 	{
 		free(input->line);
@@ -79,7 +76,7 @@ static int	tokenization(t_app *app, t_input *input)
 	{
 		while (input->line[input->i] && ft_isspace(input->line[input->i]))
 			input->i++;
-		if (!input->line || !input->line[input->i])
+		if (!input->line)
 			return (1);
 		tmp = extract_token(input, app);
 		if (NULL == tmp || input->token_error == 1)

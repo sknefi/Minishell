@@ -13,29 +13,25 @@
 int	main(int argc, char **argv, char **env)
 {
 	t_app		*app;
-	t_input		*input;
-	t_token		*tmp;
+	//t_token		*tmp;
 
 	// I am crying 
 	(void)argc;
 	(void)argv;
 	app = init_app(env);
-	input = malloc(sizeof(t_input));
-	if (!input)
-		return (free(app), EXIT_FAILURE);
 	if (!app)
-		return (EXIT_FAILURE);
+		return (clean_app(app), EXIT_FAILURE);
 	sig_handler();
 	while (1)
 	{
-		int prompt_res = prompt(app, input);
+		int prompt_res = prompt(app, app->input);
 		if (prompt_res == 1)
 		{
 			free_tokens(app->token);
 			continue ;
 		}
 		else if (prompt_res == -1)
-			return (clean_app(app), free(input), EXIT_FAILURE);
+			return (clean_app(app), EXIT_FAILURE);
 		app->exit_status = prompt_res;
 		app->root = parse(app->token, app);
 		if (!app->root)
@@ -45,12 +41,12 @@ int	main(int argc, char **argv, char **env)
 			continue ;
 		}
 		print_ast(app->root, 0, 0);
-		tmp = app->token;
-    	while (tmp)
-    	{
-        	printf("Token: %-10s | Typ: %d\n", tmp->data, tmp->type);
-        	tmp = tmp->next;
-    	}
+		// tmp = app->token;
+    	// while (tmp)
+    	// {
+        // 	printf("Token: %-10s | Typ: %d\n", tmp->data, tmp->type);
+        // 	tmp = tmp->next;
+    	// }
 		sh_exec(app);
 		printf(Y "exit status: %d\n" RST, app->exit_status);
 		free_ast(app->root);

@@ -17,10 +17,12 @@ static void	handle_left_child(t_app *app, t_ast_node *node, int *pipefd)
 		ft_printf(RED "Error: dup2 failed in left child\n" RST);
 		close(pipefd[1]);
 		clean_app(app);
+		rl_clear_history();
 		exit(EXIT_FAILURE);
 	}
 	close(pipefd[1]);
 	exit_status = exec_ast_node(node->left, app);
+	rl_clear_history();
 	clean_app(app);
 	exit(exit_status);
 }
@@ -42,10 +44,12 @@ static void	handle_right_child(t_app *app, t_ast_node *node, int *pipefd)
 		ft_printf(RED "Error: dup2 failed in right child\n" RST);
 		close(pipefd[0]);
 		clean_app(app);
+		rl_clear_history();
 		exit(EXIT_FAILURE);
 	}
 	close(pipefd[0]);
 	exit_status = exec_ast_node(node->right, app);
+	rl_clear_history();
 	clean_app(app);
 	exit(exit_status);
 }
