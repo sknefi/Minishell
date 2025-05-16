@@ -59,4 +59,10 @@ int			handle_pipe(t_app *app, t_ast_node *node);
  */
 int			handle_heredoc(t_app *app, t_ast_node *node);
 
+/**
+ * @brief Close the pipe
+ * @param pipefd The pipe file descriptors
+ */
+void	    close_pipe(int *pipefd);
+
 #endif

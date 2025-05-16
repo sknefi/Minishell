@@ -4,7 +4,7 @@
 // sh -> shell
 // ast -> abstract syntax tree
 // env -> environment
-
+static int    g_heredoc_interrupted = 0;
 // LIBRARIES
 # include <stdlib.h>
 # include <unistd.h>
