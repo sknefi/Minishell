@@ -14,19 +14,18 @@ char	**init_env(char **env);
  */
 void	free_env(char **env);
 
-
 /**
  * @brief Shows the environment variables with the prefix "declare -x " 
  * - bash behavior
  * @param env The environment variables
  */
-void show_env_prefix(char **env);
+void	show_env_prefix(char **env);
 
 /**
- * @brief Creates an environment row with quotes
- * @param str The environment row
- * @return The environment row with quotes
+ * @brief Sorts the environment variables
+ * @param env The environment variables
+ * @return The sorted environment variables on heap
  */
-char	*create_env_row_with_quotes(char *str);
+char	**env_sort(char **env);
 
 #endif

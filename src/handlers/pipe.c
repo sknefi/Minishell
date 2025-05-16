@@ -54,11 +54,7 @@ static void	handle_right_child(t_app *app, t_ast_node *node, int *pipefd)
 	exit(exit_status);
 }
 
-/**
- * @brief Close the pipe
- * @param pipefd The pipe file descriptors
- */
-static void	close_pipe(int *pipefd)
+void	close_pipe(int *pipefd)
 {
 	close(pipefd[0]);
 	close(pipefd[1]);

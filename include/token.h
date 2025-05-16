@@ -1,7 +1,7 @@
 #ifndef TOKEN_H
 # define TOKEN_H
 
-#include <stdio.h>
+# include <stdio.h>
 # include "structs.h"
 
 int		prompt(t_app *app, t_input *input);

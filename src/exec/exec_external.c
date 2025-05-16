@@ -91,6 +91,7 @@ int	exec_external(t_app *app, char **cmd_args)
 	char	*cmd_path;
 	pid_t	pid;
 
+	status = 0;
 	cmd_path = choose_cmd_path(app, cmd_args);
 	if (!cmd_path)
 		return (ES_CMD_NOT_FOUND);
