@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 16:03:49 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/15 20:34:22 by fkarika          ###   ########.fr       */
+/*   Updated: 2025/05/16 13:00:42 by tmateja          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,12 @@ int	prompt(t_app *app, t_input *input)
 	if (!input->line)
 		return (-1);
 	if (input->line[input->i] == 0x0)
-	{
-		free(input->line);
-		return (1);
-
-	}
+		return (free(input->line), 1);
 	if (input->line)
 	{
 		add_history(input->line);
 		if (tokenization(app, input))
-		{
-			free(input->line);
-			return (1);
-		}
+			return (free(input->line), 1);
 	}
 	free(input->line);
 	return (0);
@@ -110,11 +103,10 @@ static char	*extract_token(t_input *input, t_app *app)
 		token = handle_operators(input, app);
 	else
 		token = handle_word(input, app);
-	if (token &&input->token_error == 1)
+	if (token && input->token_error == 1)
 		free(token);
 	if (!token)
 		return (NULL);
-	//if (token == '')
 	return (token);
 }
 

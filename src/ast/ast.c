@@ -6,7 +6,7 @@
 /*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 20:47:33 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/13 18:27:44 by tmateja          ###   ########.fr       */
+/*   Updated: 2025/05/16 13:05:36 by tmateja          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_ast_node	*parse(t_token *tokens, t_app *app)
 	root = handle_pipes(&tokens);
 	if (!root)
 	{
-		app->exit_status = 1; //change to ES_ERROR
+		app->exit_status = ES_ERROR;
 		return (NULL);
 	}
 	return (root);

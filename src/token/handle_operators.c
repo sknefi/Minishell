@@ -6,7 +6,7 @@
 /*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 15:01:11 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/09 20:30:43 by tmateja          ###   ########.fr       */
+/*   Updated: 2025/05/16 13:02:04 by tmateja          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,14 @@ char	*handle_operators(t_input *input, t_app *app)
 				input->i += 2;
 			else
 				return (ft_printf("Syntax error near unexpected token\n"), \
-					app->exit_status = 1, NULL); //change to ES_ERROR
+					app->exit_status = ES_ERROR, NULL);
 		}
 		else
 			input->i++;
 	}
 	else
 		return (ft_printf("Syntax error near unexpected token\n"), \
-			app->exit_status = 1, NULL); //change to ES_ERROR
+			app->exit_status = ES_ERROR, NULL);
 	token = ft_substr(input->line, start, input->i - start);
 	return (token);
 }
