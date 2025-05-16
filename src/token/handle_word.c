@@ -6,7 +6,7 @@
 /*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 16:09:17 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/09 21:12:17 by tmateja          ###   ########.fr       */
+/*   Updated: 2025/05/16 13:04:27 by tmateja          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,13 +95,13 @@ static int	handle_single_quotes(t_input *input, char **token, \
 	while (input->line[input->i] && input->line[input->i] != '\'')
 	{
 		if (grow_token(app, token, size, input->line[input->i++]))
-			return (1); //TODO
+			return (1);
 	}
 	if (input->line[input->i] != '\'')
 	{
 		ft_printf("Syntax error: quotes not closed honey\n");
 		input->token_error = 1;
-		app->exit_status = 1; //change to ES_ERROR
+		app->exit_status = ES_ERROR;
 	}
 	else
 		input->i++;
@@ -126,19 +126,19 @@ static int	handle_double_quotes(t_input *input, char **token, \
 		if (input->line[input->i] == '$')
 		{
 			if (expand_env(input, token, size, app))
-				return (1); //TODO
+				return (1);
 		}
 		else
 		{
 			if (grow_token(app, token, size, input->line[input->i++]))
-				return (1); //TODO
+				return (1);
 		}
 	}
 	if (input->line[input->i] != '\"')
 	{
 		ft_printf("Syntax error: quotes not closed honey\n");
 		input->token_error = 1;
-		app->exit_status = 1; //change to ES_ERROR
+		app->exit_status = ES_ERROR;
 	}
 	else
 		input->i++;
@@ -155,12 +155,12 @@ static int	expand_dollar(t_input *input, char **token, \
 {
 	if (input->line[input->i + 1] && input->line[input->i + 1] == '?')
 	{
-		if (expand_exit_status(input, token, size, app)) //TODO
+		if (expand_exit_status(input, token, size, app))
 			return (1);
 	}
 	else
 	{
-		if (expand_env(input, token, size, app)) //TODO
+		if (expand_env(input, token, size, app))
 			return (1);
 	}
 	return (0);

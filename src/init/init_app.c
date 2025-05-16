@@ -8,10 +8,10 @@ void	clean_app(t_app *app)
 		free_builtins(app->builtins);
 		free_tokens(app->token);
 		free_ast(app->root);
-		if (app->input->line)
-			free(app->input->line);
 		if (app->input)
 			free(app->input);
+		if (app->term_stdout > STDERR_FILENO)
+			close(app->term_stdout);
 		free(app);
 	}
 }
@@ -35,5 +35,6 @@ t_app	*init_app(char **env)
 	app->exit_status = 0;
 	app->token = NULL;
 	app->root = NULL;
+	app->term_stdout = dup(STDOUT_FILENO);
 	return (app);
 }

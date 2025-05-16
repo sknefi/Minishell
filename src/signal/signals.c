@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fkarika <fkarika@student.42prague.com>     +#+  +:+       +#+        */
+/*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 14:54:04 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/15 19:09:51 by tmateja          ###   ########.fr       */
+/*   Updated: 2025/05/16 13:05:15 by tmateja          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	sig_handler(void)
 static void	sigint_handler(int sig)
 {
 	(void)sig;
-  
 	write(STDOUT_FILENO, "\n", 1);
 	rl_replace_line("", 0);
 	rl_on_new_line();
