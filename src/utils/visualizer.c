@@ -58,3 +58,13 @@ void	print_ast(const t_ast_node *node, int depth, int is_left)
 }
 
 /* ----- End of visualizer ----- */
+
+/* ----- Put into main	   -----*/
+	//t_token	*tmp;
+	//print_ast(app->root, 0, 0);
+	// tmp = app->token;
+	// while (tmp)
+	// {
+	// 	printf("Token: %-10s | Typ: %d\n", tmp->data, tmp->type);
+	// 	tmp = tmp->next;
+	// 		// }

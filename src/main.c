@@ -1,21 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/16 13:13:05 by tmateja           #+#    #+#             */
+/*   Updated: 2025/05/16 13:14:57 by tmateja          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
-
-// t_input	*init_input(void)
-// {
-// 	t_input	*input;
-
-// 	input = NULL;
-// 	input->i = 0;
-// 	input->line = NULL;
-// 	return(input);
-// }
 
 int	main(int argc, char **argv, char **env)
 {
 	t_app		*app;
-	//t_token		*tmp;
 
-	// I am crying 
 	(void)argc;
 	(void)argv;
 	app = init_app(env);
@@ -40,15 +40,7 @@ int	main(int argc, char **argv, char **env)
 			free_tokens(app->token);
 			continue ;
 		}
-		print_ast(app->root, 0, 0);
-		// tmp = app->token;
-    	// while (tmp)
-    	// {
-        // 	printf("Token: %-10s | Typ: %d\n", tmp->data, tmp->type);
-        // 	tmp = tmp->next;
-    	// }
 		sh_exec(app);
-		printf(Y "exit status: %d\n" RST, app->exit_status);
 		free_ast(app->root);
 		free_tokens(app->token);
 		app->root = NULL;
