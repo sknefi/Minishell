@@ -1,7 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/23 17:23:24 by fkarika           #+#    #+#             */
+/*   Updated: 2025/05/23 17:23:56 by fkarika          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
-#include <readline/readline.h>
-#include <stdlib.h>
-#include <unistd.h>
 
 #define HEREDOC_INPUT "> "
 
@@ -41,35 +50,35 @@ char    *read_heredoc_line(t_app *app)
  * @param app Shell context (used for terminal FD and word expansion)
  * @return Does not return - exits with status 0 on success, 130 on interrupt
  */
-static void    heredoc_child_process(char *delimiter, int pipe_write, t_app *app)
+static void	heredoc_child_process(char *delimiter, int pipe_write, t_app *app)
 {
-    char    	*line;
-    t_input		input;
+	char		*line;
+	t_input		input;
 
-    setup_heredoc_signals();
-    while (!g_heredoc)
-    {
-        line = read_heredoc_line(app);
+	setup_heredoc_signals();
+	while (!g_heredoc)
+	{
+		line = read_heredoc_line(app);
 		if (!line)
-        {
-            free(line);
-            break;
-        }
-        if (ft_strcmp(line, delimiter) == 0)
-        {
-            free(line);
-            break;
-        }
-        ft_memset(&input, 0, sizeof(t_input));
-        input.line = ft_strdup(line);
-        free(line);
-        line = handle_word(&input, app);
-        write(pipe_write, line, ft_strlen(line));
-        write(pipe_write, "\n", 1);
-        free(line);
-        free(input.line);
-    }
-    close(pipe_write);
+		{
+			free(line);
+			break;
+		}
+		if (ft_strcmp(line, delimiter) == 0)
+		{
+			free(line);
+			break;
+		}
+		ft_memset(&input, 0, sizeof(t_input));
+		input.line = ft_strdup(line);
+		free(line);
+		line = handle_word(&input, app);
+		write(pipe_write, line, ft_strlen(line));
+		write(pipe_write, "\n", 1);
+		free(line);
+		free(input.line);
+	}
+	close(pipe_write);
 	rl_clear_history();
 	clean_app(app);
 	if (g_heredoc)
@@ -86,7 +95,7 @@ static void    heredoc_child_process(char *delimiter, int pipe_write, t_app *app
  * @param node The node to handle
  * @return 0 on success, 1 on failure
  */
-int handle_heredoc(t_app *app, t_ast_node *node)
+int	handle_heredoc(t_app *app, t_ast_node *node)
 {
 	int		status;
 	int		wstatus;
@@ -117,7 +126,7 @@ int handle_heredoc(t_app *app, t_ast_node *node)
 	// we restore the main signals handlers for the parent process
 	sig_handler();
 	status = get_child_exit_status(wstatus);
-	if (status != ES_SIG_NOT_USED)
+	if (status != CHILD_NO_STATUS)
 		return (close(pipefd[0]), status);
 	save_stdin = dup(STDIN_FILENO);
 	dup2(pipefd[0], STDIN_FILENO);

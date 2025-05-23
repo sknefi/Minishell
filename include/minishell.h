@@ -6,7 +6,7 @@
 /*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:08:05 by fkarika           #+#    #+#             */
-/*   Updated: 2025/05/23 17:16:22 by fkarika          ###   ########.fr       */
+/*   Updated: 2025/05/23 17:21:39 by fkarika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@
 # include <sys/stat.h>
 
 // INCLUDES
-# include "../libft_divinus/libft.h"
 # include "structs.h"
 # include "builtin.h"
 # include "token.h"
