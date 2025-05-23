@@ -33,6 +33,7 @@ SRCS =  \
 		./src/init/init_app.c \
 		./src/init/init_env.c \
 		\
+		./src/exec/status_res.c \
 		./src/exec/sh_exec.c \
 		./src/exec/exec_external.c \
 		./src/exec/exec_builtin.c \

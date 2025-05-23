@@ -58,8 +58,8 @@ static char	*find_executable(char **all_paths, char *cmd)
  */
 static char	*get_cmd_path(t_app *app, char **cmd_args)
 {
-	char	**all_paths;
 	char	*executable_path;
+	char	**all_paths;
 
 	all_paths = get_all_paths(app);
 	if (!all_paths)
@@ -88,29 +88,30 @@ static char	*choose_cmd_path(t_app *app, char **cmd_args)
 int	exec_external(t_app *app, char **cmd_args)
 {
 	int		status;
+	int		wstatus;
 	char	*cmd_path;
 	pid_t	pid;
 
-	status = 0;
 	cmd_path = choose_cmd_path(app, cmd_args);
 	if (!cmd_path)
 		return (ES_CMD_NOT_FOUND);
 	pid = fork();
 	if (pid < 0)
-	{
-		ft_printf(RED "Error: fork failed\n" RST);
-		return (free(cmd_path), ES_ERROR);
-	}
+		return (free(cmd_path), ft_printf("Error: fork failed\n"), ES_ERROR);
 	if (pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		execve(cmd_path, cmd_args, app->env);
 		ft_printf(RED "Error: execve failed\n" RST);
 		free(cmd_path);
-		exit(1);
+		clean_app(app);
+		exit(EXIT_FAILURE);
 	}
-	waitpid(pid, &status, 0);
+	waitpid(pid, &wstatus, 0);
 	free(cmd_path);
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
+	status = get_child_exit_status(wstatus);
+	if (status != ES_SIG_NOT_USED)
+		return (status);
 	return (ES_ERROR);
 }

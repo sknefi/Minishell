@@ -33,12 +33,12 @@ int	sh_exec(t_app *app)
 
 	if (!app->root)
 		return (ES_ERROR);
-	signal(SIGINT, NULL); //change
-	signal(SIGQUIT, NULL); //change
+
+	ignore_int_quit();
 	status = exec_ast_node(app->root, app);
+	sig_handler();
 	if (status == ES_CMD_NOT_FOUND)
 		ft_printf("%s: command not found\n", app->root->data[0]);
 	app->exit_status = status;
-	sig_handler(); //change
 	return (status);
 }

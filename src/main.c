@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:13:05 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/22 20:54:59 by tmateja          ###   ########.fr       */
+/*   Updated: 2025/05/23 13:31:22 by fkarika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	main(int argc, char **argv, char **env)
 	helper = 0;
 	sig_handler();
 	if (shell_loop(app, helper))
-		return (1);
+		return (clean_app(app), EXIT_FAILURE);
 	clean_app(app);
 	return (0);
 }

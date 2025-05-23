@@ -41,11 +41,14 @@
 # define RST 	"\033[0m"
 
 // EXIT STATUS
+# define ES_SIG_NOT_USED	 -3
 # define NOT_BUILTIN 		 -2
 # define ES_FAILED	 		 -1
 # define ES_OK				  0
 # define ES_ERROR			  1
 # define ES_CMD_NOT_FOUND	127
+# define ES_EXIT			130
+# define ES_SIGQUIT			131
 
 /**
  * @brief Initialize the app struct
@@ -83,5 +86,7 @@ int		exec_external(t_app *app, char **cmd_args);
  * -1 on failure (malloc failed) or anything that exec_external returns
 */
 int		exec_ast_node(t_ast_node *node, t_app *app);
+
+int	    get_child_exit_status(int status);
 
 #endif

@@ -3,53 +3,21 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-static volatile int	g_heredoc = 0;
-
 #define HEREDOC_INPUT "> "
 
-/**
- * @brief Signal handler for heredoc mode
- * @param sig The signal number
- */
-static void heredoc_signal_handler(int sig)
-{
-    if (sig == SIGINT || sig == SIGQUIT)
-    {
-		//rl_done = 1;
-        g_heredoc = 1;
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
-		write(1, "\n", 1);
-		rl_done = 1;
-        //close(STDIN_FILENO);
-		exit(130);
-    }
-}
-/**
- * @brief Set up signal handlers for heredoc mode
- */
-static void    setup_heredoc_signals(void)
-{
-    struct sigaction    sa;
-
-    sigemptyset(&sa.sa_mask);
-    sa.sa_flags = 0;
-    sa.sa_handler = heredoc_signal_handler;
-    sigaction(SIGINT, &sa, NULL);
-    sigaction(SIGQUIT, &sa, NULL);
-}
+volatile int	g_heredoc;
 
 /**
  * @brief Read a single line from heredoc prompt,
  * ensuring output goes to terminal
+ * I love norminette
  * @param app The application (contains saved terminal stdout)
  * @return The input line (must be freed by caller), or NULL on EOF
  */
 char    *read_heredoc_line(t_app *app)
 {
-    int        saved_stdout;
-    char    *line;
+    int		saved_stdout;
+    char	*line;
 
     saved_stdout = dup(STDOUT_FILENO);
     if (app->term_stdout >= 0)
@@ -75,14 +43,13 @@ char    *read_heredoc_line(t_app *app)
  */
 static void    heredoc_child_process(char *delimiter, int pipe_write, t_app *app)
 {
-    char    *line;
-    t_input    input;
+    char    	*line;
+    t_input		input;
 
     setup_heredoc_signals();
     while (!g_heredoc)
     {
         line = read_heredoc_line(app);
-        write(1, "[readline done]\n", 16);
 		if (!line)
         {
             free(line);
@@ -105,7 +72,12 @@ static void    heredoc_child_process(char *delimiter, int pipe_write, t_app *app
     close(pipe_write);
 	rl_clear_history();
 	clean_app(app);
-    exit(g_heredoc ? 130 : 0);
+	if (g_heredoc)
+	{
+		write(1, "\n", 1);
+		exit(130);
+	}
+	exit(0);
 }
 
 /**
@@ -116,55 +88,42 @@ static void    heredoc_child_process(char *delimiter, int pipe_write, t_app *app
  */
 int handle_heredoc(t_app *app, t_ast_node *node)
 {
-	int     pipefd[2];
-	int     saved_stdin;
-	pid_t   pid;
-	int     wstatus = 0;
-	int     status;
-
+	int		status;
+	int		wstatus;
+	int		pipefd[2];
+	int		save_stdin;
+	pid_t	pid;
+	
 	g_heredoc = 0;
 	if (pipe(pipefd) < 0)
-		return (ft_printf("Pipe error\n"), 1);
-
+		return (ft_printf("Error: pipe"), 1);
 	pid = fork();
 	if (pid < 0)
-	{
-		close(pipefd[0]);
-		close(pipefd[1]);
-		return (ft_printf("Fork error\n"), 1);
-	}
-
+		return (ft_printf("Error: fork"), close_pipe(pipefd), 1);
 	if (pid == 0)
 		heredoc_child_process(node->data[0], pipefd[1], app);
-	// Parent process
-	close(pipefd[1]);
-	signal(SIGINT, SIG_IGN);
-	if (waitpid(pid, &wstatus, 0) < 1)
-	{
-		sig_handler();
-		close(pipefd[0]);
-		app->exit_status = 1;
-		return (1);
-	}
 
-	// If heredoc was interrupted (Ctrl+C), skip execution
-	if (WIFEXITED(wstatus) && WEXITSTATUS(wstatus) == 130)
-	{
-		sig_handler();
-		close(pipefd[0]);
-		return (130);  // Skip running the actual command
-	}
+	// here starts parent process
+	close(pipefd[1]); // we dont need to write into the pipe anymore
+
+	// ignore both CTRL-C and CTRL-\ here
+	// we make sure that the parent process ignores them so it wont kill the parent
+	// process when the child process is running
+	ignore_int_quit();
+
+	if (waitpid(pid, &wstatus, 0) < 0)
+		ft_printf("Error: waitpid");
+
+	// we restore the main signals handlers for the parent process
 	sig_handler();
-
-	// Execute the right side of the heredoc
-	saved_stdin = dup(STDIN_FILENO);
+	status = get_child_exit_status(wstatus);
+	if (status != ES_SIG_NOT_USED)
+		return (close(pipefd[0]), status);
+	save_stdin = dup(STDIN_FILENO);
 	dup2(pipefd[0], STDIN_FILENO);
 	close(pipefd[0]);
 	status = exec_ast_node(node->right, app);
-
-	dup2(saved_stdin, STDIN_FILENO);
-	close(saved_stdin);
-
+	dup2(save_stdin, STDIN_FILENO);
+	close(save_stdin);
 	return (status);
 }
-
