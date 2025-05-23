@@ -6,7 +6,7 @@
 /*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:07:58 by fkarika           #+#    #+#             */
-/*   Updated: 2025/05/23 17:07:59 by fkarika          ###   ########.fr       */
+/*   Updated: 2025/05/23 19:58:39 by fkarika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	sh_env(t_app *app, char **cmd_args)
 	(void)cmd_args;
 	if (cmd_args[1])
 	{
-		ft_printf(RED "env: %s: No such file or directory\n" RST, cmd_args[1]);
+		ft_printf("env: %s: No such file or directory\n", cmd_args[1]);
 		return (ES_ERROR);
 	}
 	show_env(app->env);

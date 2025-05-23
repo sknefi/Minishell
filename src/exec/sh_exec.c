@@ -6,7 +6,7 @@
 /*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:17:38 by fkarika           #+#    #+#             */
-/*   Updated: 2025/05/23 17:18:14 by fkarika          ###   ########.fr       */
+/*   Updated: 2025/05/23 19:01:24 by fkarika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@ int	exec_ast_node(t_ast_node *node, t_app *app)
 		return (handle_redirection_out(app, node));
 	else if (node->type == NODE_APPEND)
 		return (handle_redirection_out(app, node));
-	else if (node->type == NODE_PIPE)
-		return (handle_pipe(app, node));
 	else if (node->type == NODE_HEREDOC)
 		return (handle_heredoc(app, node));
+	else if (node->type == NODE_PIPE)
+		return (handle_pipe(app, node));
 	return (ES_ERROR);
 }
 

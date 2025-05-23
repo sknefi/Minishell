@@ -6,7 +6,7 @@
 /*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:23:33 by fkarika           #+#    #+#             */
-/*   Updated: 2025/05/23 17:23:34 by fkarika          ###   ########.fr       */
+/*   Updated: 2025/05/23 19:59:35 by fkarika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	handle_left_child(t_app *app, t_ast_node *node, int *pipefd)
 	close(pipefd[0]);
 	if (dup2(pipefd[1], STDOUT_FILENO) < 0)
 	{
-		ft_printf(RED "Error: dup2 failed in left child\n" RST);
+		ft_printf("Error: dup2 failed in left child\n");
 		close(pipefd[1]);
 		clean_app(app);
 		rl_clear_history();
@@ -53,7 +53,7 @@ static void	handle_right_child(t_app *app, t_ast_node *node, int *pipefd)
 	close(pipefd[1]);
 	if (dup2(pipefd[0], STDIN_FILENO) < 0)
 	{
-		ft_printf(RED "Error: dup2 failed in right child\n" RST);
+		ft_printf("Error: dup2 failed in right child\n");
 		close(pipefd[0]);
 		clean_app(app);
 		rl_clear_history();
@@ -80,10 +80,10 @@ int	handle_pipe(t_app *app, t_ast_node *node)
 	pid_t	right_pid;
 
 	if (pipe(pipefd) < 0)
-		return (ft_printf(RED "Error: pipe creation failed\n" RST), 1);
+		return (ft_printf("Error: pipe creation failed\n"), 1);
 	left_pid = fork();
 	if (left_pid < 0)
-		return (close_pipe(pipefd), ft_printf(RED "Fork failed\n" RST), 1);
+		return (close_pipe(pipefd), ft_printf("Fork failed\n"), 1);
 	if (left_pid == 0)
 		handle_left_child(app, node, pipefd);
 	right_pid = fork();
@@ -91,12 +91,12 @@ int	handle_pipe(t_app *app, t_ast_node *node)
 	{
 		close_pipe(pipefd);
 		waitpid(left_pid, NULL, 0);
-		return (ft_printf(RED "Error: fork failed\n" RST), 1);
+		return (ft_printf("Error: fork failed\n"), 1);
 	}
 	if (right_pid == 0)
 		handle_right_child(app, node, pipefd);
 	close_pipe(pipefd);
 	waitpid(left_pid, NULL, 0);
 	waitpid(right_pid, &status, 0);
-	return (WEXITSTATUS(status));
+	return (get_child_exit_status(status));
 }

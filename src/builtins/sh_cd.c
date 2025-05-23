@@ -6,7 +6,7 @@
 /*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:08:00 by fkarika           #+#    #+#             */
-/*   Updated: 2025/05/23 17:08:01 by fkarika          ###   ########.fr       */
+/*   Updated: 2025/05/23 19:58:23 by fkarika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static char	*set_path(t_app *app, char **cmd_args)
 
 	if (cmd_args[1] && cmd_args[2])
 	{
-		ft_printf(RED "cd: too many arguments\n" RST);
+		ft_printf("cd: too many arguments\n");
 		return (NULL);
 	}
 	else if (!cmd_args[1] || ft_strncmp(cmd_args[1], "~", 1) == 0)
@@ -83,7 +83,7 @@ int	sh_cd(t_app *app, char **cmd_args)
 		return (free(old_pwd), ES_ERROR);
 	if (chdir(path) == -1)
 	{
-		ft_printf(RED "cd: %s: No such file or directory\n" RST, cmd_args[1]);
+		ft_printf("cd: %s: No such file or directory\n", cmd_args[1]);
 		free(old_pwd);
 		return (ES_ERROR);
 	}

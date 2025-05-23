@@ -6,7 +6,7 @@
 /*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:23:28 by fkarika           #+#    #+#             */
-/*   Updated: 2025/05/23 17:23:29 by fkarika          ###   ########.fr       */
+/*   Updated: 2025/05/23 20:00:03 by fkarika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,9 @@ int	handle_redirection_in(t_app *app, t_ast_node *node)
 	t_ast_node	*cmd_node;
 
 	fd = open(node->data[0], O_RDONLY);
-	printf(Y "Opening file: %s\n" RST, node->data[0]);
 	if (fd < 0)
 	{
-		ft_printf(RED "Error: cannot open file %s\n" RST, node->data[0]);
+		ft_printf("Error: cannot open file %s\n", node->data[0]);
 		return (1);
 	}
 	cmd_node = find_command_node(node);
