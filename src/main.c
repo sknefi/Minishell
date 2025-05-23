@@ -26,9 +26,10 @@ int	main(int argc, char **argv, char **env)
 		return (clean_app(app), EXIT_FAILURE);
 	helper = 0;
 	sig_handler();
-	shell_loop(app, helper);
+	if (shell_loop(app, helper))
+		return (1);
 	clean_app(app);
-	return (EXIT_SUCCESS);
+	return (0);
 }
 
 static int	shell_loop(t_app *app, int helper)
@@ -42,7 +43,7 @@ static int	shell_loop(t_app *app, int helper)
 			continue ;
 		}
 		else if (helper == -1)
-			return (clean_app(app), EXIT_SUCCESS);
+			return (1);
 		app->exit_status = helper;
 		app->root = parse(app->token, app);
 		if (!app->root)
