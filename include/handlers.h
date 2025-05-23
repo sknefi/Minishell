@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   handlers.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/23 17:08:06 by fkarika           #+#    #+#             */
+/*   Updated: 2025/05/23 17:09:04 by fkarika          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef HANDLERS_H
 # define HANDLERS_H
 
@@ -63,6 +75,6 @@ int			handle_heredoc(t_app *app, t_ast_node *node);
  * @brief Close the pipe
  * @param pipefd The pipe file descriptors
  */
-void	    close_pipe(int *pipefd);
+void		close_pipe(int *pipefd);
 
 #endif

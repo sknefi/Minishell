@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/23 17:08:05 by fkarika           #+#    #+#             */
+/*   Updated: 2025/05/23 17:16:22 by fkarika          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -41,7 +53,7 @@
 # define RST 	"\033[0m"
 
 // EXIT STATUS
-# define ES_SIG_NOT_USED	 -3
+# define CHILD_NO_STATUS	 -3
 # define NOT_BUILTIN 		 -2
 # define ES_FAILED	 		 -1
 # define ES_OK				  0
@@ -87,6 +99,6 @@ int		exec_external(t_app *app, char **cmd_args);
 */
 int		exec_ast_node(t_ast_node *node, t_app *app);
 
-int	    get_child_exit_status(int status);
+int		get_child_exit_status(int status);
 
 #endif
