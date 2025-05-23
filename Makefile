@@ -51,7 +51,7 @@ OBJS         = $(SRCS:.c=.o)
 
 CC            = cc
 CFLAGS        = -Wall -Wextra -Werror -g
-LDFLAGS        = -lreadline
+LDFLAGS       = -lreadline
 RM            = rm -f
 
 LIBFT_NAME    = libft.a
@@ -90,4 +90,4 @@ libfte:
 libftfclean:
 	make fclean -C $(LIBFT_DIR)
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re e libft libfte libftfclean
