@@ -4,7 +4,7 @@
 // sh -> shell
 // ast -> abstract syntax tree
 // env -> environment
-static int    g_heredoc_interrupted = 0;
+//static volatile int    g_heredoc_interrupted; ERASE_IT
 // LIBRARIES
 # include <stdlib.h>
 # include <unistd.h>

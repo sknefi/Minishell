@@ -12,7 +12,7 @@
 
 #include "../../include/minishell.h"
 
-static void	sigint_handler(int sig, siginfo_t *info, void *context);
+static void	sigint_handler(int sig);
 
 /*
  * Signal handler
@@ -26,8 +26,8 @@ void	sig_handler(void)
 	struct sigaction	sa;
 
 	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = SA_SIGINFO;
-	sa.sa_sigaction = sigint_handler;
+	sa.sa_flags = 0;
+	sa.sa_handler = sigint_handler;
 	sigaction(SIGINT, &sa, NULL);
 	sa.sa_handler = SIG_IGN;
 	sigaction(SIGQUIT, &sa, NULL);
@@ -37,20 +37,11 @@ void	sig_handler(void)
  * Handler for Ctrl + C
  */
 
-static void	sigint_handler(int sig, siginfo_t *info, void *context)
+static void	sigint_handler(int sig)
 {
 	(void)sig;
-	(void)info;
-	(void)context;
-	if (!g_heredoc_interrupted)
-	{
-		write(STDOUT_FILENO, "\n", 1);
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
-	}
-	// write(STDOUT_FILENO, "\n", 1);
-	// rl_replace_line("", 0);
-	// rl_on_new_line();
-	// rl_redisplay();
+	write(STDOUT_FILENO, "\n", 1);
+	rl_replace_line("", 0);
+	rl_on_new_line();		
+	rl_redisplay();
 }

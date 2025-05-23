@@ -1,4 +1,9 @@
 #include "../../include/minishell.h"
+#include <readline/readline.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+static volatile int	g_heredoc = 0;
 
 #define HEREDOC_INPUT "> "
 
@@ -10,8 +15,15 @@ static void heredoc_signal_handler(int sig)
 {
     if (sig == SIGINT || sig == SIGQUIT)
     {
-        g_heredoc_interrupted = 1;
-        close(STDIN_FILENO);  // Interrupt readline
+		//rl_done = 1;
+        g_heredoc = 1;
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+		write(1, "\n", 1);
+		rl_done = 1;
+        //close(STDIN_FILENO);
+		exit(130);
     }
 }
 /**
@@ -45,6 +57,12 @@ char    *read_heredoc_line(t_app *app)
     line = readline(HEREDOC_INPUT);
     dup2(saved_stdout, STDOUT_FILENO);
     close(saved_stdout);
+	if (g_heredoc)
+	{
+		if (line)
+			free(line);
+		return (NULL);
+	}
     return (line);
 }
 
@@ -60,12 +78,12 @@ static void    heredoc_child_process(char *delimiter, int pipe_write, t_app *app
     char    *line;
     t_input    input;
 
-    g_heredoc_interrupted = 0;
     setup_heredoc_signals();
-    while (!g_heredoc_interrupted)
+    while (!g_heredoc)
     {
         line = read_heredoc_line(app);
-        if (!line || g_heredoc_interrupted)
+        write(1, "[readline done]\n", 16);
+		if (!line)
         {
             free(line);
             break;
@@ -87,7 +105,7 @@ static void    heredoc_child_process(char *delimiter, int pipe_write, t_app *app
     close(pipe_write);
 	rl_clear_history();
 	clean_app(app);
-    exit(g_heredoc_interrupted ? 130 : 0);
+    exit(g_heredoc ? 130 : 0);
 }
 
 /**
@@ -104,6 +122,7 @@ int handle_heredoc(t_app *app, t_ast_node *node)
 	int     wstatus = 0;
 	int     status;
 
+	g_heredoc = 0;
 	if (pipe(pipefd) < 0)
 		return (ft_printf("Pipe error\n"), 1);
 
@@ -117,12 +136,12 @@ int handle_heredoc(t_app *app, t_ast_node *node)
 
 	if (pid == 0)
 		heredoc_child_process(node->data[0], pipefd[1], app);
-
 	// Parent process
 	close(pipefd[1]);
-
-	if (waitpid(pid, &wstatus, 0) < 0)
+	signal(SIGINT, SIG_IGN);
+	if (waitpid(pid, &wstatus, 0) < 1)
 	{
+		sig_handler();
 		close(pipefd[0]);
 		app->exit_status = 1;
 		return (1);
@@ -131,16 +150,16 @@ int handle_heredoc(t_app *app, t_ast_node *node)
 	// If heredoc was interrupted (Ctrl+C), skip execution
 	if (WIFEXITED(wstatus) && WEXITSTATUS(wstatus) == 130)
 	{
+		sig_handler();
 		close(pipefd[0]);
-        g_heredoc_interrupted = 0;
 		return (130);  // Skip running the actual command
 	}
+	sig_handler();
 
 	// Execute the right side of the heredoc
 	saved_stdin = dup(STDIN_FILENO);
 	dup2(pipefd[0], STDIN_FILENO);
 	close(pipefd[0]);
-
 	status = exec_ast_node(node->right, app);
 
 	dup2(saved_stdin, STDIN_FILENO);
