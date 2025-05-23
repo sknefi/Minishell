@@ -6,7 +6,7 @@
 /*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:17:36 by fkarika           #+#    #+#             */
-/*   Updated: 2025/05/23 17:18:07 by fkarika          ###   ########.fr       */
+/*   Updated: 2025/05/23 20:15:08 by fkarika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,5 @@ int	get_child_exit_status(int status)
 		if (sig == SIGQUIT)
 			return (ES_SIGQUIT);
 	}
-	return (CHILD_NO_STATUS);
+	return (ES_OK);
 }

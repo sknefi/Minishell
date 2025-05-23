@@ -6,7 +6,7 @@
 /*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:23:24 by fkarika           #+#    #+#             */
-/*   Updated: 2025/05/23 17:37:07 by fkarika          ###   ########.fr       */
+/*   Updated: 2025/05/23 20:16:12 by fkarika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ int	handle_heredoc(t_app *app, t_ast_node *node)
 	// we restore the main signals handlers for the parent process
 	sig_handler();
 	status = get_child_exit_status(wstatus);
-	if (status != CHILD_NO_STATUS)
+	if (status != ES_OK)
 		return (close(pipefd[0]), status);
 	save_stdin = dup(STDIN_FILENO);
 	dup2(pipefd[0], STDIN_FILENO);
