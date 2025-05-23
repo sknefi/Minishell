@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.c                                          :+:      :+:    :+:   */
+/*   signals_01.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 14:54:04 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/23 15:03:16 by fkarika          ###   ########.fr       */
+/*   Updated: 2025/05/23 17:19:17 by fkarika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-extern volatile int  g_heredoc;
+extern volatile int	g_heredoc;
 
 static void	sigint_handler(int sig);
 
@@ -44,21 +44,15 @@ static void	sigint_handler(int sig)
 	(void)sig;
 	write(STDOUT_FILENO, "\n", 1);
 	rl_replace_line("", 0);
-	rl_on_new_line();		
+	rl_on_new_line();
 	rl_redisplay();
-}
-
-void	ignore_int_quit(void)
-{
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
 }
 
 /**
  * @brief Signal handler for heredoc mode
  * @param sig The signal number
  */
-static void heredoc_signal_handler(int sig)
+static void	heredoc_signal_handler(int sig)
 {
 	if (sig == SIGINT || sig == SIGQUIT)
 	{
@@ -67,7 +61,6 @@ static void heredoc_signal_handler(int sig)
 		rl_on_new_line();
 		rl_redisplay();
 		write(1, "\n", 1);
-		rl_done = 1;
 		exit(130);
 	}
 }
@@ -77,7 +70,7 @@ static void heredoc_signal_handler(int sig)
  */
 void	setup_heredoc_signals(void)
 {
-	struct sigaction    sa;
+	struct sigaction	sa;
 
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = 0;

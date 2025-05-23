@@ -7,7 +7,8 @@ BLUE          = \033[34m
 RESET         = \033[0m
 
 SRCS =  \
-		./src/signal/signals.c \
+		./src/signal/signals_01.c \
+		./src/signal/signals_02.c \
 		\
 		./src/token/token.c \
 		./src/token/token_utils.c \
@@ -20,7 +21,6 @@ SRCS =  \
 		./src/ast/ast_utils.c \
 		\
 		./src/builtins/env_utils_01.c \
-		./src/builtins/env_utils_02.c \
 		./src/builtins/sh_cd.c \
 		./src/builtins/sh_env.c \
 		./src/builtins/sh_pwd.c \

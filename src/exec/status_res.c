@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   status_res.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/23 17:17:36 by fkarika           #+#    #+#             */
+/*   Updated: 2025/05/23 17:18:07 by fkarika          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 int	get_child_exit_status(int status)
@@ -5,7 +17,7 @@ int	get_child_exit_status(int status)
 	int	sig;
 
 	if (WIFEXITED(status))
-		return WEXITSTATUS(status);
+		return (WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))
 	{
 		sig = WTERMSIG(status);
@@ -14,5 +26,5 @@ int	get_child_exit_status(int status)
 		if (sig == SIGQUIT)
 			return (ES_SIGQUIT);
 	}
-	return (ES_SIG_NOT_USED);
+	return (CHILD_NO_STATUS);
 }

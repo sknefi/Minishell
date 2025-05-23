@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sh_exec.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/23 17:17:38 by fkarika           #+#    #+#             */
+/*   Updated: 2025/05/23 17:18:14 by fkarika          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 #include <signal.h>
 
@@ -33,7 +45,6 @@ int	sh_exec(t_app *app)
 
 	if (!app->root)
 		return (ES_ERROR);
-
 	ignore_int_quit();
 	status = exec_ast_node(app->root, app);
 	sig_handler();

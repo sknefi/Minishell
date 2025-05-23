@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_external.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/23 17:17:39 by fkarika           #+#    #+#             */
+/*   Updated: 2025/05/23 17:17:40 by fkarika          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 /**
@@ -100,10 +112,8 @@ int	exec_external(t_app *app, char **cmd_args)
 		return (free(cmd_path), ft_printf("Error: fork failed\n"), ES_ERROR);
 	if (pid == 0)
 	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
+		default_int_quit();
 		execve(cmd_path, cmd_args, app->env);
-		ft_printf(RED "Error: execve failed\n" RST);
 		free(cmd_path);
 		clean_app(app);
 		exit(EXIT_FAILURE);
@@ -111,7 +121,7 @@ int	exec_external(t_app *app, char **cmd_args)
 	waitpid(pid, &wstatus, 0);
 	free(cmd_path);
 	status = get_child_exit_status(wstatus);
-	if (status != ES_SIG_NOT_USED)
+	if (status != CHILD_NO_STATUS)
 		return (status);
 	return (ES_ERROR);
 }

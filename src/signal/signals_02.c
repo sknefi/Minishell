@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sh_exit.c                                          :+:      :+:    :+:   */
+/*   signals_02.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/23 17:07:57 by fkarika           #+#    #+#             */
-/*   Updated: 2025/05/23 17:07:58 by fkarika          ###   ########.fr       */
+/*   Created: 2025/05/23 17:19:26 by fkarika           #+#    #+#             */
+/*   Updated: 2025/05/23 17:19:31 by fkarika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-// Function to exit the shell
-int	sh_exit(t_app *app, char **cmd_args)
+void	ignore_int_quit(void)
 {
-	(void)app;
-	(void)cmd_args;
-	rl_clear_history();
-	clean_app(app);
-	ft_printf(RED "exiting minishell\n" RST);
-	exit(ES_OK);
-	return (ES_OK);
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+void	default_int_quit(void)
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 }
