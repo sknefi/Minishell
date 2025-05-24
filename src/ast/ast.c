@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 20:47:33 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/24 20:05:20 by fkarika          ###   ########.fr       */
+/*   Updated: 2025/05/24 21:15:50 by tmateja          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,8 @@ static t_ast_node *ast_command(t_token **tokens)
 	// 6) now eat & attach any trailing redirections
 	while (*tokens && is_redir_token((*tokens)->type))
 		root = parse_redirection(tokens, root);
+	if (!root)
+		return(free_ast(cmd), NULL);
 
 	return root;
 }
@@ -153,6 +155,7 @@ static t_ast_node	*parse_redirection(t_token **tokens, t_ast_node *cmd)
 	*tokens = (*tokens)->next;
 	if (!*tokens || (*tokens)->type != TOKEN_WORD)
 	{
+		//free(cmd);
 		ft_printf("Error\n");
 		return (NULL);
 	}

@@ -3,70 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:13:05 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/24 19:41:50 by fkarika          ###   ########.fr       */
+/*   Updated: 2025/05/24 21:29:31 by tmateja          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-void print_prefix(int depth, int is_last)
-{
-	for (int i = 0; i < depth - 1; i++)
-		printf("│   ");
-	if (depth > 0)
-		printf("%s── ", is_last ? "└" : "├");
-}
-
-void print_ast_pretty(t_ast_node *node, int depth, int is_last)
-{
-	if (!node)
-		return;
-
-	print_prefix(depth, is_last);
-
-	// Print node type
-	switch (node->type)
-	{
-		case NODE_CMD:
-			printf("CMD: ");
-			if (node->data)
-			{
-				for (int i = 0; node->data[i]; i++)
-					printf("%s ", node->data[i]);
-			}
-			printf("\n");
-			break;
-		case NODE_PIPE:
-			printf("PIPE\n");
-			break;
-		case NODE_REDIRECTION_IN:
-			printf("REDIR_IN: %s\n", node->data ? node->data[0] : "(null)");
-			break;
-		case NODE_REDIRECTION_OUT:
-			printf("REDIR_OUT: %s\n", node->data ? node->data[0] : "(null)");
-			break;
-		case NODE_APPEND:
-			printf("APPEND: %s\n", node->data ? node->data[0] : "(null)");
-			break;
-		case NODE_HEREDOC:
-			printf("HEREDOC: %s\n", node->data ? node->data[0] : "(null)");
-			break;
-		default:
-			printf("UNKNOWN NODE\n");
-	}
-
-	// Count children to determine how to draw tree lines
-	int has_left = node->left != NULL;
-	int has_right = node->right != NULL;
-
-	if (has_left)
-		print_ast_pretty(node->left, depth + 1, !has_right); // left is not last if there's a right
-	if (has_right)
-		print_ast_pretty(node->right, depth + 1, 1); // right is always last
-}
 
 static int	shell_loop(t_app *app, int helper);
 
@@ -102,17 +46,8 @@ static int	shell_loop(t_app *app, int helper)
 			return (1);
 		app->exit_status = helper;
 		app->root = parse(app->token, app);
-		print_ast_pretty(app->root, 0, 1); // Print the AST in a pretty format
-		// print all tokens for debugging
-		t_token *current = app->token;
-		while (current)
-		{
-			printf("Token: %s, Type: %d\n", current->data, current->type);
-			current = current->next;
-		}
 		if (!app->root)
 		{
-			free(app->input->line);
 			free_ast(app->root);
 			free_tokens(app->token);
 			continue ;
