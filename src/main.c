@@ -6,7 +6,7 @@
 /*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:13:05 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/24 21:29:31 by tmateja          ###   ########.fr       */
+/*   Updated: 2025/05/24 21:54:18 by fkarika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	main(int argc, char **argv, char **env)
 	if (shell_loop(app, helper))
 		return (clean_app(app), EXIT_FAILURE);
 	clean_app(app);
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
 static int	shell_loop(t_app *app, int helper)
@@ -55,7 +55,6 @@ static int	shell_loop(t_app *app, int helper)
 		sh_exec(app);
 		free_ast(app->root);
 		free_tokens(app->token);
-		
 		app->root = NULL;
 	}
 }
