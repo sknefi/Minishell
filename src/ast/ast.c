@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   ast.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 20:47:33 by tmateja           #+#    #+#             */
 /*   Updated: 2025/05/24 21:52:55 by fkarika          ###   ########.fr       */
@@ -154,6 +154,7 @@ static t_ast_node	*parse_redirection(t_token **tokens, t_ast_node *cmd)
 	*tokens = (*tokens)->next;
 	if (!*tokens || (*tokens)->type != TOKEN_WORD)
 	{
+		//free(cmd);
 		ft_printf("Error\n");
 		return (NULL);
 	}
