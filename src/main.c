@@ -6,7 +6,7 @@
 /*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:13:05 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/23 20:23:18 by fkarika          ###   ########.fr       */
+/*   Updated: 2025/05/24 19:41:50 by fkarika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,14 @@ static int	shell_loop(t_app *app, int helper)
 			return (1);
 		app->exit_status = helper;
 		app->root = parse(app->token, app);
-		// print_ast_pretty(app->root, 0, 1); // Print the AST in a pretty format
+		print_ast_pretty(app->root, 0, 1); // Print the AST in a pretty format
+		// print all tokens for debugging
+		t_token *current = app->token;
+		while (current)
+		{
+			printf("Token: %s, Type: %d\n", current->data, current->type);
+			current = current->next;
+		}
 		if (!app->root)
 		{
 			free(app->input->line);
