@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 20:47:33 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/16 13:05:36 by tmateja          ###   ########.fr       */
+/*   Updated: 2025/05/24 20:05:20 by fkarika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 static t_ast_node	*handle_pipes(t_token **token);
 static t_ast_node	*ast_command(t_token **tokens);
 static t_ast_node	*parse_redirection(t_token **tokens, t_ast_node *cmd);
-static t_ast_node	*ast_command_norminette(t_ast_node *cmd, \
-	t_token **tokens, char **data);
 
 /*
  * Main ast function, which takes tokens and returns root node
@@ -68,44 +66,71 @@ static t_ast_node	*handle_pipes(t_token **tokens)
 	return (left);
 }
 
-/*
- * Builds AST command node.
- * It takes pointer to current token.
- * First counts how many TOKEN_WORD is it working with. (ls -la)(2)
- * Then allocates memory for it + NULL.
- * Then it fills data array with TOKEN_WORDs.
- * After it creates AST node NODE_CMD.
- * If redirections, parse it.
- */
 
-static t_ast_node	*ast_command(t_token **tokens)
+static inline int is_redir_token(int tokentype)
 {
-	char		**data;
-	int			i;
-	t_token		*tmp;
-	t_ast_node	*cmd;
+	return (tokentype == TOKEN_REDIRECTION_IN
+		|| tokentype == TOKEN_REDIRECTION_OUT
+		|| tokentype == TOKEN_APPEND
+		|| tokentype == TOKEN_HEREDOC);
+}
+	
+/*
+* Builds AST command node.
+* It takes pointer to current token.
+* First counts how many TOKEN_WORD is it working with. (ls -la)(2)
+* Then allocates memory for it + NULL.
+* Then it fills data array with TOKEN_WORDs.
+* After it creates AST node NODE_CMD.
+* If redirections, parse it.
+*/
+static t_ast_node *ast_command(t_token **tokens)
+{
+	t_ast_node *root = NULL;
+	char **data;
+	int    i;
 
+	// 1) eat any leading redirections first
+	while (*tokens && is_redir_token((*tokens)->type))
+		root = parse_redirection(tokens, root);
+
+	// 2) now count _all_ the WORD tokens (your actual command + args)
 	i = 0;
-	cmd = NULL;
-	tmp = *tokens;
-	while (tmp && tmp->type == TOKEN_WORD)
+	for (t_token *t = *tokens;
+			t && t->type == TOKEN_WORD;
+			t = t->next)
+		++i;
+
+	// 3) copy them into data[]
+	data = malloc((i+1)*sizeof *data);
+	if (!data) return NULL;
+	for (int j = 0;  j < i;  ++j)
 	{
-		i++;
-		tmp = tmp->next;
-	}
-	data = malloc(sizeof(char *) * (i + 1));
-	if (!data)
-		return (NULL);
-	i = 0;
-	while (*tokens && (*tokens)->type == TOKEN_WORD)
-	{
-		data[i++] = ft_strdup((*tokens)->data);
-		*tokens = (*tokens)->next;
+		data[j] = ft_strdup((*tokens)->data);
+		*tokens   = (*tokens)->next;
 	}
 	data[i] = NULL;
-	cmd = ast_command_norminette(cmd, tokens, data);
-	return (cmd);
+
+	// 4) build your CMD node  
+	t_ast_node *cmd = ast_new_node(NODE_CMD, data);
+
+	// 5) if we had a leading‐redir chain, tack this CMD onto its rightmost leaf
+	if (root)
+	{
+		t_ast_node *r = root;
+		while (r->right) r = r->right;
+		r->right = cmd;
+	}
+	else
+		root = cmd;
+
+	// 6) now eat & attach any trailing redirections
+	while (*tokens && is_redir_token((*tokens)->type))
+		root = parse_redirection(tokens, root);
+
+	return root;
 }
+
 
 /*
  * Takes pointer to current token and cmd node.
@@ -143,24 +168,3 @@ static t_ast_node	*parse_redirection(t_token **tokens, t_ast_node *cmd)
 	return (redir_node);
 }
 
-/*
- * Function just for norminette purpose.
- * Takes cmd node, tokens and data to this token.
- * Also check for redirection.
- * Returns cmd node.
- */
-
-static t_ast_node	*ast_command_norminette(t_ast_node *cmd, \
-	t_token **tokens, char **data)
-{
-	cmd = ast_new_node(NODE_CMD, data);
-	if (!cmd)
-		return (NULL);
-	while (*tokens && ((*tokens)->type == TOKEN_REDIRECTION_IN || \
-		(*tokens)->type == TOKEN_REDIRECTION_OUT || \
-		(*tokens)->type == TOKEN_APPEND || (*tokens)->type == TOKEN_HEREDOC))
-		cmd = parse_redirection(tokens, cmd);
-	if (!cmd)
-		return (NULL);
-	return (cmd);
-}

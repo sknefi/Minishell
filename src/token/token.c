@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 16:03:49 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/16 13:00:42 by tmateja          ###   ########.fr       */
+/*   Updated: 2025/05/23 18:08:48 by fkarika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ int	prompt(t_app *app, t_input *input)
 		if (tokenization(app, input))
 			return (free(input->line), 1);
 	}
+	free(app->input->line);
 	return (0);
 }
 

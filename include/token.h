@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   token.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/23 17:08:02 by fkarika           #+#    #+#             */
+/*   Updated: 2025/05/23 17:08:03 by fkarika          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef TOKEN_H
 # define TOKEN_H
 
-#include <stdio.h>
+# include <stdio.h>
 # include "structs.h"
 
 int		prompt(t_app *app, t_input *input);

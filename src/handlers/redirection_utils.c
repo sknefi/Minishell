@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirection_utils.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/23 17:23:29 by fkarika           #+#    #+#             */
+/*   Updated: 2025/05/23 19:59:56 by fkarika          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 /**
@@ -16,7 +28,7 @@ static int	redirect_stdout(t_ast_node *node, int saved_stdout)
 		fd = open(node->data[0], O_WRONLY | O_CREAT | O_APPEND, 0777);
 	if (fd < 0)
 	{
-		ft_printf(RED "Error: cannot open file %s\n" RST, node->data[0]);
+		ft_printf("Error: cannot open file %s\n", node->data[0]);
 		dup2(saved_stdout, STDOUT_FILENO);
 		close(saved_stdout);
 		return (1);
@@ -58,7 +70,7 @@ int	create_files(t_ast_node *node, int saved_stdout)
 			fd = open(current->data[0], O_WRONLY | O_CREAT | O_APPEND, 0777);
 		if (fd < 0)
 		{
-			ft_printf(RED "Error: cannot open file %s\n" RST, current->data[0]);
+			ft_printf("Error: cannot open file %s\n", current->data[0]);
 			dup2(saved_stdout, STDOUT_FILENO);
 			close(saved_stdout);
 			return (1);

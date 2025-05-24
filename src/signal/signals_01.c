@@ -1,16 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.c                                          :+:      :+:    :+:   */
+/*   signals_01.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 14:54:04 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/16 13:05:15 by tmateja          ###   ########.fr       */
+/*   Updated: 2025/05/23 17:37:01 by fkarika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+extern volatile int	g_heredoc;
 
 static void	sigint_handler(int sig);
 
@@ -44,4 +46,35 @@ static void	sigint_handler(int sig)
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
+}
+
+/**
+ * @brief Signal handler for heredoc mode
+ * @param sig The signal number
+ */
+static void	heredoc_signal_handler(int sig)
+{
+	if (sig == SIGINT || sig == SIGQUIT)
+	{
+		g_heredoc = 1;
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+		write(1, "\n", 1);
+		exit(130);
+	}
+}
+
+/**
+ * @brief Set up signal handlers for heredoc mode
+ */
+void	setup_heredoc_signals(void)
+{
+	struct sigaction	sa;
+
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sa.sa_handler = heredoc_signal_handler;
+	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
 }

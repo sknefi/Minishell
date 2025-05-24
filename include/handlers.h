@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   handlers.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/23 17:08:06 by fkarika           #+#    #+#             */
+/*   Updated: 2025/05/23 17:09:04 by fkarika          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef HANDLERS_H
 # define HANDLERS_H
 
@@ -10,7 +22,7 @@
  * @param type The type of redirection
  * @return 0 on success, 1 on failure
  */
-int	handle_redirection_out(t_app *app, t_ast_node *node);
+int			handle_redirection_out(t_app *app, t_ast_node *node);
 
 /**
  * @brief Handle redirection in (<)
@@ -18,7 +30,7 @@ int	handle_redirection_out(t_app *app, t_ast_node *node);
  * @param node The node to handle
  * @return 0 on success, 1 on failure
  */
-int	handle_redirection_in(t_app *app, t_ast_node *node);
+int			handle_redirection_in(t_app *app, t_ast_node *node);
 
 /**
  * @brief Create files and redirect stdout to the top file
@@ -34,7 +46,7 @@ int	handle_redirection_in(t_app *app, t_ast_node *node);
  * We want to create a, b but only write to c
  * 
  */
-int	create_files(t_ast_node *node, int saved_stdout);
+int			create_files(t_ast_node *node, int saved_stdout);
 
 /**
  * @brief Find the command node, which is the rightmost node in the AST
@@ -50,12 +62,19 @@ t_ast_node	*find_command_node(t_ast_node *node);
  * @param app The application
  * @param node The node to handle
  */
-int	handle_pipe(t_app *app, t_ast_node *node);
+int			handle_pipe(t_app *app, t_ast_node *node);
 
 /**
  * @brief Handle heredoc
  * @param app The application
  * @param node The node to handle
  */
-int	handle_heredoc(t_app *app, t_ast_node *node);
+int			handle_heredoc(t_app *app, t_ast_node *node);
+
+/**
+ * @brief Close the pipe
+ * @param pipefd The pipe file descriptors
+ */
+void		close_pipe(int *pipefd);
+
 #endif

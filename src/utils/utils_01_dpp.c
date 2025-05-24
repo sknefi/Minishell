@@ -1,9 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils_01_dpp.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/23 17:19:48 by fkarika           #+#    #+#             */
+/*   Updated: 2025/05/23 17:19:49 by fkarika          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
-// utils for double pointer functions
 
 size_t	count_pointer(char **str)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while (str[i])

@@ -1,10 +1,22 @@
-#ifndef MINISHEL_H
-# define MINISHEL_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/23 17:08:05 by fkarika           #+#    #+#             */
+/*   Updated: 2025/05/23 17:30:55 by fkarika          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
 // sh -> shell
 // ast -> abstract syntax tree
 // env -> environment
-
+//static volatile int    g_heredoc_interrupted; ERASE_IT
 // LIBRARIES
 # include <stdlib.h>
 # include <unistd.h>
@@ -22,15 +34,13 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 
-
 // INCLUDES
-# include "../libft_divinus/libft.h"
+# include "../libft/libft.h"
 # include "structs.h"
 # include "builtin.h"
 # include "token.h"
 # include "utils.h"
 # include "ast.h"
-# include "visualizer.h"
 # include "handlers.h"
 # include "signals.h"
 # include "env.h"
@@ -43,11 +53,14 @@
 # define RST 	"\033[0m"
 
 // EXIT STATUS
+# define CHILD_NO_STATUS	 -3
 # define NOT_BUILTIN 		 -2
 # define ES_FAILED	 		 -1
 # define ES_OK				  0
 # define ES_ERROR			  1
 # define ES_CMD_NOT_FOUND	127
+# define ES_EXIT			130
+# define ES_SIGQUIT			131
 
 /**
  * @brief Initialize the app struct
@@ -63,24 +76,29 @@ void	clean_app(t_app *app);
  * @brief Executes a command (builtin or external)
  * @param app The application
  * @param token The token
- * @return 0 on success, 1 on failure (command not found), -1 on failure (malloc failed)
+ * @return 0 on success, 1 on failure (command not found), 
+ * -1 on failure (malloc failed) or anything that exec_external returns
 */
-int	sh_exec(t_app *app);
+int		sh_exec(t_app *app);
 
 /**
  * @brief Executes an external command
  * @param app The application
  * @param cmd_args The command arguments
- * @return 0 on success, 1 on failure (command not found), -1 on failure (malloc failed)
+ * @return 0 on success, 1 on failure (command not found), 
+ * -1 on failure (malloc failed) or anything that exec_external returns
 */
-int	exec_external(t_app *app, char **cmd_args);
+int		exec_external(t_app *app, char **cmd_args);
 
 /**
  * @brief Executes an AST node
  * @param node The AST node
  * @param app The application
- * @return 0 on success, 1 on failure (command not found), -1 on failure (malloc failed)
+ * @return 0 on success, 1 on failure (command not found), 
+ * -1 on failure (malloc failed) or anything that exec_external returns
 */
-int	exec_ast_node(t_ast_node *node, t_app *app);
+int		exec_ast_node(t_ast_node *node, t_app *app);
+
+int		get_child_exit_status(int status);
 
 #endif

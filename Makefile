@@ -7,7 +7,8 @@ BLUE          = \033[34m
 RESET         = \033[0m
 
 SRCS =  \
-		./src/signal/signals.c \
+		./src/signal/signals_01.c \
+		./src/signal/signals_02.c \
 		\
 		./src/token/token.c \
 		./src/token/token_utils.c \
@@ -20,7 +21,6 @@ SRCS =  \
 		./src/ast/ast_utils.c \
 		\
 		./src/builtins/env_utils_01.c \
-		./src/builtins/env_utils_02.c \
 		./src/builtins/sh_cd.c \
 		./src/builtins/sh_env.c \
 		./src/builtins/sh_pwd.c \
@@ -33,12 +33,12 @@ SRCS =  \
 		./src/init/init_app.c \
 		./src/init/init_env.c \
 		\
+		./src/exec/status_res.c \
 		./src/exec/sh_exec.c \
 		./src/exec/exec_external.c \
 		./src/exec/exec_builtin.c \
 		\
 		./src/utils/utils_01_dpp.c \
-		./src/utils/visualizer.c \
 		\
 		./src/handlers/pipe.c \
 		./src/handlers/heredoc.c \
@@ -51,7 +51,7 @@ OBJS         = $(SRCS:.c=.o)
 
 CC            = cc
 CFLAGS        = -Wall -Wextra -Werror -g
-LDFLAGS        = -lreadline
+LDFLAGS       = -lreadline
 RM            = rm -f
 
 LIBFT_NAME    = libft.a
@@ -90,4 +90,4 @@ libfte:
 libftfclean:
 	make fclean -C $(LIBFT_DIR)
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re e libft libfte libftfclean
