@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+#include <stdlib.h>
 
 static t_ast_node	*handle_pipes(t_token **token);
 static t_ast_node	*ast_command(t_token **tokens);
@@ -66,72 +67,44 @@ static t_ast_node	*handle_pipes(t_token **tokens)
 	return (left);
 }
 
-
-static inline int is_redir_token(int tokentype)
-{
-	return (tokentype == TOKEN_REDIRECTION_IN
-		|| tokentype == TOKEN_REDIRECTION_OUT
-		|| tokentype == TOKEN_APPEND
-		|| tokentype == TOKEN_HEREDOC);
-}
-	
 /*
-* Builds AST command node.
-* It takes pointer to current token.
-* First counts how many TOKEN_WORD is it working with. (ls -la)(2)
-* Then allocates memory for it + NULL.
-* Then it fills data array with TOKEN_WORDs.
-* After it creates AST node NODE_CMD.
-* If redirections, parse it.
-*/
-static t_ast_node *ast_command(t_token **tokens)
-{
-	t_ast_node *root = NULL;
-	char **data;
-	int    i;
+ * Builds AST command node.
+ * It takes pointer to tokens.
+ * First it eats all the redirections.
+ * Then command_data is gathering and allocating data.
+ * Creates cmd node.
+ * If there is redirection chain, takes CMD token to rightmost node/leaf.
+ * At the end it is trailing any redirections.
+ * Returns t_ast_node on success, NULL on error.
+ */
 
-	// 1) eat any leading redirections first
+static t_ast_node	*ast_command(t_token **tokens)
+{
+	t_ast_node	*root;
+	t_ast_node	*cmd;
+	t_ast_node	*tmp_node;
+	char		**data;
+
+	root = NULL;
 	while (*tokens && is_redir_token((*tokens)->type))
 		root = parse_redirection(tokens, root);
-
-	// 2) now count _all_ the WORD tokens (your actual command + args)
-	i = 0;
-	for (t_token *t = *tokens;
-			t && t->type == TOKEN_WORD;
-			t = t->next)
-		++i;
-
-	// 3) copy them into data[]
-	data = malloc((i+1)*sizeof *data);
-	if (!data) return NULL;
-	for (int j = 0;  j < i;  ++j)
-	{
-		data[j] = ft_strdup((*tokens)->data);
-		*tokens   = (*tokens)->next;
-	}
-	data[i] = NULL;
-
-	// 4) build your CMD node  
-	t_ast_node *cmd = ast_new_node(NODE_CMD, data);
-
-	// 5) if we had a leading‐redir chain, tack this CMD onto its rightmost leaf
+	data = command_data(tokens);
+	cmd = ast_new_node(NODE_CMD, data);
 	if (root)
 	{
-		t_ast_node *r = root;
-		while (r->right) r = r->right;
-		r->right = cmd;
+		tmp_node = root;
+		while (tmp_node->right)
+			tmp_node = tmp_node->right;
+		tmp_node->right = cmd;
 	}
 	else
 		root = cmd;
-
-	// 6) now eat & attach any trailing redirections
 	while (*tokens && is_redir_token((*tokens)->type))
 		root = parse_redirection(tokens, root);
 	if (!root)
 		return (free_ast(cmd), NULL);
 	return (root);
 }
-
 
 /*
  * Takes pointer to current token and cmd node.
