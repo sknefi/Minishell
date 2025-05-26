@@ -18,7 +18,9 @@ SRCS =  \
 		./src/token/ft_realloc_token.c \
 		\
 		./src/ast/ast.c \
+		./src/ast/ast_norm.c \
 		./src/ast/ast_utils.c \
+		./src/ast/free_ast.c \
 		\
 		./src/builtins/env_utils_01.c \
 		./src/builtins/sh_cd.c \

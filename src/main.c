@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:13:05 by tmateja           #+#    #+#             */
 /*   Updated: 2025/05/24 21:54:18 by fkarika          ###   ########.fr       */
