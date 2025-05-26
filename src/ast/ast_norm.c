@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ast_norm.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fkarika <fkarika@student.42prague.com>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/09 20:47:33 by tmateja           #+#    #+#             */
+/*   Updated: 2025/05/26 12:36:00 by fkarika          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 /*
@@ -80,10 +92,10 @@ char	**redirection_data(t_token **tokens)
 
 // Norminette function.
 
-int	is_redir_token(int	token_type)
+int	is_redir_token(int token_type)
 {
 	return (token_type == TOKEN_REDIRECTION_IN
-			|| token_type == TOKEN_REDIRECTION_OUT
-			|| token_type == TOKEN_APPEND
-			|| token_type == TOKEN_HEREDOC);
+		|| token_type == TOKEN_REDIRECTION_OUT
+		|| token_type == TOKEN_APPEND
+		|| token_type == TOKEN_HEREDOC);
 }
