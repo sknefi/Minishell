@@ -6,6 +6,9 @@ YELLOW     = \033[33m
 BLUE       = \033[34m
 RESET      = \033[0m
 
+# Detect OS
+UNAME_S := $(shell uname -s)
+
 SRCS = \
     ./src/signal/signals_01.c \
     ./src/signal/signals_02.c \
@@ -54,7 +57,15 @@ OBJS       = $(SRCS:.c=.o)
 
 CC         = cc
 CFLAGS     = -Wall -Wextra -Werror -g
-LDFLAGS    = -lreadline
+
+# Add readline paths for macOS
+ifeq ($(UNAME_S),Darwin)
+    CFLAGS += -I$(shell brew --prefix readline)/include
+    LDFLAGS = -lreadline -L$(shell brew --prefix readline)/lib
+else
+    LDFLAGS = -lreadline
+endif
+
 RM         = rm -f
 
 LIBFT_NAME = libft.a
