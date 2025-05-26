@@ -264,6 +264,7 @@ The exit status of the last command is stored in the `$?` variable, following ba
 - `127`: Command not found
 - `130`: Terminated by Ctrl+C (SIGINT)
 - `131`: Terminated by Ctrl+\ (SIGQUIT)
+- Other values: Depends on the command and its exit status
 
 ## Signal Handling
 
