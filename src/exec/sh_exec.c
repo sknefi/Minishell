@@ -6,7 +6,7 @@
 /*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:17:38 by fkarika           #+#    #+#             */
-/*   Updated: 2025/05/23 19:01:24 by fkarika          ###   ########.fr       */
+/*   Updated: 2025/05/26 17:10:50 by fkarika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	sh_exec(t_app *app)
 	ignore_int_quit();
 	status = exec_ast_node(app->root, app);
 	sig_handler();
-	if (status == ES_CMD_NOT_FOUND)
+	if (status == ES_CMD_NOT_FOUND && app->root->data && app->root->data[0])
 		ft_printf("%s: command not found\n", app->root->data[0]);
 	app->exit_status = status;
 	return (status);
