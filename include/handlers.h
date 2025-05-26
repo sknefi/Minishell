@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handlers.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fkarika <fkarika@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:08:06 by fkarika           #+#    #+#             */
-/*   Updated: 2025/05/23 17:09:04 by fkarika          ###   ########.fr       */
+/*   Updated: 2025/05/26 14:41:35 by fkarika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,29 @@ int			handle_heredoc(t_app *app, t_ast_node *node);
  */
 void		close_pipe(int *pipefd);
 
+/**
+ * @brief Read a single line from heredoc prompt,
+ * ensuring output goes to terminal
+ * I love norminette
+ * @param app The application (contains saved terminal stdout)
+ * @return The input line (must be freed by caller), or NULL on EOF
+ */
+char		*read_heredoc_line(t_app *app);
+
+/**
+ * @brief Process a line in the heredoc
+ * @param line The input line
+ * @param input Input structure to be filled
+ * @param pipe_write Pipe to write to
+ * @param app Shell context
+ */
+void		process_heredoc_line(char *line, t_input *input,
+				int pipe_write, t_app *app);
+
+/**
+ * @brief Clean up and exit the heredoc child process
+ * @param pipe_write The write end of the pipe
+ * @param app The application
+ */
+void		heredoc_child_cleanup(int pipe_write, t_app *app);
 #endif

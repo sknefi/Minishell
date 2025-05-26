@@ -44,6 +44,7 @@ SRCS =  \
 		\
 		./src/handlers/pipe.c \
 		./src/handlers/heredoc.c \
+		./src/handlers/heredoc_utils.c \
 		./src/handlers/redirection.c \
 		./src/handlers/redirection_utils.c \
 		\
@@ -52,8 +53,8 @@ SRCS =  \
 OBJS         = $(SRCS:.c=.o)
 
 CC            = cc
-CFLAGS        = -Wall -Wextra -Werror -g
-LDFLAGS       = -lreadline
+CFLAGS        = -Wall -Wextra -Werror -g -I$(shell brew --prefix readline)/include
+LDFLAGS        = -lreadline -L$(shell brew --prefix readline)/lib
 RM            = rm -f
 
 LIBFT_NAME    = libft.a

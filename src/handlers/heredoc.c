@@ -3,44 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fkarika <fkarika@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:23:24 by fkarika           #+#    #+#             */
-/*   Updated: 2025/05/23 20:16:12 by fkarika          ###   ########.fr       */
+/*   Updated: 2025/05/26 14:17:19 by fkarika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-#define HEREDOC_INPUT "> "
-
 volatile int	g_heredoc;
 
 /**
- * @brief Read a single line from heredoc prompt,
- * ensuring output goes to terminal
- * I love norminette
- * @param app The application (contains saved terminal stdout)
- * @return The input line (must be freed by caller), or NULL on EOF
+ * @brief Read lines in a loop until delimiter or EOF
+ * @param delimiter The string that ends the heredoc
+ * @param pipe_write The write-end of the heredoc pipe
+ * @param app Shell context
  */
-char    *read_heredoc_line(t_app *app)
+static void	heredoc_read_loop(char *delimiter, int pipe_write, t_app *app)
 {
-    int		saved_stdout;
-    char	*line;
+	char		*line;
+	t_input		input;
 
-    saved_stdout = dup(STDOUT_FILENO);
-    if (app->term_stdout >= 0)
-        dup2(app->term_stdout, STDOUT_FILENO);
-    line = readline(HEREDOC_INPUT);
-    dup2(saved_stdout, STDOUT_FILENO);
-    close(saved_stdout);
-	if (g_heredoc)
+	while (!g_heredoc)
 	{
-		if (line)
+		line = read_heredoc_line(app);
+		if (!line)
+			break ;
+		if (ft_strcmp(line, delimiter) == 0)
+		{
 			free(line);
-		return (NULL);
+			break ;
+		}
+		process_heredoc_line(line, &input, pipe_write, app);
 	}
-    return (line);
 }
 
 /**
@@ -52,41 +48,26 @@ char    *read_heredoc_line(t_app *app)
  */
 static void	heredoc_child_process(char *delimiter, int pipe_write, t_app *app)
 {
-	char		*line;
-	t_input		input;
-
 	setup_heredoc_signals();
-	while (!g_heredoc)
-	{
-		line = read_heredoc_line(app);
-		if (!line)
-		{
-			free(line);
-			break;
-		}
-		if (ft_strcmp(line, delimiter) == 0)
-		{
-			free(line);
-			break;
-		}
-		ft_memset(&input, 0, sizeof(t_input));
-		input.line = ft_strdup(line);
-		free(line);
-		line = handle_word(&input, app);
-		write(pipe_write, line, ft_strlen(line));
-		write(pipe_write, "\n", 1);
-		free(line);
-		free(input.line);
-	}
-	close(pipe_write);
-	rl_clear_history();
-	clean_app(app);
-	if (g_heredoc)
-	{
-		write(1, "\n", 1);
-		exit(130);
-	}
-	exit(0);
+	heredoc_read_loop(delimiter, pipe_write, app);
+	heredoc_child_cleanup(pipe_write, app);
+}
+
+/**
+ * @brief Execute the right node of the heredoc
+ * I love norminette
+ */
+static int	exec_ast_node_heredoc(t_ast_node *node, t_app *app,
+	int pipe[2], int save_stdin)
+{
+	int	status;
+
+	dup2(pipe[0], STDIN_FILENO);
+	close(pipe[0]);
+	status = exec_ast_node(node->right, app);
+	dup2(save_stdin, STDIN_FILENO);
+	close(save_stdin);
+	return (status);
 }
 
 /**
@@ -102,7 +83,7 @@ int	handle_heredoc(t_app *app, t_ast_node *node)
 	int		pipefd[2];
 	int		save_stdin;
 	pid_t	pid;
-	
+
 	g_heredoc = 0;
 	if (pipe(pipefd) < 0)
 		return (ft_printf("Error: pipe"), 1);
@@ -111,28 +92,14 @@ int	handle_heredoc(t_app *app, t_ast_node *node)
 		return (ft_printf("Error: fork"), close_pipe(pipefd), 1);
 	if (pid == 0)
 		heredoc_child_process(node->data[0], pipefd[1], app);
-
-	// here starts parent process
-	close(pipefd[1]); // we dont need to write into the pipe anymore
-
-	// ignore both CTRL-C and CTRL-\ here
-	// we make sure that the parent process ignores them so it wont kill the parent
-	// process when the child process is running
+	close(pipefd[1]);
 	ignore_int_quit();
-
 	if (waitpid(pid, &wstatus, 0) < 0)
 		ft_printf("Error: waitpid");
-
-	// we restore the main signals handlers for the parent process
 	sig_handler();
 	status = get_child_exit_status(wstatus);
 	if (status != ES_OK)
 		return (close(pipefd[0]), status);
 	save_stdin = dup(STDIN_FILENO);
-	dup2(pipefd[0], STDIN_FILENO);
-	close(pipefd[0]);
-	status = exec_ast_node(node->right, app);
-	dup2(save_stdin, STDIN_FILENO);
-	close(save_stdin);
-	return (status);
+	return (exec_ast_node_heredoc(node, app, pipefd, save_stdin));
 }
