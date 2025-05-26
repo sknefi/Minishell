@@ -48,8 +48,6 @@ SRCS = \
     ./src/handlers/redirection.c \
     ./src/handlers/redirection_utils.c \
     \
-    ./src/banner/banner.c \
-    \
     ./src/main.c
 
 OBJS       = $(SRCS:.c=.o)
