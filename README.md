@@ -15,7 +15,7 @@ This project required deep knowledge of C programming, Unix processes, and shell
 - [Minishell](#minishell)
 	- [Summary](#summary)
 	- [Table of Contents](#table-of-contents)
-	- [Overview](#overview)
+	- [Quick overview](#quick-overview)
 	- [Features](#features)
 	- [Building](#building)
 	- [Architecture](#architecture)
@@ -40,7 +40,7 @@ This project required deep knowledge of C programming, Unix processes, and shell
 	- [Signal Handling](#signal-handling)
 	- [Authors](#authors)
 
-## Overview
+## Quick overview
 
 Minishell is a simple command-line interpreter that replicates core functionalities of bash. It provides command execution, environment variable management, pipes, redirections, and various shell builtins.
 
@@ -61,8 +61,10 @@ Clone the repository and build the project:
 
 ```bash
 git clone https://github.com/sknefi/Minishell.git
+
 cd Minishell
-make
+
+make # build the project
 ```
 
 Run the shell:
@@ -213,7 +215,8 @@ echo -n -nn -nnnnnn Hello World # No newline
 ### cd
 Changes the current directory.
 ```bash
-cd /path/to/directory
+cd /absolute/path/to/directory
+cd relative/path/to/directory
 cd ..  # Parent directory
 cd -   # Previous directory
 cd     # Home directory
@@ -230,6 +233,7 @@ pwd
 Sets environment variables.
 ```bash
 export VAR=value
+export VAR1=value1 VAR2=value2 # export multiple variables
 export    # Sorted list of all exported variables
 ```
 
@@ -237,6 +241,7 @@ export    # Sorted list of all exported variables
 Removes environment variables.
 ```bash
 unset VAR
+unset VAR1 VAR2 # unset multiple variables
 ```
 
 ### env
