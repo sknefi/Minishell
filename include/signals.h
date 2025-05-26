@@ -6,14 +6,14 @@
 /*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:08:04 by fkarika           #+#    #+#             */
-/*   Updated: 2025/05/23 17:15:54 by fkarika          ###   ########.fr       */
+/*   Updated: 2025/05/26 17:29:14 by fkarika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SIGNALS_H
 # define SIGNALS_H
 
-extern volatile int	g_heredoc;
+static volatile int	g_heredoc;
 
 // TYM_COMMENT
 void	sig_handler(void);

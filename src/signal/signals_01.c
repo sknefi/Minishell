@@ -6,13 +6,11 @@
 /*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 14:54:04 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/23 17:37:01 by fkarika          ###   ########.fr       */
+/*   Updated: 2025/05/26 17:29:37 by fkarika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-extern volatile int	g_heredoc;
 
 static void	sigint_handler(int sig);
 

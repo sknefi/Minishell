@@ -6,7 +6,7 @@
 /*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:08:05 by fkarika           #+#    #+#             */
-/*   Updated: 2025/05/26 16:12:12 by fkarika          ###   ########.fr       */
+/*   Updated: 2025/05/26 17:28:55 by fkarika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 // sh -> shell
 // ast -> abstract syntax tree
 // env -> environment
-//static volatile int    g_heredoc_interrupted; ERASE_IT
 // LIBRARIES
 # include <stdlib.h>
 # include <unistd.h>

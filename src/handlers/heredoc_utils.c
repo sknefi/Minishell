@@ -6,15 +6,13 @@
 /*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:23:24 by fkarika           #+#    #+#             */
-/*   Updated: 2025/05/26 14:54:56 by fkarika          ###   ########.fr       */
+/*   Updated: 2025/05/26 17:29:32 by fkarika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 #define HEREDOC_INPUT "> "
-
-extern volatile int	g_heredoc;
 
 char	*read_heredoc_line(t_app *app)
 {

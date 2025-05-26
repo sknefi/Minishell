@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fkarika <fkarika@student.42prague.com>     +#+  +:+       +#+        */
+/*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:23:24 by fkarika           #+#    #+#             */
-/*   Updated: 2025/05/26 14:17:19 by fkarika          ###   ########.fr       */
+/*   Updated: 2025/05/26 17:29:34 by fkarika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-volatile int	g_heredoc;
 
 /**
  * @brief Read lines in a loop until delimiter or EOF
