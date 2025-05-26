@@ -3,34 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmateja <tmateja@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:13:05 by tmateja           #+#    #+#             */
-/*   Updated: 2025/05/24 21:54:18 by fkarika          ###   ########.fr       */
+/*   Updated: 2025/05/26 15:20:35 by fkarika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-static int	shell_loop(t_app *app, int helper);
-
-int	main(int argc, char **argv, char **env)
-{
-	t_app		*app;
-	int			helper;
-
-	(void)argc;
-	(void)argv;
-	app = init_app(env);
-	if (!app)
-		return (clean_app(app), EXIT_FAILURE);
-	helper = 0;
-	sig_handler();
-	if (shell_loop(app, helper))
-		return (clean_app(app), EXIT_FAILURE);
-	clean_app(app);
-	return (EXIT_SUCCESS);
-}
 
 static int	shell_loop(t_app *app, int helper)
 {
@@ -57,4 +37,23 @@ static int	shell_loop(t_app *app, int helper)
 		free_tokens(app->token);
 		app->root = NULL;
 	}
+}
+
+int	main(int argc, char **argv, char **env)
+{
+	t_app		*app;
+	int			helper;
+
+	(void)argc;
+	(void)argv;
+	print_banner();
+	app = init_app(env);
+	if (!app)
+		return (clean_app(app), EXIT_FAILURE);
+	helper = 0;
+	sig_handler();
+	if (shell_loop(app, helper))
+		return (clean_app(app), EXIT_FAILURE);
+	clean_app(app);
+	return (EXIT_SUCCESS);
 }

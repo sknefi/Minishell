@@ -6,7 +6,7 @@
 /*   By: fkarika <fkarika@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 17:08:05 by fkarika           #+#    #+#             */
-/*   Updated: 2025/05/23 17:30:55 by fkarika          ###   ########.fr       */
+/*   Updated: 2025/05/26 15:20:07 by fkarika          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,5 +100,7 @@ int		exec_external(t_app *app, char **cmd_args);
 int		exec_ast_node(t_ast_node *node, t_app *app);
 
 int		get_child_exit_status(int status);
+
+void	print_banner(void);
 
 #endif
